@@ -1,9 +1,9 @@
-<link href="static/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+<link href="${my_path}/static/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 <div class="col-sm-3 col-md-2 sidebar">
     <div class="top-navigation">
         <div class="t-menu">MENU</div>
         <div class="t-img">
-            <img src="static/images/lines.png" alt=""/>
+            <img src="${my_path}/static/images/lines.png" alt=""/>
         </div>
         <div class="clearfix"></div>
     </div>

@@ -1,4 +1,4 @@
-<link href="static/css/my_menu.css" rel='stylesheet' type='text/css' media="all"/>
+<link href="${my_path}/static/css/my_menu.css" rel='stylesheet' type='text/css' media="all"/>
 <ul class="menu">
     <li><#include "../common/user.ftl">
         <ul class="submenu">
@@ -7,7 +7,7 @@
             <#if Session["global_user"]?exists>
                 <li><a href="#small-dialog3" class="play-icon popup-with-zoom-anim">上传</a></li>
             </#if>
-            <li><a href="${mypath}/my_user/logout">注销</a></li>
+            <li><a href="${my_path}/my_user/logout">注销</a></li>
             <li><a href="javascript:void(0)" id="dispear">消息</a></li>
             <li>
                 <select name="row" id="my_select">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>设置</title>
     <#assign mypath =Request.request.contextPath />
-    <link rel="stylesheet" href="static/css/my_style.css" media="screen" type="text/css" />
+    <link rel="stylesheet" href="${my_path}/static/css/my_style.css" media="screen" type="text/css" />
 </head>
 <body>
 <div class="container">

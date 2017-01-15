@@ -9,7 +9,7 @@
     <h3>登录</h3>
     <#include "../common/left_page.ftl">
     <div class="signup">
-        <form method="post" id="l_form" action="${mypath}/my_user/login">
+        <form method="post" id="l_form" action="${my_path}/my_user/login">
             <input type="text" class="email" placeholder="用户名" name="username" id="username"/>
             <input type="hidden" id="_action" name="action" value="0"/>
             <input type="password" placeholder="密码" name="password" id="password"/><br>

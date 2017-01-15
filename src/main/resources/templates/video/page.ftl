@@ -8,7 +8,7 @@
     body{font:12px/180% Arial,Lucida,Verdana,"宋体",Helvetica,sans-serif;font-size:13px;color:#211922;text-shadow:0 1px rgba(255,255,255,0.9);}
     /* 分页数字链接样式 */
     .pagebox{padding:30px 20px 20px 20px;}
-    .paging a,.paging span.Bg,.paging a:hover,.paging a.cur,.paging a:hover span.Bg,.paging a.cur span.Bg{background:url(${mypath}/images/pagebg.png) no-repeat;}
+    .paging a,.paging span.Bg,.paging a:hover,.paging a.cur,.paging a:hover span.Bg,.paging a.cur span.Bg{background:url(${my_path}/images/pagebg.png) no-repeat;}
     .paging{text-align:center;font-size:13px;}
     .paging a{padding-bottom:4px;display:inline-block;background-position:0 -134px;padding-bottom:11px;}
     .paging a:hover{text-decoration:none;}
@@ -24,7 +24,7 @@
     .paging a:hover span.Bg,.paging a.cur span.Bg{background-position:0px -63px;}
     .paging a:hover span.Bg b,.paging a.cur span.Bg b{opacity:1;*visibility:visible;}
     /* 上下翻页样式 */
-    .paging a.previous,.paging a.previous span.Bg,.paging a.previous b,.paging a.previous:hover,.paging a.previous:hover span.Bg,.paging a.previous:hover b,.paging a.nextpage,.paging a.nextpage span.Bg,.paging a.nextpage b,.paging a.nextpage:hover,.paging a.nextpage:hover span.Bg,.paging a.nextpage:hover b{background:url(${mypath}/images/prev-next-bg.png) no-repeat}
+    .paging a.previous,.paging a.previous span.Bg,.paging a.previous b,.paging a.previous:hover,.paging a.previous:hover span.Bg,.paging a.previous:hover b,.paging a.nextpage,.paging a.nextpage span.Bg,.paging a.nextpage b,.paging a.nextpage:hover,.paging a.nextpage:hover span.Bg,.paging a.nextpage:hover b{background:url(${my_path}/images/prev-next-bg.png) no-repeat}
     .paging a.previous{background-position:0px -72px;}
     .paging a.previous span.Bg{width:61px;padding-left:0px;background-position:0px -121px;}
     .paging a.previous b{background-position:0px 17px;}

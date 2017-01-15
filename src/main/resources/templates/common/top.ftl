@@ -1,9 +1,9 @@
-<script type="text/javascript" src="static/js/modernizr.custom.min.js"></script>
-<link href="static/css/popuo-box.css" rel="stylesheet" type="text/css" media="all"/>
-<link href="static/css/diy.css" rel="stylesheet" type="text/css" media="all"/>
-<script src="static/js/jquery.magnific-popup.js" type="text/javascript"></script>
+<script type="text/javascript" src="${my_path}/static/js/modernizr.custom.min.js"></script>
+<link href="${my_path}/static/css/popuo-box.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="${my_path}/static/css/diy.css" rel="stylesheet" type="text/css" media="all"/>
+<script src="${my_path}/static/js/jquery.magnific-popup.js" type="text/javascript"></script>
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <input type="hidden" id="_path" value="${mypath}"/>
+    <input type="hidden" id="_path" value="${my_path}"/>
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -13,7 +13,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${mypath}/my_video/home"><h1><img src="${mypath}/images/logo.png" alt=""/></h1></a>
+            <a class="navbar-brand" href="${my_path}/my_video/home"><h1><img src="${my_path}/images/logo.png" alt=""/></h1></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="top-search">

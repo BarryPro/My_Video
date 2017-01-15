@@ -32,7 +32,7 @@ public class MyBatisMapperScannerConfig {
         mapperScannerConfigurer.setBasePackage("com.belong.dao");
         Properties properties = new Properties();
         //设置基类mapper包名 设置通用map插件
-//        properties.setProperty("mappers", "com.weikun.util.MyMapper");
+//        properties.setProperty("mappers", "com.belong.util.MyMapper");
 //        properties.setProperty("notEmpty", "false");
 //        properties.setProperty("IDENTITY", "MYSQL");
 //        //这里使用的通用Mapper的MapperScannerConfigurer，所有有下面这个方法

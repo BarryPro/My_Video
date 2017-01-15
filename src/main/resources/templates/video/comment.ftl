@@ -10,18 +10,18 @@
         height: 17px;
     }
 </style>
-<#include "video/particle.ftl">
+<#include "../video/particle.ftl">
 <body>
-<input type="hidden" id="_path" value="${mypath}"/>
-<input type="hidden" id="_user" value="${global_user.username}"/>
-<c:set var="review" value="${sessionScope.review}"></c:set>
+<input type="hidden" id="_path" value="${my_path}/"/>
+<input type="hidden" id="_user" value=""/>
+<c:set var="review" value=""></c:set>
 <div align="center" style="padding-top: inherit">
     <table width="790px" cellpadding="0" cellspacing="1" border="1">
         <tr>
             <td rowspan="6" width="28%">
-                <a href="${mypath}/my_video/src/Vid/${review.vid}">
+                <a href="${my_path}/my_video/src/Vid/${review.vid}">
                 <img width="240" height="338" id="_views"
-                     src="${mypath}/my_video/pic/Vid/${review.vid}" alt="tupian" /></a>
+                     src="${my_path}/my_video/pic/Vid/${review.vid}" alt="tupian" /></a>
             </td>
             <td width="72%"><span class="_mycolor">影片名：</span>${review.video.vname}</td>
         </tr>
@@ -61,16 +61,16 @@
     <script type="text/javascript">
         //配置ckeditor
         CKEDITOR.replace('content',{
-            filebrowserBrowseUrl : 'static/ckfinder/ckfinder.html',
-            filebrowserImageBrowseUrl : 'static/ckfinder/ckfinder.html?type=Images',
-            filebrowserFlashBrowseUrl : 'static/ckfinder/ckfinder.html?type=Flash',
-            filebrowserUploadUrl : 'static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Files',
-            filebrowserImageUploadUrl : 'static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Images',
-            filebrowserFlashUploadUrl : 'static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Flash'
+            filebrowserBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html',
+            filebrowserImageBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html?type=Images',
+            filebrowserFlashBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html?type=Flash',
+            filebrowserUploadUrl : '${my_path}/static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Files',
+            filebrowserImageUploadUrl : '${my_path}/static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Images',
+            filebrowserFlashUploadUrl : '${my_path}/static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Flash'
         });
     </script>
 </div>
-<link href="static/css/diy.css" rel='stylesheet' type='text/css' media="all"/>
+<link href="${my_path}/static/css/diy.css" rel='stylesheet' type='text/css' media="all"/>
 <div align="center">
     <div id="_submit"></div>
     </table>
@@ -226,9 +226,9 @@
                         'style="width:100% "/></div><span class="fontuser">'+article.user.username+'</span></td>' +
                         '<td width="90%"><span>'+article.acontent+'</span>'+
                         '<div class="_articlelayout"><span class="_articlefont">'+article.adate+'</span>' +
-                        '<img src='+_path+'/images/agree.png class="_my_img" title="赞" alt='+article.aid+' ><span>'+article.agree+'</span>' +
-                        '<img src='+_path+'/images/disagree.png class="_my_img" title="踩" alt='+article.aid+'><span>'+article.disagree+'</span>' +
-                        '<img src='+_path+'/images/reply.png class="_my_img" alt='+article.aid+' value='+article.user.username+' title="回贴"></div></td>' +
+                        '<img src='+_path+'/static/images/agree.png class="_my_img" title="赞" alt='+article.aid+' ><span>'+article.agree+'</span>' +
+                        '<img src='+_path+'/static/images/disagree.png class="_my_img" title="踩" alt='+article.aid+'><span>'+article.disagree+'</span>' +
+                        '<img src='+_path+'/static/images/reply.png class="_my_img" alt='+article.aid+' value='+article.user.username+' title="回贴"></div></td>' +
                         '</table>'+
                         '<label style="display:none" id="cur_page_hidden" title='+data.cur_page+'/>'+
                         '<label style="display:none" id="max_page_hidden" title='+data.page_total+'/>'
@@ -256,10 +256,10 @@
                         'style="width:100% "/></div><span class="fontuser">'+article.user.username+'</span></td>' +
                         '<td width="90%">'+article.acontent+
                         '<div class="_articlelayout"><span class="_articlefont">'+article.adate+'</span>' +
-                        '<img src='+_path+'/images/agree.png class="_my_img" title="赞" alt='+article.aid+' ><span>'+article.agree+'</span>' +
-                        '<img src='+_path+'/images/disagree.png class="_my_img" title="踩" alt='+article.aid+'><span>'+article.disagree+'</span>' +
-                        '<img src='+_path+'/images/reply.png class="_my_img" alt='+article.aid+' value='+article.user.username+' title="回贴">' +
-                        '<img src='+_path+'/images/delete.png class="_my_img" alt='+article.aid+' title="删帖"></div></td>' +
+                        '<img src='+_path+'/static/images/agree.png class="_my_img" title="赞" alt='+article.aid+' ><span>'+article.agree+'</span>' +
+                        '<img src='+_path+'/static/images/disagree.png class="_my_img" title="踩" alt='+article.aid+'><span>'+article.disagree+'</span>' +
+                        '<img src='+_path+'/static/images/reply.png class="_my_img" alt='+article.aid+' value='+article.user.username+' title="回贴">' +
+                        '<img src='+_path+'/static/images/delete.png class="_my_img" alt='+article.aid+' title="删帖"></div></td>' +
                         '</table>'+
                         '<label style="display:none" id="cur_page_hidden" title='+data.cur_page+'/>'+
                         '<label style="display:none" id="max_page_hidden" title='+data.page_total+'/>'

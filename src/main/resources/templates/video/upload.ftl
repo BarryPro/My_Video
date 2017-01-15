@@ -2,7 +2,7 @@
     <h3>上传</h3>
     <#include "../common/left_page.ftl">
     <div class="signup">
-        <form id="u_form" method="post" enctype="multipart/form-data" action="${mypath}/my_video/upload">
+        <form id="u_form" method="post" enctype="multipart/form-data" action="${my_path}/my_video/upload">
             <input type="text" class="email" placeholder="电影名字" name="vname" id="vname"/><br/>
             <input type="text" class="email" placeholder="导演名" name="vdirector" id="vdirector"/><br/>
             <input type="text" class="email" placeholder="演员表" name="vactor" id="vactor"/><br/>

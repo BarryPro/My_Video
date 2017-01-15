@@ -26,7 +26,7 @@ import java.util.Map;
 @RequestMapping(value = "/my_review")
 @SessionAttributes(value = {"review","uid"})
 public class ArticleController {
-    private static final String COMMENT = "video/comment.ftl";
+    private static final String COMMENT = "video/comment";
     private static final String A_VID = "a_Vid";
     private static final String UID = "Uid";
     private static final String USERID = "userid";
