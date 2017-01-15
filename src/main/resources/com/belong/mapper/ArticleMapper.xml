@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.belong.dao.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.belong.model.Article" >
+    <id column="Aid" property="aid" jdbcType="INTEGER" />
+    <result column="Uid" property="uid" jdbcType="INTEGER" />
+    <result column="Agree" property="agree" jdbcType="INTEGER" />
+    <result column="Disagree" property="disagree" jdbcType="INTEGER" />
+    <result column="Adate" property="adate" jdbcType="TIMESTAMP" />
+    <result column="Vid" property="vid" jdbcType="INTEGER" />
+    <result column="Acontent" property="acontent" jdbcType="LONGVARCHAR" />
+    <association property="user"
+                 column="uid"
+                 select="QueryUserByUid"></association>
+  </resultMap>
+  <update id="updateArticle" parameterType="map">
+    UPDATE article SET Acontent = #{article.acontent,jdbcType=LONGVARCHAR}
+    WHERE Aid = #{article.aid,jdbcType = INTEGER}
+  </update>
+  <update id="updataAgree" parameterType="map">
+    UPDATE article SET Agree = Agree + 1 WHERE Aid = #{aid,jdbcType = INTEGER}
+  </update>
+
+  <update id="updataDisagree" parameterType="map">
+    UPDATE article SET Disagree = Disagree + 1 WHERE Aid = #{aid,jdbcType = INTEGER}
+  </update>
+  <delete id="deleteArticle" parameterType="map">
+    DELETE FROM article WHERE Aid = #{aid,jdbcType = INTEGER}
+  </delete>
+
+  <select id="QueryUserByUid" resultMap="com.belong.dao.UserMapper.BaseResultMap">
+    SELECT *
+    FROM user
+    WHERE id = #{uid,jdbcType = INTEGER}
+  </select>
+  <select id="queryArticleByAid" resultType="com.belong.model.Article" parameterType="map">
+    SELECT * FROM article WHERE Aid = #{article.aid,jdbcType=INTEGER}
+  </select>
+
+
+  <insert id="addArticle" parameterType="map">
+    INSERT INTO article(Acontent,Uid,Adate,Vid)
+    VALUES (#{article.acontent,jdbcType=LONGVARCHAR},
+            #{article.uid,jdbcType=INTEGER},
+            now(),
+            #{article.vid,jdbcType=INTEGER})
+  </insert>
+
+</mapper>

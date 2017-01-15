@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.belong.dao.MoviesMapper" >
+  <resultMap id="BaseResultMap" type="com.belong.model.Movies" >
+    <id column="Vid" property="vid" jdbcType="INTEGER" />
+    <result column="Vname" property="vname" jdbcType="LONGVARCHAR" />
+    <result column="Vdate" property="vdate" jdbcType="DATE" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="views" property="views" jdbcType="DECIMAL" />
+    <result column="Vinfo" property="vinfo" jdbcType="LONGVARCHAR" />
+    <result column="Vpic" property="vpic" jdbcType="LONGVARBINARY"/>
+    <result column="Vsrc" property="vsrc" jdbcType="LONGVARCHAR" />
+    <association property="user"
+                 column="id"
+                 select="QueryUserByID"/>
+  </resultMap>
+
+  <select id="QueryUserByID" resultMap="com.belong.dao.UserMapper.BaseResultMap">
+    SELECT username
+    FROM user
+    WHERE id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getPath" resultType="java.lang.String" parameterType="map">
+    SELECT Vsrc
+    FROM movies
+    WHERE Vid = #{vid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getPic" parameterType="map"  resultType="com.belong.model.Movies" resultMap="BaseResultMap">
+    SELECT Vpic
+    FROM movies
+    WHERE Vid = #{vid,jdbcType=INTEGER}
+
+  </select>
+
+
+  <update id="views" parameterType="map" >
+    UPDATE movies
+    SET views = views + 1
+    WHERE Vid = #{vid,jdbcType=INTEGER}
+  </update>
+</mapper>

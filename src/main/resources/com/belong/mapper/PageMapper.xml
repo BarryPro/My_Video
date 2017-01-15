@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.belong.dao.PageMapper">
+    <select id="getInfo" statementType="CALLABLE"
+            parameterType="map"
+            resultType="com.belong.model.Movies"
+            resultMap="com.belong.dao.MoviesMapper.BaseResultMap">
+        <![CDATA[
+          call pro_pagenum1(
+            #{Vtype , mode=IN ,jdbcType=INTEGER},
+	        #{cur_page ,mode=IN ,jdbcType=INTEGER},
+	        #{Uid,  mode=IN ,jdbcType=INTEGER},
+	        #{row_num , mode=OUT ,jdbcType=INTEGER},
+	        #{row_total ,mode=OUT ,jdbcType=INTEGER},
+	        #{page_total,  mode=OUT ,jdbcType=INTEGER}
+          )
+        ]]>
+    </select>
+
+    <select id="search" statementType="CALLABLE"
+            parameterType="map"
+            resultType="com.belong.model.Movies"
+            resultMap="com.belong.dao.MoviesMapper.BaseResultMap">
+        <![CDATA[
+          call pro_pagenum2(
+            #{txt , mode=IN ,jdbcType=VARCHAR},
+	        #{cur_page ,mode=IN ,jdbcType=INTEGER},
+	        #{Uid,  mode=IN ,jdbcType=INTEGER},
+	        #{row_num , mode=OUT ,jdbcType=INTEGER},
+	        #{row_total ,mode=OUT ,jdbcType=INTEGER},
+	        #{page_total,  mode=OUT ,jdbcType=INTEGER}
+          )
+        ]]>
+    </select>
+
+    <insert id="upload" statementType="CALLABLE"
+            parameterType="map">
+        <![CDATA[
+          call pro_upload_movies(
+            #{_Vname , mode=IN ,jdbcType=LONGVARCHAR},
+	        #{_Vinfo ,mode=IN ,jdbcType=LONGVARCHAR},
+	        #{_Vpic,  mode=IN ,jdbcType=LONGVARBINARY},
+	        #{_Vsrc , mode=IN ,jdbcType=LONGVARCHAR},
+	        #{_id ,mode=IN ,jdbcType=INTEGER},
+	        #{_mytype,  mode=IN ,jdbcType=VARCHAR},
+	        #{_Vdirector ,mode=IN ,jdbcType=LONGVARCHAR},
+	        #{_Vactor,  mode=IN ,jdbcType=LONGVARCHAR}
+          )
+        ]]>
+    </insert>
+
+    <select id="query" statementType="CALLABLE"
+            parameterType="map"
+            resultType="com.belong.model.Article"
+            resultMap="com.belong.dao.ArticleMapper.BaseResultMap">
+        <![CDATA[
+          call pro_pagenum3(
+            #{Uid , mode=IN ,jdbcType=INTEGER},
+	        #{a_Vid ,mode=IN ,jdbcType=INTEGER},
+	        #{cur_page,  mode=IN ,jdbcType=INTEGER},
+	        #{page_total , mode=OUT ,jdbcType=INTEGER},
+	        #{row_total ,mode=OUT ,jdbcType=INTEGER},
+	        #{a_pagenum,  mode=OUT ,jdbcType=INTEGER}
+          )
+        ]]>
+    </select>
+</mapper>

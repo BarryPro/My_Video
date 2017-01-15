@@ -1,5 +1,11 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <script src="static/js/jquery-1.11.1.min.js"></script>
+</head>
 <body>
-<h2>Hello World!${username}</h2>
+<h1>Hello World!</h1>
 </body>
 </html>

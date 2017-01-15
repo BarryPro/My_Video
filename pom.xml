@@ -78,6 +78,16 @@
 			<artifactId>mapper</artifactId>
 			<version>3.3.9</version>
 		</dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.7</version>
+        </dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.1</version>
+		</dependency>
 	</dependencies>
 
 	<!--热部署插件-->

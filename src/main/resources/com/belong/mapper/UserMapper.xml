@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.belong.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.belong.model.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="pagenum" property="pagenum" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="LONGVARBINARY" />
+  </resultMap>
+
+  <select id="login" parameterType="map" resultMap="BaseResultMap">
+    SELECT *
+    FROM USER
+    WHERE username=#{user.username,jdbcType=VARCHAR} and
+          password=#{user.password,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="register" parameterType="map">
+    INSERT INTO USER (username,password,pic)
+    VALUES (#{user.username,jdbcType=VARCHAR},
+            #{user.password,jdbcType=VARCHAR},
+            #{user.pic,jdbcType=LONGVARBINARY})
+  </insert>
+
+  <select id="getPic" parameterType="map"  resultType="com.belong.model.User" resultMap="BaseResultMap">
+    SELECT pic
+    FROM user
+    WHERE id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <update id="updateVideoNumber" parameterType="map">
+    UPDATE user
+    SET pagenum = #{pagenum,jdbcType=INTEGER}
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

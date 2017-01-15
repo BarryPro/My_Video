@@ -11,6 +11,16 @@ public class User {
 
     private byte[] pic;
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    private String path;
+
     public Integer getId() {
         return id;
     }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.belong.dao.ReviewMapper" >
+  <resultMap id="BaseResultMap" type="com.belong.model.Review" >
+    <id column="Vid" property="vid" jdbcType="INTEGER" />
+    <result column="Vamount" property="vamount" jdbcType="VARCHAR" />
+    <result column="Vdirector" property="vdirector" jdbcType="LONGVARCHAR" />
+    <result column="Vactor" property="vactor" jdbcType="LONGVARCHAR" />
+    <association property="video"
+                 column="Vid"
+                 javaType="com.belong.model.Movies"
+                 jdbcType="INTEGER" select="QueryMoviesByVid"/>
+  </resultMap>
+
+  <select id="QueryMoviesByVid" resultMap="com.belong.dao.MoviesMapper.BaseResultMap">
+    SELECT *
+    FROM review r
+    JOIN movies m ON (r.Vid = m.Vid)
+    WHERE r.Vid = #{vid,jdbcType=INTEGER};
+  </select>
+
+  <select id="review" parameterType="map" resultMap="BaseResultMap">
+    SELECT *
+    FROM review r
+    JOIN movies m ON (r.Vid = m.Vid)
+    WHERE r.Vid = #{vid,jdbcType=INTEGER};
+  </select>
+
+</mapper>

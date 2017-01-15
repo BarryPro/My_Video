@@ -43,7 +43,7 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
         bean.setDataSource(dataSource);
 
         //根据实际配置实体类路径
-        bean.setTypeAliasesPackage("com.weikun.model");
+        bean.setTypeAliasesPackage("com.belong.model");
 
 
         //添加xml目录

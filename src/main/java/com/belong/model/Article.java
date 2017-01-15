@@ -1,7 +1,5 @@
 package com.belong.model;
 
-import java.util.Date;
-
 public class Article {
     private Integer aid;
 
@@ -9,11 +7,13 @@ public class Article {
 
     private Integer agree;
 
-    private Date adate;
+    private Integer disagree;
+
+    private String adate;
 
     private Integer vid;
 
-    private Integer disagree;
+    private User user;
 
     private String acontent;
 
@@ -41,11 +41,19 @@ public class Article {
         this.agree = agree;
     }
 
-    public Date getAdate() {
+    public Integer getDisagree() {
+        return disagree;
+    }
+
+    public void setDisagree(Integer disagree) {
+        this.disagree = disagree;
+    }
+
+    public String getAdate() {
         return adate;
     }
 
-    public void setAdate(Date adate) {
+    public void setAdate(String adate) {
         this.adate = adate;
     }
 
@@ -57,12 +65,12 @@ public class Article {
         this.vid = vid;
     }
 
-    public Integer getDisagree() {
-        return disagree;
+    public User getUser() {
+        return user;
     }
 
-    public void setDisagree(Integer disagree) {
-        this.disagree = disagree;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getAcontent() {
