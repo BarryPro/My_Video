@@ -1,6 +1,8 @@
 package com.belong.model;
 
-public class Review {
+import java.io.Serializable;
+
+public class Review implements Serializable{
     private Integer vid;
     private String vamount;
     private Movies video;

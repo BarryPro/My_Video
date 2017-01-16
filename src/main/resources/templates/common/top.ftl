@@ -22,7 +22,7 @@
                     <input type="button" value=" " id="btn_search">
                 </form>
                 <div class="signin">
-                    <label id="label1" style="color: red"><b><i></i></b></label>
+                    <label id="label1" style="color: red"><b><i>${(msg)?default("")}</i></b></label>
                 </div>
             </div>
             <div class="header-top-right">

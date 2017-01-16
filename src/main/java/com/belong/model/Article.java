@@ -1,6 +1,8 @@
 package com.belong.model;
 
-public class Article {
+import java.io.Serializable;
+
+public class Article implements Serializable{
     private Integer aid;
 
     private Integer uid;

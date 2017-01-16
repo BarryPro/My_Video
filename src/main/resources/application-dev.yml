@@ -8,6 +8,10 @@ spring:
       cache: false
       enabled: true
       request-context-attribute: request
+      expose-session-attributes: true
+      expose-request-attributes: true
+      allow-session-override: true
+      expose-spring-macro-helpers: true
   #  数据源
   datasource:
     name: video
@@ -33,4 +37,14 @@ spring:
   # 加载其他配置文件
   profiles:
     include: msg,server
+  # 允许上传文件
+  http:
+    multipart:
+      enabled: true
+  # redis
+  redis:
+    host: localhost
+    password: belong
+    port: 6379
+
 

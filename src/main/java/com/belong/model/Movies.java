@@ -1,8 +1,9 @@
 package com.belong.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Movies {
+public class Movies implements Serializable{
     private Integer vid;
 
     private String vname;

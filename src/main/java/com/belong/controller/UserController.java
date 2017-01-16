@@ -24,7 +24,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping(value = "/my_user")
-@SessionAttributes(value = "global_user")
+@SessionAttributes("global_user")
 public class UserController {
     private static final String SUCCESS = "登录成功,欢迎";
     private static final String POST = "光临本站";
