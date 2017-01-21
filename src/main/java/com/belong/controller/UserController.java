@@ -68,7 +68,8 @@ public class UserController {
         String msg;
         String cookiePWD = user.getPassword();
         user.setPassword(MD5.getMD5(user.getPassword()));
-        User cor_user = service.login(user);
+        map.put("user",user);
+        User cor_user = service.login(map);
         if(cor_user!=null){
             if(!cookie.equals(OFF)){
                 Cookie cookie1 = new Cookie(COOKIEUSERNAME,cor_user.getUsername());

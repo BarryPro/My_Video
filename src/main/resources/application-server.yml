@@ -2,6 +2,4 @@
 server:
   port: 8080
   context-path: /MyVideo
-  session:
-    cookie:
-      name: global_user
+  

@@ -64,9 +64,9 @@
             filebrowserBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html',
             filebrowserImageBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html?type=Images',
             filebrowserFlashBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html?type=Flash',
-            filebrowserUploadUrl : '${my_path}/static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Files',
-            filebrowserImageUploadUrl : '${my_path}/static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Images',
-            filebrowserFlashUploadUrl : '${my_path}/static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Flash'
+            filebrowserUploadUrl : '${my_path}/static/userfiles',
+            filebrowserImageUploadUrl : '${my_path}/static/userfiles/images',
+            filebrowserFlashUploadUrl : '${my_path}/static/userfiles/flash'
         });
     </script>
 </div>

@@ -44,7 +44,6 @@ spring:
   # redis
   redis:
     host: localhost
-    password: belong
     port: 6379
 
 

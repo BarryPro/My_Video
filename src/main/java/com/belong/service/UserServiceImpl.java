@@ -35,9 +35,9 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public User login(User user) {
+    public User login(Map map) {
         //用于返回正确的用户信息
-        return dao.login(user);
+        return dao.login(map);
     }
 
     @Override

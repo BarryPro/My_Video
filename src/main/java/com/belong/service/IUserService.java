@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public interface IUserService {
     boolean register(Map map);
-    User login(User user);
+    User login(Map map);
     User getPic(int id);
     String getAuthor(int userid);
     boolean updataSelect(int value, int userid);

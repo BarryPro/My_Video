@@ -30,5 +30,4 @@ CKEDITOR.editorConfig = function( config )
     config.width = 814;
     config.height = 80;
     config.toolbarCanCollapse = true;
-
 };
