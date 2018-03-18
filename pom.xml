@@ -59,6 +59,7 @@
 		</dependency>
 
 
+
 		<!--热部署-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,6 +74,11 @@
 			<version>1.0.18</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
+		</dependency>
 		<!--通用mapper-->
 		<dependency>
 			<groupId>tk.mybatis</groupId>
@@ -125,8 +131,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>

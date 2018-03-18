@@ -2,6 +2,7 @@ package com.belong.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.belong.config.MyVideoConfig;
 import com.belong.model.Movies;
 import com.belong.model.PageBean;
 import com.belong.model.Review;
@@ -40,8 +41,6 @@ public class VideoController {
     private static final String SRCPATH = "srcpath";
     private static final String TXT = "txt";
     private static final String SYSTEMSEPARATOR = "/";
-    private static final String UPLOAD = "upload";
-    private static final String MOVIES = "movies";
     private static final String UPLOADSUCCESS = "上传成功";
     private static final String MSG = "msg";
 
@@ -155,6 +154,7 @@ public class VideoController {
                          Review review,
                          @RequestPart("filem") MultipartFile filem,
                          @RequestPart("filep") MultipartFile filep,
+                         @RequestPart("id") String id,
                          HttpServletRequest request,
                          Map map){
         String pic_type = filep.getContentType();
@@ -162,18 +162,22 @@ public class VideoController {
         //符合上传要求才可以进行上传
         if(typem.containsKey(src_type) && typep.containsKey(pic_type)){
             //得到服务器的绝对路径eg:D:\IntelliJIDEA\Frame\MyVideo2\target\MyVideo2\
-            String tpath = request.getSession().getServletContext().getRealPath(SYSTEMSEPARATOR);
+            String tpath = MyVideoConfig.RESOURCE_PATH;
+//                    request.getSession().getServletContext().getRealPath(SYSTEMSEPARATOR);
             //得到随机的文件名称
             //System.out.println(tpath);
             UUID fileaname = UUID.randomUUID();
             String file = "";
+            //记录是那个用户上传的
+            movies.setId(Integer.parseInt(id));
             //处理长传视频
             if(typem.containsKey(src_type)){
                 file = fileaname+typem.get(src_type);
-                String vsrc = MOVIES+SYSTEMSEPARATOR+file;
+                String vsrc = file;
                 movies.setVsrc(vsrc);
+                vsrc = MyVideoConfig.MOVIES_PATH+file;
                 String tarFile = tpath+vsrc;
-                saveFile(filem,tarFile);
+                saveFile(filem,tarFile,false);
             }
             //处理上传图片
             if(typep.containsKey(pic_type)){
@@ -184,9 +188,9 @@ public class VideoController {
                     e.printStackTrace();
                 }
                 file = fileaname+typep.get(pic_type);
-                String uploadpath = UPLOAD+SYSTEMSEPARATOR+file;
+                String uploadpath = MyVideoConfig.PICTURE_PATH+file;
                 String tarfile = tpath+uploadpath;
-                saveFile(filep,tarfile);
+                saveFile(filep,tarfile,true);
             }
             map.put("_Vname",movies.getVname());
             map.put("_Vinfo",movies.getVinfo());
@@ -203,13 +207,18 @@ public class VideoController {
     }
 
     //保存文件到服务器
-    private boolean saveFile(MultipartFile file, String path){
-        File upload_file = new File(path);
-        if(!upload_file.exists()){
-            upload_file.mkdirs();
+    private boolean saveFile(MultipartFile file, String absFile, boolean flag){
+        File upload_dir = null;
+        if (flag) {
+            upload_dir = new File(MyVideoConfig.RESOURCE_PATH+MyVideoConfig.PICTURE_PATH);
+        } else {
+            upload_dir = new File(MyVideoConfig.RESOURCE_PATH+MyVideoConfig.MOVIES_PATH);
+        }
+        if(!upload_dir.exists()){
+            upload_dir.mkdirs();
         }
         try {
-            file.transferTo(upload_file);
+            file.transferTo(new File(absFile));
         } catch (IOException e) {
             e.printStackTrace();
         }

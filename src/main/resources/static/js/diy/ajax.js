@@ -231,7 +231,7 @@ function movie_page(i,list){
         '<div class="col-md-3 resent-grid recommended-grid slider-top-grids">' +
         '<div class="resent-grid-img recommended-grid-img">' +
         '<a href='+_path+'/my_video/src/Vid/'+list.vid+'>' +
-        '<img width="200px" height="200px" id="views" src='+_path+'/my_video/pic/Vid/' + list.vid + ' alt="tupian" />' +
+        '<img width="150px" height="200px" id="views" src='+_path+'/my_video/pic/Vid/' + list.vid + ' alt="tupian" />' +
         '</a>' +
         '<div class="time"><p>' + list.vdate + '</p></div>' +
         '</div>' +

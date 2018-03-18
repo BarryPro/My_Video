@@ -34,7 +34,7 @@
                 </ul>
             </div>
             <div class="copyright">
-                <p>Copyright &copy; 2016.Company name All rights Thanks Template's Home ----author: belong</p>
+                <p>Copyright &copy; 2016.Company name All rights Thanks Template's Home ----author: Barry</p>
             </div>
         </div>
     </div>

@@ -10,7 +10,9 @@
             <a href="javascript:;" class="file">选择你要上传的海报文件
                 <input type="file" name="filep" id="file2">
             </a><br/><br/><br/>
-            <input type="hidden" name="id" value=""/>
+            <#if Session["global_user"]??>
+                <input type="hidden" name="id" value="${global_user.id!"-1"}"/>
+            </#if>
             选择上传视频类型:
                 <select name="type" id="type">
                 <option value="1">电视</option>
