@@ -13,7 +13,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${my_path}/my_video/home"><h1><img src="${my_path}/images/logo.png" alt=""/></h1></a>
+            <a class="navbar-brand" href="${my_path}/my_video/home"><h1><img src="${my_path}/images/logo.png" alt=""/>
+            </h1></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="top-search">
@@ -21,13 +22,38 @@
                     <input type="text" class="form-control" placeholder="Search..." id="txt" name="txt">
                     <input type="button" value=" " id="btn_search">
                 </form>
-                <div class="signin">
-                    <label id="label1" style="color: red"><b><i>${(msg)?default("")}</i></b></label>
+                <div class="info-view">
+                    <a id="_login" href="#small-dialog" class="play-icon popup-with-zoom-anim">
+                        <img src="${my_path!}/static/images/Vip1.png"
+                             class="user_avatar vip-set" style="border-radius:50%;overflow:hidden"/></a>
+                    <#if Session["global_user"]??>
+                        <input type="hidden" title="${global_user.id!}" id="my_image"/>
+                        <img src="${my_path!}/my_user/pic/userid/${global_user.id!}"
+                             title="${global_user.username!}" class="user_avatar myimg" style="border-radius:50%;overflow:hidden"/>
+                    <#else>
+                        <input type="hidden" title="-1" id="my_image"/>
+                        <a id="_login" href="#small-dialog" class="play-icon popup-with-zoom-anim">
+                            <img src="${my_path!}/static/images/login.png" class="user_avatar myimg"
+                                 title="Visitor" style="border-radius:50%;overflow:hidden"/></a>
+                    </#if>
+
+                    <a href="#small-dialog2" class="play-icon popup-with-zoom-anim">
+                        <img title="注册" src="${my_path!}/static/images/register.png" class="user_avatar myimg"/></a>
+
+                    <#if Session["global_user"]?exists>
+                        <a href="#small-dialog3" class="play-icon popup-with-zoom-anim">
+                            <img title="上传" src="${my_path!}/static/images/upload.png" class="user_avatar myimg"/></a>
+                    </#if>
+                    <a href="${my_path}/my_user/logout">
+                        <img src="${my_path!}/static/images/Sign-out.png" class="user_avatar myimg" /></a>
+                    <a href="javascript:void(0)" id="dispear">
+                        <img title="消息" src="${my_path!}/static/images/msg.png" class="user_avatar myimg" /></a>
+
+                    <a href="#play-area" id="my_select">
+                        <img title="设置" src="${my_path!}/static/images/setting.png" class="user_avatar myimg" /></a>
                 </div>
-            </div>
-            <div class="header-top-right">
-                <div class="signin">
-                <#include "../common/dropdown.ftl">
+                <div class="info-msg">
+                    <label id="label1" style="color: red"><b><i>${(msg)?default("")}</i></b></label>
                 </div>
             </div>
             <div class="signin">

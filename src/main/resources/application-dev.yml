@@ -1,11 +1,13 @@
 spring:
   mvc:
+    favicon:
+      enabled: false
     #  视图层
     view:
       prefix: /templates/
       suffix: .ftl
   freemarker:
-      cache: false
+      cache: true
       enabled: true
       request-context-attribute: request
       expose-session-attributes: true

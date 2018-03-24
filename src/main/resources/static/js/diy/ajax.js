@@ -17,7 +17,7 @@ $(document).ready(function () {
     });
     //从cookie中得到用户参数
     cookies();
-
+    playArea();
     //用户注册
     $("#register").click(function () {
         //注册检测&&提交
@@ -228,27 +228,29 @@ $(document).ready(function () {
 function movie_page(i,list){
     _path = $("#_path").attr("value");
     $("#1").append(
-        '<div class="col-md-3 resent-grid recommended-grid slider-top-grids">' +
-        '<div class="resent-grid-img recommended-grid-img">' +
-        '<a href='+_path+'/my_video/src/Vid/'+list.vid+'>' +
-        '<img width="150px" height="200px" id="views" src='+_path+'/my_video/pic/Vid/' + list.vid + ' alt="tupian" />' +
-        '</a>' +
-        '<div class="time"><p>' + list.vdate + '</p></div>' +
-        '</div>' +
-        '<div class="resent-grid-info recommended-grid-info">' +
-        '<h3><a href='+_path+'/my_review/review/Vid/' + list.vid + ' class="title title-info"><b>' +
-        list.vname + '</b><br/>简介：' + list.vinfo + '</a></h3>' +
-        '<ul>' +
-        '<li><p class="author author-info"><label id="author">' +
-        //获得作者名字
-        '上传者:' + list.user.username +
-        '</label></p></li>' +
-        '<li class="right-list">' +
-        '<p class="views views-info">' +
-        '<a href="'+_path+'/'+list.vsrc+'" download="'+_path+'/'+list.vsrc+'">'+
-        '<i class="fa fa-download" aria-hidden="true" title="下载"></i></a>&nbsp;&nbsp;'+list.views+'次播放</p></li>' +
-        '</ul>' +
-        '</div>' +
+        '<div class="col-md-2 resent-grid recommended-grid slider-top-grids">' +
+            '<div class="resent-grid-img recommended-grid-img">' +
+                '<div class="video-vip"><img src='+_path+'/static/images/video-vip.png width="48px" height="48px"  alt="tupian" /></div>' +
+                '<a href='+_path+'/my_video/src/Vid/'+list.vid+'>' +
+                    '<img id="views" src='+_path+'/my_video/pic/Vid/' + list.vid + ' alt="tupian" />' +
+                '</a>' +
+                '<div class="time"><p>' + list.vdate + '</p></div>' +
+            '</div>' +
+            '<div class="resent-grid-info recommended-grid-info">' +
+                '<h3><a href='+_path+'/my_review/review/Vid/' + list.vid + ' class="title title-info"><b>' + list.vname +
+                '</b><br/>简介：' + list.vinfo + '</a></h3>' +
+                '<ul>' +
+                    '<li><p class="views views-info"><i class="fa fa-upload" aria-hidden="true" title="上传者" id="author">&nbsp;&nbsp;' +
+                        //获得作者名字
+                        list.user.username + '</i></p>' +
+                    '</li>' +
+                    '<li>' +
+                        '<p class="views views-info">' +
+                        '<a href="'+_path+'/'+list.vsrc+'" download="'+_path+'/'+list.vsrc+'">'+
+                        '<i class="fa fa-download" aria-hidden="true" title="下载"></i></a>&nbsp;&nbsp;'+list.views+'次播放</p>' +
+                    '</li>' +
+                '</ul>' +
+            '</div>' +
         '<div class="clearfix"></div>'
     );
 }
@@ -374,5 +376,7 @@ function ajax_page_search(userid,cur,txt,type){
         }
     });
 }
-
+function playArea() {
+    $("#play-area").css('display','none');
+}
 

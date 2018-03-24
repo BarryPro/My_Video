@@ -4,6 +4,7 @@
 <style>
     ._mycolor{
         color: #adadad;
+        margin-left: 10px;
     }
     ._my_img{
         width: 17px;
@@ -16,14 +17,14 @@
 <input type="hidden" id="_user" value=""/>
 <c:set var="review" value=""></c:set>
 <div align="center" style="padding-top: inherit">
-    <table width="790px" cellpadding="0" cellspacing="1" border="1">
+    <table width="790px" cellspacing="1" border="1">
         <tr>
-            <td rowspan="6" width="28%">
+            <td rowspan="6">
                 <a href="${my_path}/my_video/src/Vid/${review.vid}">
-                <img width="240" height="338" id="_views"
+                <img width="168" height="224" id="_views" class="pic-commit"
                      src="${my_path}/my_video/pic/Vid/${review.vid}" alt="tupian" /></a>
             </td>
-            <td width="72%"><span class="_mycolor">影片名：</span>${review.video.vname}</td>
+            <td width="621"><span class="_mycolor">影片名：</span>${review.video.vname}</td>
         </tr>
         <tr>
             <td><span class="_mycolor">导演名：</span>${review.vdirector}</td>
@@ -39,7 +40,7 @@
         </tr>
         <tr>
             <td>
-                <DIV style="overflow-y:scroll; WIDTH:560px;HEIGHT:200px;background-color:white color:black">
+                <DIV style="overflow-y:scroll; WIDTH:621px;HEIGHT:200px;background-color:white color:black">
                 ${review.video.vinfo}</DIV>
             </td>
         </tr>

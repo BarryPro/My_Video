@@ -109,7 +109,7 @@ public class VideoController {
         service.views(vid);
         String srcpath = service.getPath(vid);
         map.put(SRCPATH,srcpath);
-        return PLAYER;
+        return HOME;
     }
 
     @RequestMapping(value = "/search")

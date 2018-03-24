@@ -44,11 +44,13 @@
         -o-transition:all 0.6s ease;
     }
 </style>
-<div class="pagebox">
-    <div class="paging">
-        <span id="header"></span>
-        <span id="middle"></span>
-        <span id="tail"></span>
+<div class="page-box-pos">
+    <div class="pagebox">
+        <div class="paging">
+            <span id="header"></span>
+            <span id="middle"></span>
+            <span id="tail"></span>
+        </div>
     </div>
 </div>
 </body>

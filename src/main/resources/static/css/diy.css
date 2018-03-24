@@ -50,6 +50,16 @@
 .myimg {
     width: 24px;
     height: 24px;
+    margin-right: 15px;
+}
+.vip-set{
+    width: 24px;
+    height: 24px;
+}
+
+.pic-commit{
+    position: relative;
+    margin-bottom: 104px;
 }
 
 .search{height:40px !important}
@@ -63,7 +73,6 @@
     cursor: pointer;
     color: #B3B3B3;
     border: none;
-    background: url(../images/select-arrow.png) no-repeat 95% center;
     border: solid 1px #B3B3B3;
     border-radius: 3px;
     font-size: 12px;
@@ -108,4 +117,52 @@
 .fontuser{
     color: #791e25;
     font-weight: bold;
+}
+
+.top-20{
+    background-color: #272c2e;
+    right: 0px;
+    top: 80px;
+    height: 100%;
+    width: 19%;
+    position: fixed;
+}
+
+.video-list{
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 3%;
+    position: relative;
+}
+.page-box-pos{
+    bottom: 0px;
+    position: fixed;
+}
+
+.video-vip{
+    position: absolute;
+    right: 72%;
+    display: block;
+}
+
+.info-msg{
+    position: fixed;
+    right: 30px;
+    top: 60px;
+}
+
+.info-view{
+    margin: 1.1em 0 0 1em;
+    position: fixed;
+    right: 0px;
+}
+
+.play-area{
+    width: 1024px;
+    height: 576px;
+    background-color: #00CCFF;
+    z-index: 100;
+    position: fixed;
+    top: 88px;
+    left: 22%;
 }
