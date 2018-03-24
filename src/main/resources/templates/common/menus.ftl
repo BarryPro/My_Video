@@ -43,6 +43,7 @@
             </div>
         </div>
 
+
         <div class="play-area " id="play-area">
             <#--<div align="center">-->
                 <#--<video id="video_play" src="${my_path}/static/resources/movies/${srcpath}" controls="controls"-->
