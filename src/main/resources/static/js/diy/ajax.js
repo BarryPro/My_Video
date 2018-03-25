@@ -227,14 +227,15 @@ $(document).ready(function () {
         if(e.keyCode==27){//此处代表按的是键盘的Esc键
             $("#play-area").slideUp(600);
             $("#play-area").empty();
+            ajax_page(0, 1);
         }
     });
 
-    $("#play_close").bind('click',function () {
-        alert("ij")
+    $("#play-close").bind("click",function () {
         $("#play-area").slideUp(600);
-        $("#play-area").empty();
-    })
+        $("#play-player").empty();
+        ajax_page(0, 1);
+    });
 
     $("#play-area").mouseleave(function(){
         $("#play_close").hide();
@@ -414,14 +415,11 @@ function clickPlay(a){
         scriptCharset: 'utf-8',
         success: function (data) {
             $("#play-area").slideDown(600);
-            $("#play-area").empty();
-            $("#play-area").append(
-                '<div align="center">' +
-                '<img title="Close (ESC)" id="play_close" class="my_close user_avatar" src=' + _path + '/static/images/close.png>'+
+            $("#play-player").empty();
+            $("#play-player").append(
                 '<video id="video_play" src="'+_path+'/static/resources/movies/'+data.srcpath+'" controls="controls"' +
                 'autoplay="autoplay" width="1024" height="576" poster="'+_path+'/static/images/loading.gif">' +
-                '</video>' +
-                '</div>'
+                '</video>'
             );
             $("#label1").html(data.msg).show(300).delay(3000).hide(300);
         }

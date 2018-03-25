@@ -46,9 +46,13 @@
             </div>
         </div>
 
-
-        <div class="play-area " id="play-area">
-
+        <div align="center">
+            <div class="play-area " id="play-area">
+                <div id="play-close">
+                    <img title="Close (ESC)" id="play_close" class="my_close" src="${my_path}/static/images/close.png">
+                </div>
+                <div id="play-player"></div>
+            </div>
         </div>
     </div>
 </div>
