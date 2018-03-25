@@ -167,12 +167,51 @@
     left: 22%;
 }
 
-.my_close{
-    width: 24px;
-    height: 24px;
+.commit-area{
+    width: 1024px;
+    height: 100%;
+    background-color: #272c2e;
+    z-index: 100;
     position: fixed;
+    top: 88px;
+    left: 22%;
+}
+
+.commit_close{
+    margin-top: 10px;
+    z-index: 101;
+    right: 25%;
+}
+
+._close{
+    width: 20px;
+    height: 20px;
+    position: fixed;
+}
+
+.display-img{
+    width: 168px;
+    height: 224px;
+}
+
+.my_close{
     margin-top: 10px;
     margin-right: 10px;
     right: 25%;
+    z-index: 102;
+}
+
+.setting_close{
+    margin-top: 20px;
+    right: 10px;
     z-index: 101;
+}
+
+.setting{
+    position: fixed;
+    background-color: #0f7a90;
+    right: 0px;
+    top: 80px;
+    height: 100%;
+    width: 19%;
 }

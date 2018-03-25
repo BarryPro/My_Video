@@ -18,10 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -62,6 +59,13 @@ public class VideoController {
     //得到主页
     @RequestMapping(value = "/home")
     public String main(){
+        return HOME;
+    }
+
+    @RequestMapping(value = "/top20")
+    public String getTop20( HttpServletResponse response){
+        List<Movies> list = service.getTop20();
+        json(list,response);
         return HOME;
     }
 

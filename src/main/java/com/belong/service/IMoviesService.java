@@ -4,6 +4,7 @@ import com.belong.model.Movies;
 import com.belong.model.Review;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,4 +18,5 @@ public interface IMoviesService{
     void upload(Map map);
     Review review(Map map);
     ArrayList<Movies> getInfo(Map map);
+    List<Movies> getTop20();
 }

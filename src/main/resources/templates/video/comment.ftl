@@ -12,6 +12,7 @@
     }
 </style>
 <#include "../video/particle.ftl">
+<#include "../common/menus.ftl">
 <body>
 <input type="hidden" id="_path" value="${my_path}/"/>
 <input type="hidden" id="_user" value=""/>
@@ -75,7 +76,7 @@
 <div align="center">
     <div id="_submit"></div>
     </table>
-    <div style="display: none"><#include "../common/user.ftl"></div>
+
     <script>
         $(function(){
             //页面标志

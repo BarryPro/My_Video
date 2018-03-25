@@ -31,9 +31,13 @@
     SELECT Vpic
     FROM movies
     WHERE Vid = #{vid,jdbcType=INTEGER}
-
   </select>
 
+  <select id="getTop20"  resultType="com.belong.model.Movies">
+    SELECT Vname,Vid,Vdate
+    FROM movies
+    ORDER BY views desc limit 20
+  </select>
 
   <update id="views" parameterType="map" >
     UPDATE movies

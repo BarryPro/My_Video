@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,6 +64,10 @@ public class MoviesServiceImpl implements IMoviesService{
         return prodao.getInfo(map);
     }
 
+    @Override
+    public List<Movies> getTop20() {
+        return dao.getTop20();
+    }
 }
 
 

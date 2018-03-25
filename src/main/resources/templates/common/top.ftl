@@ -49,8 +49,8 @@
                     <a href="javascript:void(0)" id="dispear">
                         <img title="消息" src="${my_path!}/static/images/msg.png" class="user_avatar myimg" /></a>
 
-                    <a href="#play-area" id="my_select">
-                        <img title="设置" src="${my_path!}/static/images/setting.png" class="user_avatar myimg" /></a>
+                    <a href="javascript:void(0)">
+                        <img id="_setting" title="设置" src="${my_path!}/static/images/setting.png" class="user_avatar myimg" /></a>
                 </div>
                 <div class="info-msg">
                     <label id="label1" style="color: red"><b><i>${(msg)?default("")}</i></b></label>

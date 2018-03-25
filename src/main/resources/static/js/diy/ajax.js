@@ -237,12 +237,25 @@ $(document).ready(function () {
         ajax_page(0, 1);
     });
 
+    // 处理显示区域的关闭close是否显示
     $("#play-area").mouseleave(function(){
         $("#play_close").hide();
     });
 
     $("#play-area").mouseenter(function(){
         $("#play_close").show();
+    });
+
+    $("#_setting").click(function () {
+        $("#setting").show(600);
+    });
+
+    $("#setting_close").click(function () {
+        $("#setting").hide(600);
+    });
+
+    $("#commit_close").click(function () {
+        $("#commit-area").slideUp(1000);
     });
 
 });
@@ -259,7 +272,7 @@ function movie_page(i, list) {
         '<div class="resent-grid-img recommended-grid-img">' +
         '<div class="video-vip"><img src=' + _path + '/static/images/video-vip.png width="48px" height="48px"  alt="tupian" /></div>' +
         '<a id="play_video" title='+_path+'/my_video/src/Vid/'+list.vid+' onclick="clickPlay(this)">' +
-        '<img id="views" src=' + _path + '/my_video/pic/Vid/' + list.vid + ' alt="tupian" /></a>' +
+        '<img id="views" class="display-img" src=' + _path + '/my_video/pic/Vid/' + list.vid + ' alt="tupian" /></a>' +
         '<div class="time"><p>' + list.vdate + '</p></div>' +
         '</div>' +
         '<div class="resent-grid-info recommended-grid-info">' +
@@ -402,6 +415,25 @@ function ajax_page_search(userid, cur, txt, type) {
 
 function playArea() {
     $("#play-area").hide();
+    $("#setting").hide();
+    $("#commit-area").hide();
+    _path = $("#_path").attr("value");//得到项目的绝对路径
+    var url = _path + '/my_video/top20';
+    $.ajax({
+        url: url,
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            $("#top20-list").empty();
+            $(data).each(function (i,list) {
+                $("#top20-list").append(
+                    '<li><a href=' + _path + '/my_review/review/Vid/'+list.vid+' class="menu1" id="sport">'+
+                    '<span class="fa">'+(i+1)+'&nbsp;&nbsp;'+list.vname+'</span>'+
+                    '</a></li>'
+                );
+            })
+        }
+    });
 }
 
 // 处理video点击播放

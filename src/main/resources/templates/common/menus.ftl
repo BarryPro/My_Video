@@ -42,16 +42,26 @@
                     <li><a href="javascript:void(0)" class="menu1" id="sport">
                         <span class="fa fa-trophy">&nbsp;&nbsp;热门电影</span>
                     </a></li>
+                    <div id="top20-list"></div>
                 </ul>
             </div>
         </div>
 
+        <div class="setting" id="setting">
+            <img title="Close (ESC)" id="setting_close" class="setting_close _close" src="${my_path}/static/images/close.png">
+        </div>
+
         <div align="center">
+            <#--播放区-->
             <div class="play-area " id="play-area">
                 <div id="play-close">
-                    <img title="Close (ESC)" id="play_close" class="my_close" src="${my_path}/static/images/close.png">
+                    <img title="Close (ESC)" id="play_close" class="my_close _close" src="${my_path}/static/images/close.png">
                 </div>
                 <div id="play-player"></div>
+            </div>
+            <#--影视简介评论区-->
+            <div class="commit-area " id="commit-area">
+                <img title="Close (ESC)" id="commit_close" class="commit_close _close" src="${my_path}/static/images/close.png">
             </div>
         </div>
     </div>
