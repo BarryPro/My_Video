@@ -40,9 +40,9 @@ public class VideoController {
     private static final String PLAYER = "video/player";
     private static final String SRCPATH = "srcpath";
     private static final String TXT = "txt";
-    private static final String SYSTEMSEPARATOR = "/";
     private static final String UPLOADSUCCESS = "上传成功";
     private static final String MSG = "msg";
+    private static final String PLAY_SUCCC = "视频播放中，如果界面没有播放视频请稍后……";
 
     private HashMap<String,String> typep = new HashMap();
     private HashMap<String,String> typem = new HashMap();
@@ -105,10 +105,13 @@ public class VideoController {
 
     @RequestMapping(value = "/src/Vid/{vid}")
     public String getPath(@PathVariable(value = "vid") int vid,
-                          Map map){
+                          Map map,
+                          HttpServletResponse response){
         service.views(vid);
         String srcpath = service.getPath(vid);
         map.put(SRCPATH,srcpath);
+        map.put(MSG,PLAY_SUCCC);
+        json(map,response);
         return HOME;
     }
 
@@ -136,10 +139,10 @@ public class VideoController {
     }
 
     //json返回网页信息
-    protected void json(PageBean pageBean,HttpServletResponse response){
+    protected void json(Object object,HttpServletResponse response){
         try {
-            String json = JSON.toJSONString(pageBean,SerializerFeature.DisableCircularReferenceDetect);
-            //System.out.println(json);
+            response.setCharacterEncoding("UTF-8");
+            String json = JSON.toJSONString(object,SerializerFeature.DisableCircularReferenceDetect);
             PrintWriter writer = response.getWriter();
             writer.write(json);
             writer.flush();

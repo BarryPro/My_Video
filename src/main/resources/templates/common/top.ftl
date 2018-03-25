@@ -45,7 +45,7 @@
                             <img title="上传" src="${my_path!}/static/images/upload.png" class="user_avatar myimg"/></a>
                     </#if>
                     <a href="${my_path}/my_user/logout">
-                        <img src="${my_path!}/static/images/Sign-out.png" class="user_avatar myimg" /></a>
+                        <img title="注销" src="${my_path!}/static/images/Sign-out.png" class="user_avatar myimg" /></a>
                     <a href="javascript:void(0)" id="dispear">
                         <img title="消息" src="${my_path!}/static/images/msg.png" class="user_avatar myimg" /></a>
 

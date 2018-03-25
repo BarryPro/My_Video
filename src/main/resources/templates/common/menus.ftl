@@ -3,26 +3,29 @@
     <div >
         <ul class="nav nav-sidebar">
             <li><a href="javascript:void(0)" class="menu1" id="sport">
-                    <span class="fa fa-eye" aria-hidden="true" id="counter"></span>
-                </a></li>
+                <span class="fa fa-eye" aria-hidden="true" id="counter"></span>
+            </a></li>
             <li class="active"><a href="javascript:void(0)" id="home" class="home-icon">
-                    <span class="fa fa-home" aria-hidden="true">&nbsp;&nbsp;首页</span>
-                </a></li>
+                <span class="fa fa-home" aria-hidden="true">&nbsp;&nbsp;首页</span>
+            </a></li>
             <li><a href="javascript:void(0)" class="user-icon" id="tv">
-                    <span class="fa fa-tv" aria-hidden="true">&nbsp;&nbsp;电视剧</span>
-                </a></li>
+                <span class="fa fa-tv" aria-hidden="true">&nbsp;&nbsp;电视剧</span>
+            </a></li>
             <li><a href="javascript:void(0)" class="menu1" id="movie">
-                    <span class="fa fa-film" aria-hidden="true">&nbsp;&nbsp;电影</span>
-                </a></li>
+                <span class="fa fa-film" aria-hidden="true">&nbsp;&nbsp;电影</span>
+            </a></li>
+            <li><a href="javascript:void(0)" class="menu1" id="vip">
+                <span class="fa fa-diamond" aria-hidden="true">&nbsp;&nbsp;VIP会员</span>
+            </a></li>
             <li><a href="javascript:void(0)" class="menu1" id="MV">
-                    <span class="fa fa-headphones" aria-hidden="true">&nbsp;&nbsp;音乐MV</span>
-                </a></li>
+                <span class="fa fa-headphones" aria-hidden="true">&nbsp;&nbsp;音乐MV</span>
+            </a></li>
             <li><a href="javascript:void(0)" class="song-icon">
-                    <span class="fa fa-rss" aria-hidden="true">&nbsp;&nbsp;综艺</span>
-                </a></li>
+                <span class="fa fa-rss" aria-hidden="true">&nbsp;&nbsp;综艺</span>
+            </a></li>
             <li><a href="javascript:void(0)" class="news-icon" id="news">
-                    <span class="fa fa-caret-square-o-right" aria-hidden="true">&nbsp;&nbsp;动漫</span>
-                </a></li>
+                <span class="fa fa-caret-square-o-right" aria-hidden="true">&nbsp;&nbsp;动漫</span>
+            </a></li>
         </ul>
         <div class="side-bottom">
             <div class="copyright">
@@ -45,11 +48,7 @@
 
 
         <div class="play-area " id="play-area">
-            <#--<div align="center">-->
-                <#--<video id="video_play" src="${my_path}/static/resources/movies/${srcpath}" controls="controls"-->
-                       <#--autoplay="autoplay" width="1024" height="576" poster="${my_path}/static/images/loading.gif">-->
-                <#--</video>-->
-            <#--</div>-->
+
         </div>
     </div>
 </div>

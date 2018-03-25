@@ -12,7 +12,7 @@ public class Movies implements Serializable{
     private String vname;
     private String vdate;
     private Integer id;
-    private BigDecimal views;
+    private String views;
     private String vsrc;
     private byte[] vpic;
     private User user;
