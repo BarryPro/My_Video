@@ -1,6 +1,7 @@
 package com.belong.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.belong.config.ConstantConfig;
 import com.belong.model.Article;
 import com.belong.model.PageBean;
 import com.belong.model.Review;
@@ -26,14 +27,6 @@ import java.util.Map;
 @RequestMapping(value = "/my_review")
 @SessionAttributes(value = {"review","uid"})
 public class ArticleController {
-    private static final String COMMENT = "video/comment";
-    private static final String A_VID = "a_Vid";
-    private static final String UID = "Uid";
-    private static final String USERID = "userid";
-    private static final String VID = "Vid";
-    private static final String CURPAGE = "cur_page";
-    private static final String ENCODER = "utf-8";
-
     @Autowired
     private IMoviesService service;
 
@@ -45,22 +38,24 @@ public class ArticleController {
 
     @RequestMapping(value = "/review/Vid/{vid}")
     public String review(@PathVariable(value = "vid") int vid,
-                         Map map) {
+                         Map map,
+                         HttpServletResponse response) {
         map.put("vid", vid);
         Review review = service.review(map);
         map.put("review", review);
-        return COMMENT;
+        videoController.json(map,response);
+        return ConstantConfig.HOME;
     }
 
     @RequestMapping(value = "/query")
-    public String query(@RequestParam(CURPAGE) int cur_page,
-                        @RequestParam(VID) int vid,
-                        @RequestParam(USERID) int userid,
+    public String query(@RequestParam(ConstantConfig.CURPAGE) int cur_page,
+                        @RequestParam(ConstantConfig.VID) int vid,
+                        @RequestParam(ConstantConfig.USERID) int userid,
                         Map map,
                         HttpServletResponse response){
-        map.put(CURPAGE,cur_page);
-        map.put(A_VID,vid);
-        map.put(UID,userid);
+        map.put(ConstantConfig.CURPAGE,cur_page);
+        map.put(ConstantConfig.A_VID,vid);
+        map.put(ConstantConfig.UID,userid);
         ArrayList<Article> data = aservice.queryArticle(map);
         PageBean pageBean = new PageBean();
         pageBean.setArticles(data);
@@ -68,9 +63,9 @@ public class ArticleController {
         pageBean.setRow_total((int) map.get("row_total"));
         pageBean.setPage_total((int) map.get("page_total"));
         pageBean.setCur_page((int) map.get("cur_page"));
-        response.setCharacterEncoding(ENCODER);
+        response.setCharacterEncoding(ConstantConfig.ENCODER);
         videoController.json(pageBean,response);
-        return COMMENT;
+        return ConstantConfig.COMMENT;
     }
 
     @RequestMapping(value = "/add_article")
@@ -78,7 +73,7 @@ public class ArticleController {
                              Map map){
         map.put("article",article);
         aservice.addArticle(map);
-        return COMMENT;
+        return ConstantConfig.COMMENT;
     }
 
     @RequestMapping(value = "/delete")
@@ -86,7 +81,7 @@ public class ArticleController {
                                 Map map){
         map.put("aid",aid);
         aservice.deleteArticle(map);
-        return COMMENT;
+        return ConstantConfig.COMMENT;
     }
 
     @RequestMapping(value = "/reply")
@@ -98,7 +93,7 @@ public class ArticleController {
         article.setAcontent(article.getAcontent()+new_content);
         map.put("article",article);
         aservice.updateArticle(map);
-        return COMMENT;
+        return ConstantConfig.COMMENT;
     }
 
     @RequestMapping(value = "/agree")
@@ -109,7 +104,7 @@ public class ArticleController {
         aservice.updateAgree(map);
         json(0, response);
 
-        return COMMENT;
+        return ConstantConfig.COMMENT;
     }
 
     @RequestMapping(value = "/disagree")
@@ -120,7 +115,7 @@ public class ArticleController {
         aservice.updataDisagree(map);
         json(0, response);
 
-        return COMMENT;
+        return ConstantConfig.COMMENT;
     }
 
     private void json(int num ,HttpServletResponse response){

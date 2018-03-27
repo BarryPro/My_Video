@@ -10,6 +10,7 @@
     <result column="Vinfo" property="vinfo" jdbcType="LONGVARCHAR" />
     <result column="Vpic" property="vpic" jdbcType="LONGVARBINARY"/>
     <result column="Vsrc" property="vsrc" jdbcType="LONGVARCHAR" />
+    <result column="v_type" property="v_type" jdbcType="INTEGER" />
     <association property="user"
                  column="id"
                  select="QueryUserByID"/>

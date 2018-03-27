@@ -2,7 +2,7 @@ package com.belong.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.belong.config.MyVideoConfig;
+import com.belong.config.ConstantConfig;
 import com.belong.model.Movies;
 import com.belong.model.PageBean;
 import com.belong.model.Review;
@@ -28,19 +28,6 @@ import java.util.*;
 @RequestMapping(value = "/my_video")
 @SessionAttributes(value = "video")
 public class VideoController {
-    private static final String USERID = "userid";
-    private static final String CUR_PAGE = "cur_page";
-    private static final String ENCODER = "utf-8";
-    private static final String N = "n";
-    private static final String IMAGE = "image/jpeg";
-    private static final String HOME = "video/home";
-    private static final String PLAYER = "video/player";
-    private static final String SRCPATH = "srcpath";
-    private static final String TXT = "txt";
-    private static final String UPLOADSUCCESS = "上传成功";
-    private static final String MSG = "msg";
-    private static final String PLAY_SUCCC = "视频播放中，如果界面没有播放视频请稍后……";
-
     private HashMap<String,String> typep = new HashMap();
     private HashMap<String,String> typem = new HashMap();
 
@@ -59,20 +46,20 @@ public class VideoController {
     //得到主页
     @RequestMapping(value = "/home")
     public String main(){
-        return HOME;
+        return ConstantConfig.HOME;
     }
 
     @RequestMapping(value = "/top20")
     public String getTop20( HttpServletResponse response){
         List<Movies> list = service.getTop20();
         json(list,response);
-        return HOME;
+        return ConstantConfig.HOME;
     }
 
     @RequestMapping(value = "/db_info")
-    public String getDB_info(@RequestParam(N) String n,
-                             @RequestParam(CUR_PAGE) String cur_page,
-                             @RequestParam(USERID) String userid,
+    public String getDB_info(@RequestParam(ConstantConfig.N) String n,
+                             @RequestParam(ConstantConfig.CUR_PAGE) String cur_page,
+                             @RequestParam(ConstantConfig.USERID) String userid,
                              HttpServletResponse response){
         Map<String,Integer> map = new HashMap<String,Integer>();
         map.put("Vtype",Integer.parseInt(n));
@@ -85,14 +72,14 @@ public class VideoController {
         pageBean.setRow_total(map.get("row_total"));
         pageBean.setPage_total(map.get("page_total"));
         pageBean.setCur_page(map.get("cur_page"));
-        response.setCharacterEncoding(ENCODER);
+        response.setCharacterEncoding(ConstantConfig.ENCODER);
         json(pageBean,response);
-        return HOME;
+        return ConstantConfig.HOME;
     }
 
     @RequestMapping(value = "/pic/Vid/{vid}")
     public String getPic(@PathVariable(value = "vid") int vid, HttpServletResponse response){
-        response.setContentType(IMAGE);
+        response.setContentType(ConstantConfig.IMAGE);
         OutputStream os = null;
         try {
             Movies movies = service.getPic(vid);
@@ -113,16 +100,16 @@ public class VideoController {
                           HttpServletResponse response){
         service.views(vid);
         String srcpath = service.getPath(vid);
-        map.put(SRCPATH,srcpath);
-        map.put(MSG,PLAY_SUCCC);
+        map.put(ConstantConfig.SRCPATH,srcpath);
+        map.put(ConstantConfig.MSG,ConstantConfig.PLAY_SUCCC);
         json(map,response);
-        return HOME;
+        return ConstantConfig.HOME;
     }
 
     @RequestMapping(value = "/search")
-    public String search(@RequestParam(TXT) String txt,
-                         @RequestParam(CUR_PAGE) int cur_page,
-                         @RequestParam(USERID) int userid,
+    public String search(@RequestParam(ConstantConfig.TXT) String txt,
+                         @RequestParam(ConstantConfig.CUR_PAGE) int cur_page,
+                         @RequestParam(ConstantConfig.USERID) int userid,
                          HttpServletResponse response){
         Map<String,Object> map = new HashMap();
         //模糊查询
@@ -137,9 +124,9 @@ public class VideoController {
         pageBean.setRow_total((int) map.get("row_total"));
         pageBean.setPage_total((int) map.get("page_total"));
         pageBean.setCur_page((int) map.get("cur_page"));
-        response.setCharacterEncoding(ENCODER);
+        response.setCharacterEncoding(ConstantConfig.ENCODER);
         json(pageBean,response);
-        return HOME;
+        return ConstantConfig.HOME;
     }
 
     //json返回网页信息
@@ -169,7 +156,7 @@ public class VideoController {
         //符合上传要求才可以进行上传
         if(typem.containsKey(src_type) && typep.containsKey(pic_type)){
             //得到服务器的绝对路径eg:D:\IntelliJIDEA\Frame\MyVideo2\target\MyVideo2\
-            String tpath = MyVideoConfig.RESOURCE_PATH;
+            String tpath = ConstantConfig.RESOURCE_PATH;
 //                    request.getSession().getServletContext().getRealPath(SYSTEMSEPARATOR);
             //得到随机的文件名称
             //System.out.println(tpath);
@@ -182,7 +169,7 @@ public class VideoController {
                 file = fileaname+typem.get(src_type);
                 String vsrc = file;
                 movies.setVsrc(vsrc);
-                vsrc = MyVideoConfig.MOVIES_PATH+file;
+                vsrc = ConstantConfig.MOVIES_PATH+file;
                 String tarFile = tpath+vsrc;
                 saveFile(filem,tarFile,false);
             }
@@ -195,7 +182,7 @@ public class VideoController {
                     e.printStackTrace();
                 }
                 file = fileaname+typep.get(pic_type);
-                String uploadpath = MyVideoConfig.PICTURE_PATH+file;
+                String uploadpath = ConstantConfig.PICTURE_PATH+file;
                 String tarfile = tpath+uploadpath;
                 saveFile(filep,tarfile,true);
             }
@@ -208,18 +195,18 @@ public class VideoController {
             map.put("_Vdirector",review.getVdirector());
             map.put("_Vactor",review.getVactor());
             service.upload(map);
-            map.put(MSG,UPLOADSUCCESS);
+            map.put(ConstantConfig.MSG,ConstantConfig.UPLOADSUCCESS);
         }
-        return HOME;
+        return ConstantConfig.HOME;
     }
 
     //保存文件到服务器
     private boolean saveFile(MultipartFile file, String absFile, boolean flag){
         File upload_dir = null;
         if (flag) {
-            upload_dir = new File(MyVideoConfig.RESOURCE_PATH+MyVideoConfig.PICTURE_PATH);
+            upload_dir = new File(ConstantConfig.RESOURCE_PATH + ConstantConfig.PICTURE_PATH);
         } else {
-            upload_dir = new File(MyVideoConfig.RESOURCE_PATH+MyVideoConfig.MOVIES_PATH);
+            upload_dir = new File(ConstantConfig.RESOURCE_PATH + ConstantConfig.MOVIES_PATH);
         }
         if(!upload_dir.exists()){
             upload_dir.mkdirs();

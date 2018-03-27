@@ -270,7 +270,7 @@ function movie_page(i, list) {
     $("#1").append(
         '<div class="col-md-2 resent-grid recommended-grid slider-top-grids">' +
         '<div class="resent-grid-img recommended-grid-img">' +
-        '<div class="video-vip"><img src=' + _path + '/static/images/video-vip.png width="48px" height="48px"  alt="tupian" /></div>' +
+        '<div class="video-vip"><img src=' + _path + '/static/images/video-vip'+list.v_type+'.png width="48px" height="48px"  alt="tupian" /></div>' +
         '<a id="play_video" title='+_path+'/my_video/src/Vid/'+list.vid+' onclick="clickPlay(this)">' +
         '<img id="views" class="display-img" src=' + _path + '/my_video/pic/Vid/' + list.vid + ' alt="tupian" /></a>' +
         '<div class="time"><p>' + list.vdate + '</p></div>' +

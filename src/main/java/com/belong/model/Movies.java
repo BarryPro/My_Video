@@ -18,4 +18,5 @@ public class Movies implements Serializable{
     private User user;
     private String vinfo;//影片信息
     private String  type;//上传的电影类型
+    private Integer v_type;
 }
