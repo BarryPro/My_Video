@@ -43,8 +43,8 @@ public class ArticleController {
         map.put("vid", vid);
         Review review = service.review(map);
         map.put("review", review);
-        videoController.json(map,response);
-        return ConstantConfig.HOME;
+//        videoController.json(map,response);
+        return ConstantConfig.COMMENT;
     }
 
     @RequestMapping(value = "/query")

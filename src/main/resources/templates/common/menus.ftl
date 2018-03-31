@@ -60,8 +60,10 @@
                 <div id="play-player"></div>
             </div>
             <#--影视简介评论区-->
-            <div class="commit-area " id="commit-area">
-                <img title="Close (ESC)" id="commit_close" class="commit_close _close" src="${my_path}/static/images/close.png">
+            <div class="order-area" id="order-area">
+                <img title="Close (ESC)" id="order_close" class="order_close _close" src="${my_path}/static/images/close.png">
+                <div>
+                </div>
             </div>
         </div>
     </div>

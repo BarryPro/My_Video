@@ -23,7 +23,7 @@
                     <input type="button" value=" " id="btn_search">
                 </form>
                 <div class="info-view">
-                    <a id="_login" href="#small-dialog" class="play-icon popup-with-zoom-anim">
+                    <a id="order" href="javascript:void(0)" class="">
                         <img src="${my_path!}/static/images/Vip1.png"
                              class="user_avatar vip-set" style="border-radius:50%;overflow:hidden"/></a>
                     <#if Session["global_user"]??>

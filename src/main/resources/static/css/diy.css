@@ -167,7 +167,7 @@
     left: 22%;
 }
 
-.commit-area{
+.order-area{
     width: 1024px;
     height: 100%;
     background-color: #272c2e;
@@ -177,7 +177,7 @@
     left: 22%;
 }
 
-.commit_close{
+.order_close{
     margin-top: 10px;
     z-index: 101;
     right: 25%;

@@ -5,7 +5,7 @@
 <style type="text/css">
     *{margin:0;padding:0;list-style-type:none;}
     a,img{border:0;}
-    body{font:12px/180% Arial,Lucida,Verdana,"宋体",Helvetica,sans-serif;font-size:13px;color:#211922;text-shadow:0 1px rgba(255,255,255,0.9);}
+    body{font:12px/180% Arial,Lucida,Verdana,"宋体",Helvetica,sans-serif;font-size:13px;color:#211922;}
     /* 分页数字链接样式 */
     .pagebox{padding:30px 20px 20px 20px;}
     .paging a,.paging span.Bg,.paging a:hover,.paging a.cur,.paging a:hover span.Bg,.paging a.cur span.Bg{background:url(${my_path}/images/pagebg.png) no-repeat;}

@@ -254,8 +254,12 @@ $(document).ready(function () {
         $("#setting").hide(600);
     });
 
-    $("#commit_close").click(function () {
-        $("#commit-area").slideUp(1000);
+    $("#order_close").click(function () {
+        $("#order-area").slideUp(1000);
+    });
+
+    $("#order").click(function () {
+        $("#order-area").show(500);
     });
 
 });
@@ -416,7 +420,7 @@ function ajax_page_search(userid, cur, txt, type) {
 function playArea() {
     $("#play-area").hide();
     $("#setting").hide();
-    $("#commit-area").hide();
+    $("#order-area").hide();
     _path = $("#_path").attr("value");//得到项目的绝对路径
     var url = _path + '/my_video/top20';
     $.ajax({
