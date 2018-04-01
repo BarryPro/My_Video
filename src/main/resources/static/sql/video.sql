@@ -365,7 +365,7 @@ CREATE TABLE IF NOT EXISTS `review` (
   `Vamount` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Vid`),
   KEY `FKreview438485` (`Vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  video.review 的数据：~27 rows (大约)
 DELETE FROM `review`;

@@ -7,6 +7,8 @@ import com.belong.model.Movies;
 import com.belong.model.PageBean;
 import com.belong.model.Review;
 import com.belong.service.IMoviesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,7 @@ import java.util.*;
 @RequestMapping(value = "/my_video")
 @SessionAttributes(value = "video")
 public class VideoController {
+    Logger logger = LoggerFactory.getLogger(VideoController.class);
     private HashMap<String,String> typep = new HashMap();
     private HashMap<String,String> typem = new HashMap();
 
@@ -89,7 +92,7 @@ public class VideoController {
             os.flush();
             os.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("IOException VideoController getPic",e);
         }
         return null;
     }
@@ -139,7 +142,7 @@ public class VideoController {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException VideoController json",e);
         }
     }
 
@@ -179,7 +182,7 @@ public class VideoController {
                     byte[] vpic = filep.getBytes();
                     movies.setVpic(vpic);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("IOException VideoController upload",e);
                 }
                 file = fileaname+typep.get(pic_type);
                 String uploadpath = ConstantConfig.PICTURE_PATH+file;
@@ -201,7 +204,7 @@ public class VideoController {
     }
 
     //保存文件到服务器
-    private boolean saveFile(MultipartFile file, String absFile, boolean flag){
+    public boolean saveFile(MultipartFile file, String absFile, boolean flag){
         File upload_dir = null;
         if (flag) {
             upload_dir = new File(ConstantConfig.RESOURCE_PATH + ConstantConfig.PICTURE_PATH);
@@ -214,7 +217,7 @@ public class VideoController {
         try {
             file.transferTo(new File(absFile));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException VideoController saveFile",e);
         }
         return true;
     }

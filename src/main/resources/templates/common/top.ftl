@@ -23,14 +23,17 @@
                     <input type="button" value=" " id="btn_search">
                 </form>
                 <div class="info-view">
-                    <a id="order" href="javascript:void(0)" class="">
-                        <img src="${my_path!}/static/images/Vip1.png"
-                             class="user_avatar vip-set" style="border-radius:50%;overflow:hidden"/></a>
                     <#if Session["global_user"]??>
+                        <a id="order" href="javascript:void(0)" class="">
+                        <img src="${my_path!}/static/images/Vip${global_user.vip!}.png"
+                             class="user_avatar vip-set" style="border-radius:50%;overflow:hidden"/></a>
                         <input type="hidden" title="${global_user.id!}" id="my_image"/>
                         <img src="${my_path!}/my_user/pic/userid/${global_user.id!}"
                              title="${global_user.username!}" class="user_avatar myimg" style="border-radius:50%;overflow:hidden"/>
                     <#else>
+                        <a id="order" href="javascript:void(0)" class="">
+                        <img src="${my_path!}/static/images/Vip0.png"
+                             class="user_avatar vip-set" style="border-radius:50%;overflow:hidden"/></a>
                         <input type="hidden" title="-1" id="my_image"/>
                         <a id="_login" href="#small-dialog" class="play-icon popup-with-zoom-anim">
                             <img src="${my_path!}/static/images/login.png" class="user_avatar myimg"

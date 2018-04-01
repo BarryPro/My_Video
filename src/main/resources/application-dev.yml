@@ -1,13 +1,11 @@
 spring:
   mvc:
-    favicon:
-      enabled: false
     #  视图层
     view:
       prefix: /templates/
       suffix: .ftl
   freemarker:
-      cache: true
+      cache: false
       enabled: true
       request-context-attribute: request
       expose-session-attributes: true
@@ -43,11 +41,7 @@ spring:
   http:
     multipart:
       enabled: true
-      max-file-size: 3000MB
-      max-request-size: 3000MB
   # redis
   redis:
     host: localhost
     port: 6379
-
-

@@ -1,9 +1,12 @@
 package com.belong.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.belong.config.ConstantConfig;
 import com.belong.encrypt.MD5;
 import com.belong.model.User;
 import com.belong.service.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +30,11 @@ import java.util.UUID;
 @RequestMapping(value = "/my_user")
 @SessionAttributes("global_user")
 public class UserController {
+    Logger logger = LoggerFactory.getLogger(UserController.class);
     private HashMap<String,String> typep = new HashMap();
+
+    @Autowired
+    private VideoController videoController;
 
     public UserController(){
         typep.put("image/jpeg", ".jpg");
@@ -49,6 +56,7 @@ public class UserController {
         String cookiePWD = user.getPassword();
         user.setPassword(MD5.getMD5(user.getPassword()));
         map.put("user",user);
+        logger.info("UserController login{}",map);
         User cor_user = service.login(map);
         if(cor_user!=null){
             if(!cookie.equals(ConstantConfig.OFF)){
@@ -79,6 +87,7 @@ public class UserController {
         //注销当前的session
         sessionStatus.setComplete();
         map.put(ConstantConfig.MSG,ConstantConfig.LOGOUT);
+        logger.info("UserController logout {}",map);
         return ConstantConfig.HOME;
     }
 
@@ -95,7 +104,7 @@ public class UserController {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException UserController getVisitor",e);
         }
         return ConstantConfig.HOME;
     }
@@ -120,7 +129,7 @@ public class UserController {
             bos.flush();
             bos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("IOException UserController add",e);
         }
     }
 
@@ -136,11 +145,11 @@ public class UserController {
                 pic = file.getBytes();
                 //Blob blob = Blob.class.;
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("IOException UserController register pic",e);
             }
             //1.得到服务器的绝对路径eg:D:\IntelliJIDEA\Frame\MyVideo2\target\MyVideo2\
-            String tpath = request.getSession().getServletContext().getRealPath(ConstantConfig.SYSTEMSEPARATOR);
-            String targetDIR = tpath+ConstantConfig.SYSTEMSEPARATOR+ConstantConfig.UPLAOD;
+            String tpath = ConstantConfig.RESOURCE_PATH;
+            String targetDIR = tpath+ConstantConfig.UPLAOD;
             //得到唯一的文件名存放到服务器中
             UUID filename = UUID.randomUUID();
             //组装文件名
@@ -148,15 +157,9 @@ public class UserController {
             String targetFile = targetDIR+ConstantConfig.SYSTEMSEPARATOR+_file;
             //得到最终存放的路径
             File tarFile = new File (targetFile);
-            try {
-                if(!tarFile.exists()){
-                    tarFile.mkdirs();
-                }
-                file.transferTo(tarFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            videoController.saveFile(file,targetFile,true);
             //加密保存
+            String pwd = user.getPassword();
             user.setPassword(MD5.getMD5(user.getPassword()));
             user.setPic(pic);
             map.put("user",user);
@@ -165,6 +168,9 @@ public class UserController {
             } else {
                 map.put(ConstantConfig.MSG,ConstantConfig.RFAILED);
             }
+            user.setPassword(pwd);
+            map.put("user",user);
+            service.login(map);
         }
         return ConstantConfig.HOME;
     }
@@ -180,7 +186,7 @@ public class UserController {
             os.flush();
             os.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("IOException UserController getPic",e);
         }
         return null;
     }

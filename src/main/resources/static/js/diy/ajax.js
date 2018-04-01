@@ -225,14 +225,15 @@ $(document).ready(function () {
 
     $(window).keyup(function(e){
         if(e.keyCode==27){//此处代表按的是键盘的Esc键
-            $("#play-area").slideUp(600);
+            $("#play-area").slideUp(300);
+            $("#order-area").slideUp(300);
             $("#play-area").empty();
             ajax_page(0, 1);
         }
     });
 
     $("#play-close").bind("click",function () {
-        $("#play-area").slideUp(600);
+        $("#play-area").slideUp(300);
         $("#play-player").empty();
         ajax_page(0, 1);
     });
@@ -247,20 +248,57 @@ $(document).ready(function () {
     });
 
     $("#_setting").click(function () {
-        $("#setting").show(600);
+        $("#setting").show(300);
     });
 
     $("#setting_close").click(function () {
-        $("#setting").hide(600);
+        $("#setting").hide(300);
     });
 
     $("#order_close").click(function () {
-        $("#order-area").slideUp(1000);
+        $("#order-area").slideUp(300);
     });
 
     $("#order").click(function () {
         $("#order-area").show(500);
     });
+
+    $("#preview").click(function () {
+        _path = $("#_path").attr("value");//得到项目的绝对路径
+        $("#common-area").html(
+            '<div class="container-fluid">' +
+            '    <div class="row-fluid"><div class="span12">' +
+            '            <div class="page-header"><h1 class="white-color">MyPlay 收银台.</h1></div>' +
+            '            <h3 class="white-color">订单支付详情.</h3>' +
+            '            <table class="table table-hover table-bordered">' +
+            '                <tbody>' +
+            '                <tr class="info"><td>订单标号</td><td>20180401123456</td></tr>' +
+            '                <tr class="warning"><td>商品名称</td><td>MyPlay_vip会员_一个月</td></tr>' +
+            '                <tr class="info"><td>交易时间</td><td>2018-04-01 10.21:00</td></tr>' +
+            '                <tr class="warning"><td >支付方式</td><td>微信支付</td></tr>' +
+            '                <tr class="info"><td>支付金额</td><td>6元</td></tr></tbody></table>' +
+            '            <div class="tabbable" id="tabs-797679">' +
+            '                <ul class="nav nav-tabs">' +
+            '                    <li><a href="#panel-544732" data-toggle="tab">微信</a></li>' +
+            '                    <li class="active"><a href="#panel-879116" data-toggle="tab">支付宝</a></li></ul>' +
+            '                <div class="tab-content">' +
+            '                    <div class="tab-pane msg" id="panel-544732">' +
+            '                        <img alt="支付二维码" src='+_path+'/static/images/v6.jpg class="sys-ewm"/>' +
+            '                        <small class="msg-info margin">提示：先扫【微信】二维码支付，再点击【支付提交】</small></div>' +
+            '                    <div class="tab-pane active msg" id="panel-879116">' +
+            '                        <img alt="支付二维码" src='+_path+'/static/images/z6.jpg class="sys-ewm"/>' +
+            '                        <small class="msg-info margin">提示：先扫【支付宝】二维码支付，再点击【支付提交】</small></div></div>' +
+            '            </div><hr/><button class="btn btn-block btn-primary" type="button" id="pay-submit"><b>支付提交</b></button><hr/></div></div>' +
+            '</div>'
+        );
+    });
+
+    $("#common-area").on('click', 'button', function () {
+        $("#label1").html("支付成功！").show(300).delay(3000).hide(300);
+        $("#order-area").hide(300);
+    });
+
+    window.setInterval(hello,1000);
 
 });
 

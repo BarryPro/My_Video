@@ -40,7 +40,7 @@
             <div class="video-list">
                 <ul class="nav nav-sidebar">
                     <li><a href="javascript:void(0)" class="menu1" id="sport">
-                        <span class="fa fa-trophy">&nbsp;&nbsp;热门电影</span>
+                        <span class="fa fa-trophy">&nbsp;&nbsp;热门TOP-20</span>
                     </a></li>
                     <div id="top20-list"></div>
                 </ul>
@@ -49,6 +49,9 @@
 
         <div class="setting" id="setting">
             <img title="Close (ESC)" id="setting_close" class="setting_close _close" src="${my_path}/static/images/close.png">
+            <div>
+                <#include "../video/cashier.ftl">
+            </div>
         </div>
 
         <div align="center">
@@ -59,10 +62,11 @@
                 </div>
                 <div id="play-player"></div>
             </div>
-            <#--影视简介评论区-->
+            <#--公共使用部分-->
             <div class="order-area" id="order-area">
                 <img title="Close (ESC)" id="order_close" class="order_close _close" src="${my_path}/static/images/close.png">
-                <div>
+                <div id="common-area">
+                    <#include "../video/order-preview.ftl">
                 </div>
             </div>
         </div>

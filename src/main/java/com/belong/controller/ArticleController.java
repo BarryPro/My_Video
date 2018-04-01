@@ -7,6 +7,8 @@ import com.belong.model.PageBean;
 import com.belong.model.Review;
 import com.belong.service.IArticleService;
 import com.belong.service.IMoviesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ import java.util.Map;
 @RequestMapping(value = "/my_review")
 @SessionAttributes(value = {"review","uid"})
 public class ArticleController {
+    Logger logger = LoggerFactory.getLogger(ArticleController.class);
     @Autowired
     private IMoviesService service;
 
@@ -126,7 +129,7 @@ public class ArticleController {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException ArticleController json",e);
         }
     }
 

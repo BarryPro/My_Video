@@ -169,8 +169,7 @@
 
 .order-area{
     width: 1024px;
-    height: 100%;
-    background-color: #272c2e;
+    background-color: grey;
     z-index: 100;
     position: fixed;
     top: 88px;
@@ -214,4 +213,40 @@
     top: 80px;
     height: 100%;
     width: 19%;
+}
+
+.my_btn{
+    padding-bottom: 10px;
+}
+
+.msg{
+    color: deepskyblue;
+    font-weight: bold;
+}
+
+.sys-ewm{
+    width: 200px;
+    height: 240px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.white-color{
+    color: white;
+}
+
+.right-size{
+    width: 22px;
+    height: 22px;
+}
+
+.margin{
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.msg-info{
+    color: yellow;
 }
