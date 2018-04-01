@@ -3,7 +3,7 @@
         <div class="span12">
             <div class="page-header">
                 <h1>
-                    MyPlay 设置中心.
+                    MyPlay 个人中心.
                 </h1>
             </div>
             <h3>

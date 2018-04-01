@@ -21,19 +21,26 @@
                 <form class="navbar-form navbar-right" id="form_search" method="post">
                     <input type="text" class="form-control" placeholder="Search..." id="txt" name="txt">
                     <input type="button" value=" " id="btn_search">
+                    <input type="hidden" id="cur_type" value="0"/>
                 </form>
                 <div class="info-view">
                     <#if Session["global_user"]??>
+                    <#if (global_user.vip > 0 && global_user.vip < 10)>
                         <a id="order" href="javascript:void(0)" class="">
                         <img src="${my_path!}/static/images/Vip${global_user.vip!}.png"
-                             class="user_avatar vip-set" style="border-radius:50%;overflow:hidden"/></a>
+                             class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
+                    <#else>
+                        <a id="vip-center" href="javascript:void(0)" class="">
+                            <img src="${my_path!}/static/images/Vip${global_user.vip!}.png"
+                                 class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
+                    </#if>
                         <input type="hidden" title="${global_user.id!}" id="my_image"/>
-                        <img src="${my_path!}/my_user/pic/userid/${global_user.id!}"
+                        <img  id="_setting" src="${my_path!}/my_user/pic/userid/${global_user.id!}"
                              title="${global_user.username!}" class="user_avatar myimg" style="border-radius:50%;overflow:hidden"/>
                     <#else>
                         <a id="order" href="javascript:void(0)" class="">
                         <img src="${my_path!}/static/images/Vip0.png"
-                             class="user_avatar vip-set" style="border-radius:50%;overflow:hidden"/></a>
+                             class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
                         <input type="hidden" title="-1" id="my_image"/>
                         <a id="_login" href="#small-dialog" class="play-icon popup-with-zoom-anim">
                             <img src="${my_path!}/static/images/login.png" class="user_avatar myimg"
@@ -51,9 +58,6 @@
                         <img title="注销" src="${my_path!}/static/images/Sign-out.png" class="user_avatar myimg" /></a>
                     <a href="javascript:void(0)" id="dispear">
                         <img title="消息" src="${my_path!}/static/images/msg.png" class="user_avatar myimg" /></a>
-
-                    <a href="javascript:void(0)">
-                        <img id="_setting" title="设置" src="${my_path!}/static/images/setting.png" class="user_avatar myimg" /></a>
                 </div>
                 <div class="info-msg">
                     <label id="label1" style="color: red"><b><i>${(msg)?default("")}</i></b></label>

@@ -721,12 +721,12 @@ button::-moz-focus-inner {
 		margin: 0 0 2em 0;
 	}
 	.facebook-button a {
-		background: url(../images/fb1.png) no-repeat 8px 9px #3b5998 !important;
+		background:  no-repeat 8px 9px #3b5998 !important;
 		padding: .5em .5em .5em 2em !important;
 		font-size: 13px !important;
 	}
 	.chrome-button a {
-		background: url(../images/ch1.png) no-repeat 8px 9px #dd4b39 !important;
+		background: no-repeat 8px 9px #dd4b39 !important;
 		font-size: 13px !important;
 		padding: .5em .5em .5em 2em !important;
 	}
@@ -751,7 +751,7 @@ button::-moz-focus-inner {
 .social-sits{
     float: left;
     text-align: left;
-    padding: 3em 0 0 3em;
+    padding: 4em 0 0 13em;
     width: 50%;
 }
 .social-sits ul{
@@ -769,14 +769,14 @@ button::-moz-focus-inner {
     margin-bottom: 4em;
 }
 .facebook-button a{
-    background: url(../images/fb1.png) no-repeat 14px 15px #3b5998;
+    background:  no-repeat 14px 15px #3b5998;
     color: #fff;
     padding: 1em 1em 1em 3em;
     text-decoration: none;
     font-size: 14px;
 }
 .chrome-button a{
-    background: url(../images/ch1.png) no-repeat 14px 15px #dd4b39;
+    background:  no-repeat 14px 15px #dd4b39;
     color: #FFF;
     font-size: 14px;
     padding: 1em 1em 1em 3em;
@@ -821,7 +821,7 @@ button::-moz-focus-inner {
   font-size: 14px;
   margin: 0;
   padding-left: 1.5em;
-  background: url(../images/h-arrow.png) no-repeat 0px 4px;
+  background:  no-repeat 0px 4px;
 }
 .help-button-bottom a:hover{
     color: #21DEEF;

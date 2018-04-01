@@ -250,3 +250,7 @@
 .msg-info{
     color: yellow;
 }
+
+.movies-list{
+    width: 800px;
+}

@@ -41,6 +41,8 @@ spring:
   http:
     multipart:
       enabled: true
+      max-file-size: 3000Mb
+      max-request-size: 100Mb
   # redis
   redis:
     host: localhost

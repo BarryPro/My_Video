@@ -85,27 +85,32 @@ $(document).ready(function () {
     //得到电影
     $("#movie").click(function () {
         var n = 2;
+        $("#cur_type").attr("value",n);
         ajax_page(n, 1);
     });
     //得到新闻
     $("#news").click(function () {
         var n = 4;
+        $("#cur_type").attr("value",n);
         ajax_page(n, 1);
     });
     //得到TV
     $("#tv").click(function () {
         var n = 1;
+        $("#cur_type").attr("value",n);
         ajax_page(n, 1);
     });
     //得到 MV
     $("#MV").click(function () {
         var n = 3;
+        $("#cur_type").attr("value",n);
         ajax_page(n, 1);
     });
 
     //得到 主页
     $("#home").click(function () {
         var n = 0;
+        $("#cur_type").attr("value",n);
         ajax_page(n, 1);
     });
 
@@ -228,14 +233,14 @@ $(document).ready(function () {
             $("#play-area").slideUp(300);
             $("#order-area").slideUp(300);
             $("#play-area").empty();
-            ajax_page(0, 1);
+            fixCurPage();
         }
     });
 
     $("#play-close").bind("click",function () {
         $("#play-area").slideUp(300);
         $("#play-player").empty();
-        ajax_page(0, 1);
+        fixCurPage();
     });
 
     // 处理显示区域的关闭close是否显示
@@ -298,7 +303,19 @@ $(document).ready(function () {
         $("#order-area").hide(300);
     });
 
-    window.setInterval(hello,1000);
+    $("#movies-list").on('click','button',function () {
+        var cur = $(this).attr("value");
+        alert(cur);
+    });
+
+    $("#vip-center").click(function () {
+        $("#order-area").show();
+        $("#common-area").html('<div class="container-fluid">' +
+            '                    <div class="row-fluid">' +
+            '                        <div class="span12">' +
+            '                            <div class="hero-unit"><h1>Hello, 会员!</h1><hr/>' +
+            '                                <p>你现在享有MyPlay网站上的所有视频资源，祝你观看愉快！</p><hr/></div></div></div></div>');
+    });
 
 });
 
@@ -498,4 +515,10 @@ function clickPlay(a){
             $("#label1").html(data.msg).show(300).delay(3000).hide(300);
         }
     });
+}
+
+function fixCurPage() {
+    var n = $("#cur_type").attr("value");
+    var cur = $("#cur_page").attr("title");
+    ajax_page(n, cur);
 }

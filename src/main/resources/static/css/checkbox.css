@@ -4,7 +4,7 @@
 /*******STYLE 4*******/
 .chk_4 + label {
     background-color: #FFF;
-    padding: 11px 9px;
+    padding: 16px 10px;
     border-radius: 7px;
     display: inline-block;
     position: relative;
@@ -22,9 +22,9 @@
     top: 0px;
     z-index: 99999;
     left: 0px;
-    width: 24px;
+    width: 18px;
     color: #FFF;
-    height: 22px;
+    height: 32px;
     border-radius: 7px;
     box-shadow: 0 0 1px rgba(0,0,0,0.6);
 }
