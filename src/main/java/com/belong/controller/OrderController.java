@@ -18,7 +18,11 @@ public class OrderController {
     Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @RequestMapping(value = "/preview")
-    public String query(){
+    public String query(@RequestParam("vip_type") String vip_type,
+                        @RequestParam("vip_time") String vip_time,
+                        Map map){
+        map.put("vip_type",vip_type);
+        map.put("vip_time",vip_time);
         return ConstantConfig.HOME;
     }
 }

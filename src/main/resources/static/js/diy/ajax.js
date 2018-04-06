@@ -302,9 +302,10 @@ $(document).ready(function () {
                 '                </tbody>' +
                 '            </table>' +
                 '            <hr/><div ><label class="msg">充值类型：</label>'+
-                '                <select class="margin"><option>vip</option><option>svip</option></select>' +
+                '                <select class="margin" name="vip_type"><option>vip</option><option>svip</option></select>' +
                 '                <label class="msg">充值时长：</label>' +
-                '                <select class="margin"><option>1个月</option><option>6个月</option><option>12个月</option></select></div><hr/>' +
+                '                <select class="margin" name="vip_time"><option  value="1">1个月</option><option value="6">6个月</option>' +
+                '                           <option value="1">12个月</option></select></div><hr/>' +
                 '            <input class="btn btn-block btn-primary my_btn" type="submit"  value="立即充值"/><hr/>' +
                 '</div></div></form></div>'
             );
