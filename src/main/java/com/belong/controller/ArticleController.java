@@ -3,6 +3,7 @@ package com.belong.controller;
 import com.alibaba.fastjson.JSON;
 import com.belong.config.ConstantConfig;
 import com.belong.model.Article;
+import com.belong.model.Movies;
 import com.belong.model.PageBean;
 import com.belong.model.Review;
 import com.belong.service.IArticleService;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +48,11 @@ public class ArticleController {
         map.put("vid", vid);
         Review review = service.review(map);
         map.put("review", review);
-//        videoController.json(map,response);
+        String vName = review.getVideo().getVname();
+        map.put("vname",vName);
+        List<Movies> moviesList = service.getVideosFromVname(map);
+        map.put("moviesList",moviesList);
+        map.put("_page_str",1);
         return ConstantConfig.COMMENT;
     }
 

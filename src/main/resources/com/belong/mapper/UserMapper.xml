@@ -17,6 +17,12 @@
           password=#{user.password,jdbcType=VARCHAR}
   </select>
 
+  <select id="getVip" parameterType="map" resultType="java.lang.Integer">
+    SELECT vip
+    FROM USER
+    WHERE id=#{uid,jdbcType=INTEGER}
+  </select>
+
   <insert id="register" parameterType="map">
     INSERT INTO USER (username,password,pic)
     VALUES (#{user.username,jdbcType=VARCHAR},

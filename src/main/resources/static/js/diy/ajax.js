@@ -89,7 +89,7 @@ $(document).ready(function () {
         ajax_page(n, 1);
     });
     //得到新闻
-    $("#news").click(function () {
+    $("#vip").click(function () {
         var n = 4;
         $("#cur_type").attr("value",n);
         ajax_page(n, 1);
@@ -107,6 +107,19 @@ $(document).ready(function () {
         ajax_page(n, 1);
     });
 
+    //得到 ZY
+    $("#ZY").click(function () {
+        var n = 5;
+        $("#cur_type").attr("value",n);
+        ajax_page(n, 1);
+    });
+
+    //得到 DM
+    $("#DM").click(function () {
+        var n = 6;
+        $("#cur_type").attr("value",n);
+        ajax_page(n, 1);
+    });
     //得到 主页
     $("#home").click(function () {
         var n = 0;
@@ -265,10 +278,41 @@ $(document).ready(function () {
     });
 
     $("#order").click(function () {
-        $("#order-area").show(500);
+        if ($("#my_image").attr("title") == -1){
+            $("#_login").trigger("click");
+        } else {
+            $("#order-area").show(500);
+            $("#common-area").html('<div class="container-fluid">' +
+                '    <div class="row-fluid"><form method="post" enctype="multipart/form-data" action='+_path+'/my_order/preview>' +
+                '        <div class="span12">' +
+                '            <div class="page-header">' +
+                '                <h1 class="white-color">充值VIP.</h1></div>' +
+                '            <table class="table table-hover table-bordered white-color">' +
+                '                <thead><tr><th>权限</th><th>普通</th><th>vip</th><th>svip</th></tr></thead>' +
+                '                <tbody>' +
+                '                <tr><td>普通视频</td>' +
+                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td>' +
+                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td>' +
+                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td></tr>' +
+                '                <tr ><td>vip视频</td><td></td>' +
+                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td>' +
+                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td></tr>' +
+                '                <tr><td>付费/用券视频</td><td></td><td></td>' +
+                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td></tr>' +
+                '                </tbody>' +
+                '            </table>' +
+                '            <hr/><div ><label class="msg">充值类型：</label>'+
+                '                <select class="margin"><option>vip</option><option>svip</option></select>' +
+                '                <label class="msg">充值时长：</label>' +
+                '                <select class="margin"><option>1个月</option><option>6个月</option><option>12个月</option></select></div><hr/>' +
+                '            <input class="btn btn-block btn-primary my_btn" type="submit"  value="立即充值"/><hr/>' +
+                '</div></div></form></div>'
+            );
+        }
     });
 
     $("#preview").click(function () {
+        alert("ij")
         _path = $("#_path").attr("value");//得到项目的绝对路径
         $("#common-area").html(
             '<div class="container-fluid">' +
@@ -305,7 +349,9 @@ $(document).ready(function () {
 
     $("#movies-list").on('click','button',function () {
         var cur = $(this).attr("value");
-        alert(cur);
+        var uid = $("#cur_user_uid").attr("value");
+        cur = _path+'/my_video/src/Vid/'+cur+'/Uid/'+uid;
+        clickPlay(this,cur);
     });
 
     $("#vip-center").click(function () {
@@ -317,11 +363,18 @@ $(document).ready(function () {
             '                                <p>你现在享有MyPlay网站上的所有视频资源，祝你观看愉快！</p><hr/></div></div></div></div>');
     });
 
+    // 设置评论页不可以选择视频分类
+    $("#cur_page_str").attr("value",$("#_page_str").attr("value"));
+    if ($("#cur_page_str").attr("value") == 1) {
+        $("#cover-menus").show();
+    }
+
 });
 
 //获取电影界面
 function movie_page(i, list) {
     _path = $("#_path").attr("value");
+    var uid = $("#cur_user_uid").attr("value");
     pro_views = list.views;
     if (pro_views > 9999) {
         pro_views = "9999+";
@@ -330,7 +383,7 @@ function movie_page(i, list) {
         '<div class="col-md-2 resent-grid recommended-grid slider-top-grids">' +
         '<div class="resent-grid-img recommended-grid-img">' +
         '<div class="video-vip"><img src=' + _path + '/static/images/video-vip'+list.v_type+'.png width="48px" height="48px"  alt="tupian" /></div>' +
-        '<a id="play_video" title='+_path+'/my_video/src/Vid/'+list.vid+' onclick="clickPlay(this)">' +
+        '<a id="play_video" title='+_path+'/my_video/src/Vid/'+list.vid+'/Uid/'+uid+' onclick="clickPlay(this,0)">' +
         '<img id="views" class="display-img" src=' + _path + '/my_video/pic/Vid/' + list.vid + ' alt="tupian" /></a>' +
         '<div class="time"><p>' + list.vdate + '</p></div>' +
         '</div>' +
@@ -351,7 +404,7 @@ function movie_page(i, list) {
 }
 
 //显示电影加分页图标
-function ajax_page(type, cur) {
+function ajax_page(type,cur) {
     _path = $("#_path").attr("value");//得到项目的绝对路径
     $.ajax({
         url: _path + "/my_video/db_info",
@@ -475,6 +528,7 @@ function ajax_page_search(userid, cur, txt, type) {
 function playArea() {
     $("#play-area").hide();
     $("#setting").hide();
+    $("#cover-menus").hide();
     $("#order-area").hide();
     _path = $("#_path").attr("value");//得到项目的绝对路径
     var url = _path + '/my_video/top20';
@@ -496,23 +550,31 @@ function playArea() {
 }
 
 // 处理video点击播放
-function clickPlay(a){
+function clickPlay(a,value){
     _path = $("#_path").attr("value");//得到项目的绝对路径
-    url = $(a).attr("title");//this就是表示此时点击的那个超链的title了
+    if (value == 0) {
+        url = $(a).attr("title");//this就是表示此时点击的那个超链的title了
+    } else {
+        url = value;
+    }
     $.ajax({
         url: url,
         type: "post",
         dataType: "json",
         scriptCharset: 'utf-8',
         success: function (data) {
-            $("#play-area").slideDown(600);
-            $("#play-player").empty();
-            $("#play-player").append(
-                '<video id="video_play" src="'+_path+'/static/resources/movies/'+data.srcpath+'" controls="controls"' +
-                'autoplay="autoplay" width="1024" height="576" poster="'+_path+'/static/images/loading.gif">' +
-                '</video>'
-            );
-            $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+            if (data.play_switch == 1) {
+                $("#play-area").slideDown(600);
+                $("#play-player").empty();
+                $("#play-player").append(
+                    '<video id="video_play" src="'+_path+'/static/resources/movies/'+data.srcpath+'" controls="controls"' +
+                    'autoplay="autoplay" width="1024" height="576" poster="'+_path+'/static/images/loading.gif">' +
+                    '</video>'
+                );
+                $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+            } else {
+                $("#order-area").show();
+            }
         }
     });
 }

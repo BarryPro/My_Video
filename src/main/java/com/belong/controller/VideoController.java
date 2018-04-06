@@ -6,7 +6,9 @@ import com.belong.config.ConstantConfig;
 import com.belong.model.Movies;
 import com.belong.model.PageBean;
 import com.belong.model.Review;
+import com.belong.model.User;
 import com.belong.service.IMoviesService;
+import com.belong.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,8 @@ public class VideoController {
 
     @Autowired
     private IMoviesService service;
+    @Autowired
+    private IUserService userService;
 
     //得到主页
     @RequestMapping(value = "/home")
@@ -97,14 +101,27 @@ public class VideoController {
         return null;
     }
 
-    @RequestMapping(value = "/src/Vid/{vid}")
+    @RequestMapping(value = "/src/Vid/{vid}/Uid/{uid}")
     public String getPath(@PathVariable(value = "vid") int vid,
+                          @PathVariable(value = "uid") int uid,
                           Map map,
                           HttpServletResponse response){
         service.views(vid);
-        String srcpath = service.getPath(vid);
-        map.put(ConstantConfig.SRCPATH,srcpath);
-        map.put(ConstantConfig.MSG,ConstantConfig.PLAY_SUCCC);
+        map.put("vid",vid);
+        Integer vType = service.getVType(map);
+        int vip = 0;
+        if (uid != -1) {
+            map.put("uid",uid);
+            vip = userService.getVip(map);
+        }
+        if (vType != 0 && vip < 1) {
+            map.put("play_switch",0);
+        } else {
+            map.put("play_switch", 1);
+            String srcpath = service.getPath(vid);
+            map.put(ConstantConfig.SRCPATH, srcpath);
+            map.put(ConstantConfig.MSG, ConstantConfig.PLAY_SUCCC);
+        }
         json(map,response);
         return ConstantConfig.HOME;
     }
@@ -222,6 +239,16 @@ public class VideoController {
         return true;
     }
 
-
-
+    /**
+     * 判断返回那个页面
+     * @param page
+     * @return
+     */
+    private String getReturnPage(String page){
+        if ("0".equals(page)) {
+            return ConstantConfig.HOME;
+        } else {
+            return ConstantConfig.COMMENT;
+        }
+    }
 }

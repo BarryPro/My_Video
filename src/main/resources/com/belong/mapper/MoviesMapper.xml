@@ -28,6 +28,12 @@
     WHERE Vid = #{vid,jdbcType=INTEGER}
   </select>
 
+  <select id="getVType" resultType="java.lang.Integer" parameterType="map">
+    SELECT v_type
+    FROM movies
+    WHERE Vid = #{vid,jdbcType=INTEGER}
+  </select>
+
   <select id="getPic" parameterType="map"  resultType="com.belong.model.Movies" resultMap="BaseResultMap">
     SELECT Vpic
     FROM movies
@@ -38,6 +44,13 @@
     SELECT Vname,Vid,Vdate
     FROM movies
     ORDER BY views desc limit 20
+  </select>
+
+  <select id="getVideosFromVname"  resultType="com.belong.model.Movies" parameterType="map">
+    SELECT Vname,Vid,v_set
+    FROM movies
+    WHERE Vname = #{vname,jdbcType=VARCHAR}
+    order by v_set desc
   </select>
 
   <update id="views" parameterType="map" >

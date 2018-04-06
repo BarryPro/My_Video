@@ -20,10 +20,10 @@
             <li><a href="javascript:void(0)" class="menu1" id="MV">
                 <span class="fa fa-headphones" aria-hidden="true">&nbsp;&nbsp;音乐MV</span>
             </a></li>
-            <li><a href="javascript:void(0)" class="song-icon">
+            <li><a href="javascript:void(0)" class="song-icon" id="ZY">
                 <span class="fa fa-rss" aria-hidden="true">&nbsp;&nbsp;综艺</span>
             </a></li>
-            <li><a href="javascript:void(0)" class="news-icon" id="news">
+            <li><a href="javascript:void(0)" class="news-icon" id="DM">
                 <span class="fa fa-caret-square-o-right" aria-hidden="true">&nbsp;&nbsp;动漫</span>
             </a></li>
         </ul>
@@ -36,6 +36,7 @@
                 </ul>
             </div>
         </div>
+        <div id="cover-menus" class="cover-menus"></div>
         <div class="top-20">
             <div class="video-list">
                 <ul class="nav nav-sidebar">
@@ -65,9 +66,7 @@
             <#--公共使用部分-->
             <div class="order-area" id="order-area">
                 <img title="Close (ESC)" id="order_close" class="order_close _close" src="${my_path}/static/images/close.png">
-                <div id="common-area">
-                    <#include "../video/order-preview.ftl">
-                </div>
+                <div id="common-area"></div>
             </div>
         </div>
     </div>

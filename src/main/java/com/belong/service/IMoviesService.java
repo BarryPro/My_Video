@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by belong on 16-11-6.
  */
 public interface IMoviesService{
+    int getVType(Map map);
     String getPath(int Vid);
     Movies getPic(int Vid);
     ArrayList<Movies> search(Map map);
@@ -19,4 +20,5 @@ public interface IMoviesService{
     Review review(Map map);
     ArrayList<Movies> getInfo(Map map);
     List<Movies> getTop20();
+    List<Movies> getVideosFromVname(Map map);
 }

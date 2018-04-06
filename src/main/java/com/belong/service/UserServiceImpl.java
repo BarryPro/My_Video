@@ -41,6 +41,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public Integer getVip(Map map) {
+        return dao.getVip(map);
+    }
+
+    @Override
     public User getPic(int id) {
         return dao.getPic(id);
     }

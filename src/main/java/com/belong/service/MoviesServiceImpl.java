@@ -28,6 +28,11 @@ public class MoviesServiceImpl implements IMoviesService{
     private ReviewMapper rdao;
 
     @Override
+    public int getVType(Map map) {
+        return dao.getVType(map);
+    }
+
+    @Override
     public String getPath(int Vid) {
         return dao.getPath(Vid);
     }
@@ -67,6 +72,11 @@ public class MoviesServiceImpl implements IMoviesService{
     @Override
     public List<Movies> getTop20() {
         return dao.getTop20();
+    }
+
+    @Override
+    public List<Movies> getVideosFromVname(Map map) {
+        return dao.getVideosFromVname(map);
     }
 }
 

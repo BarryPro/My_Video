@@ -22,10 +22,15 @@
                     <input type="text" class="form-control" placeholder="Search..." id="txt" name="txt">
                     <input type="button" value=" " id="btn_search">
                     <input type="hidden" id="cur_type" value="0"/>
+                    <#if Session["global_user"]??>
+                        <input type="hidden" id="cur_user_uid" value="${global_user.id}"/>
+                    <#else>
+                        <input type="hidden" id="cur_user_uid" value="-1"/>
+                    </#if>
                 </form>
                 <div class="info-view">
                     <#if Session["global_user"]??>
-                    <#if (global_user.vip > 0 && global_user.vip < 10)>
+                    <#if (global_user.vip >= 0 && global_user.vip < 10)>
                         <a id="order" href="javascript:void(0)" class="">
                         <img src="${my_path!}/static/images/Vip${global_user.vip!}.png"
                              class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>

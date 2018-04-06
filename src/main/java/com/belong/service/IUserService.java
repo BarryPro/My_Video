@@ -10,6 +10,7 @@ import java.util.Map;
 public interface IUserService {
     boolean register(Map map);
     User login(Map map);
+    Integer getVip(Map map);
     User getPic(int id);
     String getAuthor(int userid);
     boolean updataSelect(int value, int userid);

@@ -36,4 +36,5 @@ public class ConstantConfig {
     public static final String MOVIES_PATH = "movies/";
     public static final String PICTURE_PATH = "upload/";
     public static final String RESOURCE_PATH = "D:/Codes/My_Video/target/classes/static/resources/";
+    public static final String PAGE = "page";
 }

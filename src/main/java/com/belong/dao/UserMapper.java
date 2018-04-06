@@ -6,6 +6,7 @@ import java.util.Map;
 
 public interface UserMapper {
     User login(Map map);
+    Integer getVip(Map map);
     boolean register(Map map);
     User getPic(int id);
     void updateVideoNumber(Map map);
