@@ -281,6 +281,7 @@ $(document).ready(function () {
         if ($("#my_image").attr("title") == -1){
             $("#_login").trigger("click");
         } else {
+            var uid = $("#cur_user_uid").attr("value");
             $("#order-area").show(500);
             $("#common-area").html('<div class="container-fluid">' +
                 '    <div class="row-fluid"><form method="post" enctype="multipart/form-data" action='+_path+'/my_order/preview>' +
@@ -288,7 +289,7 @@ $(document).ready(function () {
                 '            <div class="page-header">' +
                 '                <h1 class="white-color">充值VIP.</h1></div>' +
                 '            <table class="table table-hover table-bordered white-color">' +
-                '                <thead><tr><th>权限</th><th>普通</th><th>vip</th><th>svip</th></tr></thead>' +
+                '                <thead><tr><th>权限</th><th>普通（免费）</th><th>vip（6元/月）</th><th>svip（15元/月）</th></tr></thead>' +
                 '                <tbody>' +
                 '                <tr><td>普通视频</td>' +
                 '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td>' +
@@ -301,47 +302,20 @@ $(document).ready(function () {
                 '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td></tr>' +
                 '                </tbody>' +
                 '            </table>' +
-                '            <hr/><div ><label class="msg">充值类型：</label>'+
-                '                <select class="margin" name="vip_type"><option>vip</option><option>svip</option></select>' +
+                '            <hr/><div ><input type="hidden" name="user_id" value='+uid+' >' +
+                '               <label class="msg">充值类型：</label>'+
+                '                <select class="margin" name="vip_type"><option value="1">vip</option><option value="2">svip</option></select>' +
                 '                <label class="msg">充值时长：</label>' +
                 '                <select class="margin" name="vip_time"><option  value="1">1个月</option><option value="6">6个月</option>' +
-                '                           <option value="1">12个月</option></select></div><hr/>' +
+                '                           <option value="12">12个月</option></select></div><hr/>' +
                 '            <input class="btn btn-block btn-primary my_btn" type="submit"  value="立即充值"/><hr/>' +
                 '</div></div></form></div>'
             );
         }
     });
 
-    $("#preview").click(function () {
-        alert("ij")
-        _path = $("#_path").attr("value");//得到项目的绝对路径
-        $("#common-area").html(
-            '<div class="container-fluid">' +
-            '    <div class="row-fluid"><div class="span12">' +
-            '            <div class="page-header"><h1 class="white-color">MyPlay 收银台.</h1></div>' +
-            '            <h3 class="white-color">订单支付详情.</h3>' +
-            '            <table class="table table-hover table-bordered">' +
-            '                <tbody>' +
-            '                <tr class="info"><td>订单标号</td><td>20180401123456</td></tr>' +
-            '                <tr class="warning"><td>商品名称</td><td>MyPlay_vip会员_一个月</td></tr>' +
-            '                <tr class="info"><td>交易时间</td><td>2018-04-01 10.21:00</td></tr>' +
-            '                <tr class="warning"><td >支付方式</td><td>微信支付</td></tr>' +
-            '                <tr class="info"><td>支付金额</td><td>6元</td></tr></tbody></table>' +
-            '            <div class="tabbable" id="tabs-797679">' +
-            '                <ul class="nav nav-tabs">' +
-            '                    <li><a href="#panel-544732" data-toggle="tab">微信</a></li>' +
-            '                    <li class="active"><a href="#panel-879116" data-toggle="tab">支付宝</a></li></ul>' +
-            '                <div class="tab-content">' +
-            '                    <div class="tab-pane msg" id="panel-544732">' +
-            '                        <img alt="支付二维码" src='+_path+'/static/images/v6.jpg class="sys-ewm"/>' +
-            '                        <small class="msg-info margin">提示：先扫【微信】二维码支付，再点击【支付提交】</small></div>' +
-            '                    <div class="tab-pane active msg" id="panel-879116">' +
-            '                        <img alt="支付二维码" src='+_path+'/static/images/z6.jpg class="sys-ewm"/>' +
-            '                        <small class="msg-info margin">提示：先扫【支付宝】二维码支付，再点击【支付提交】</small></div></div>' +
-            '            </div><hr/><button class="btn btn-block btn-primary" type="button" id="pay-submit"><b>支付提交</b></button><hr/></div></div>' +
-            '</div>'
-        );
-    });
+    // 判断是否显示订单支付页
+    submitOrder();
 
     $("#common-area").on('click', 'button', function () {
         $("#label1").html("支付成功！").show(300).delay(3000).hide(300);
@@ -383,7 +357,7 @@ function movie_page(i, list) {
     $("#1").append(
         '<div class="col-md-2 resent-grid recommended-grid slider-top-grids">' +
         '<div class="resent-grid-img recommended-grid-img">' +
-        '<div class="video-vip"><img src=' + _path + '/static/images/video-vip'+list.v_type+'.png width="48px" height="48px"  alt="tupian" /></div>' +
+        '<div class="video-vip"><img src=' + _path + '/static/images/video/video-vip'+list.v_type+'.png width="48px" height="48px"  alt="tupian" /></div>' +
         '<a id="play_video" title='+_path+'/my_video/src/Vid/'+list.vid+'/Uid/'+uid+' onclick="clickPlay(this,0)">' +
         '<img id="views" class="display-img" src=' + _path + '/my_video/pic/Vid/' + list.vid + ' alt="tupian" /></a>' +
         '<div class="time"><p>' + list.vdate + '</p></div>' +
@@ -584,4 +558,41 @@ function fixCurPage() {
     var n = $("#cur_type").attr("value");
     var cur = $("#cur_page").attr("title");
     ajax_page(n, cur);
+}
+
+function submitOrder() {
+    $("#order-area").show(500);
+    var order_id = $("#order_id").attr("value");
+    var pay_total = $("#pay_total").attr("value");
+    var order_switch = $("#order_switch").attr("value");
+    if (order_switch == 1) {
+        $("#common-area").html(
+            '<div class="container-fluid"><form method="post" enctype="multipart/form-data" action='+_path+'/my_order/paySubmit>' +
+            '    <div class="row-fluid"><div class="span12">' +
+            '            <div class="page-header"><h1 class="white-color">MyPlay 收银台.</h1></div>' +
+            '            <h3 class="white-color">订单支付详情.</h3>' +
+            '            <table class="table table-hover table-bordered">' +
+            '                <tbody>' +
+            '                <tr class="info"><td>订单标号</td><td>'+order_id+'</td></tr>' +
+            '                <tr class="warning"><td>商品名称</td><td>'+$("#order_name").attr("value")+'</td></tr>' +
+            '                <tr class="info"><td>交易时间</td><td>'+$("#trade_time").attr("value")+'</td></tr>' +
+            '                <tr class="info"><td>订单类型</td><td>'+$("#order_type").attr("value")+'</td></tr>' +
+            '                <tr class="info"><td>支付金额</td><td>'+pay_total+'元</td></tr></tbody></table>' +
+            '            <div class="tabbable" id="tabs-797679">' +
+            '                <ul class="nav nav-tabs">' +
+            '                    <li><a href="#panel-544732" data-toggle="tab">微信</a></li>' +
+            '                    <li class="active"><a href="#panel-879116" data-toggle="tab">支付宝</a></li></ul>' +
+            '                <div class="tab-content">' +
+            '                   <input value='+order_id+' name="order_id" type="hidden" />' +
+            '                  <input value='+pay_total+' name="pay_total" type="hidden" />'+
+            '                    <div class="tab-pane msg" id="panel-544732">' +
+            '                        <img alt="支付二维码" src='+_path+'/static/images/code/v6.jpg class="sys-ewm"/>' +
+            '                        <small class="msg-info margin">提示：先扫【微信】二维码支付，再点击【支付提交】</small></div>' +
+            '                    <div class="tab-pane active msg" id="panel-879116">' +
+            '                        <img alt="支付二维码" src='+_path+'/static/images/code/z6.jpg class="sys-ewm"/>' +
+            '                        <small class="msg-info margin">提示：先扫【支付宝】二维码支付，再点击【支付提交】</small></div></div>' +
+            '            </div><hr/><input class="btn btn-block btn-primary" type="submit" value="支付提交"></input><hr/></div></div>' +
+            '</form></div>'
+        );
+    }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.belong.dao.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.belong.model.Order_Video">
+        <id column="order_id" property="order_id" jdbcType="INTEGER"/>
+        <result column="order_name" property="order_name" jdbcType="VARCHAR"/>
+        <result column="order_type" property="order_type" jdbcType="INTEGER"/>
+        <result column="trade_time" property="trade_time" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="update_time" jdbcType="TIMESTAMP"/>
+        <result column="user_id" property="user_id" jdbcType="INTEGER"/>
+        <result column="order_status" property="order_status" jdbcType="INTEGER"/>
+        <result column="pay_total" property="pay_total" jdbcType="DECIMAL"/>
+        <result column="extra" property="extra" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <insert id="insertOrder" parameterType="map">
+        INSERT INTO ORDER_VIDEO
+        (order_id,order_name,order_type,trade_time,update_time,user_id,order_status,pay_total,extra)
+        VALUES
+        (#{order.order_id,jdbcType=INTEGER},
+         #{order.order_name,jdbcType=VARCHAR},
+         #{order.order_type,jdbcType=INTEGER},
+         #{order.trade_time,jdbcType=TIMESTAMP},
+         now(),
+         #{order.user_id,jdbcType=INTEGER},
+         #{order.order_status,jdbcType=INTEGER},
+         #{order.pay_total,jdbcType=DECIMAL},
+         #{user.extra,jdbcType=LONGVARCHAR})
+    </insert>
+</mapper>

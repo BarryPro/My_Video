@@ -1,10 +1,11 @@
-package com.belong.service;
+package com.belong.service.impl;
 
 import com.belong.dao.MoviesMapper;
 import com.belong.dao.PageMapper;
 import com.belong.dao.ReviewMapper;
 import com.belong.model.Movies;
 import com.belong.model.Review;
+import com.belong.service.IMoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * Created by belong on 16-11-6.
  */
 @Service
-public class MoviesServiceImpl implements IMoviesService{
+public class MoviesServiceImpl implements IMoviesService {
 
     @Autowired
     private MoviesMapper dao;

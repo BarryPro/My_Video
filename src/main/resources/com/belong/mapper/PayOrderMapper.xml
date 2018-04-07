@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.belong.dao.PayOrderMapper">
+    <resultMap id="BaseResultMap" type="com.belong.model.Pay_Order">
+        <id column="pay_id" property="order_id" jdbcType="INTEGER"/>
+        <result column="order_id" property="order_id" jdbcType="INTEGER"/>
+        <result column="pay_time" property="pay_time" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="update_time" jdbcType="TIMESTAMP"/>
+        <result column="user_id" property="user_id" jdbcType="INTEGER"/>
+        <result column="pay_type" property="pay_type" jdbcType="INTEGER"/>
+        <result column="pay_status" property="pay_status" jdbcType="INTEGER"/>
+        <result column="pay_total" property="pay_total" jdbcType="DECIMAL"/>
+        <result column="extra" property="extra" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <insert id="insertPayOrder" parameterType="map">
+        INSERT INTO ORDER_VIDEO
+        (pay_id,order_id,pay_time,update_time,user_id,pay_type,pay_status,pay_total,extra)
+        VALUES
+        (#{payOrder.pay_id,jdbcType=INTEGER},
+        #{payOrder.order_id,jdbcType=INTEGER},
+        now(),now(),
+        #{payOrder.user_id,jdbcType=INTEGER},
+        #{payOrder.pay_type,jdbcType=INTEGER},
+        #{payOrder.pay_status,jdbcType=INTEGER},
+        #{payOrder.pay_total,jdbcType=DECIMAL},
+        #{payOrder.extra,jdbcType=LONGVARCHAR})
+    </insert>
+</mapper>

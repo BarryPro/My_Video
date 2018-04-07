@@ -1,8 +1,9 @@
-package com.belong.service;
+package com.belong.service.impl;
 
 import com.belong.dao.ArticleMapper;
 import com.belong.dao.PageMapper;
 import com.belong.model.Article;
+import com.belong.service.IArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * Created by belong on 2017/1/10.
  */
 @Service
-public class ArticleServiceImpl implements IArticleService{
+public class ArticleServiceImpl implements IArticleService {
     @Autowired
     private PageMapper pdao;
 

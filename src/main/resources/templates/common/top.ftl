@@ -22,8 +22,14 @@
                     <input type="text" class="form-control" placeholder="Search..." id="txt" name="txt">
                     <input type="button" value=" " id="btn_search">
                     <input type="hidden" id="cur_type" value="0"/>
+                    <input type="hidden" id="order_switch" value="${order_switch!}"/>
+                    <input type="hidden" id="order_id" value="${order.order_id?c}"/>
+                    <input type="hidden" id="order_name" value="${order.order_name!}"/>
+                    <input type="hidden" id="trade_time" value="${order.trade_time!}"/>
+                    <input type="hidden" id="order_type" value="${order.order_type!}"/>
+                    <input type="hidden" id="pay_total" value="${order.pay_total!}"/>
                     <#if Session["global_user"]??>
-                        <input type="hidden" id="cur_user_uid" value="${global_user.id}"/>
+                        <input type="hidden" id="cur_user_uid" value="${global_user.id!}"/>
                     <#else>
                         <input type="hidden" id="cur_user_uid" value="-1"/>
                     </#if>
@@ -32,11 +38,11 @@
                     <#if Session["global_user"]??>
                     <#if (global_user.vip >= 0 && global_user.vip < 10)>
                         <a id="order" href="javascript:void(0)" class="">
-                        <img src="${my_path!}/static/images/Vip${global_user.vip!}.png"
+                        <img src="${my_path!}/static/images/vip/Vip${global_user.vip!}.png"
                              class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
                     <#else>
                         <a id="vip-center" href="javascript:void(0)" class="">
-                            <img src="${my_path!}/static/images/Vip${global_user.vip!}.png"
+                            <img src="${my_path!}/static/images/vip/Vip${global_user.vip!}.png"
                                  class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
                     </#if>
                         <input type="hidden" title="${global_user.id!}" id="my_image"/>
@@ -44,7 +50,7 @@
                              title="${global_user.username!}" class="user_avatar myimg" style="border-radius:50%;overflow:hidden"/>
                     <#else>
                         <a id="order" href="javascript:void(0)" class="">
-                        <img src="${my_path!}/static/images/Vip0.png"
+                        <img src="${my_path!}/static/images/vip/Vip0.png"
                              class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
                         <input type="hidden" title="-1" id="my_image"/>
                         <a id="_login" href="#small-dialog" class="play-icon popup-with-zoom-anim">

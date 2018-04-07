@@ -1,7 +1,8 @@
-package com.belong.service;
+package com.belong.service.impl;
 
 import com.belong.dao.UserMapper;
 import com.belong.model.User;
+import com.belong.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

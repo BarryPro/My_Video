@@ -6,7 +6,6 @@ import com.belong.config.ConstantConfig;
 import com.belong.model.Movies;
 import com.belong.model.PageBean;
 import com.belong.model.Review;
-import com.belong.model.User;
 import com.belong.service.IMoviesService;
 import com.belong.service.IUserService;
 import org.slf4j.Logger;
@@ -97,6 +96,14 @@ public class VideoController {
             os.close();
         } catch (Exception e) {
             logger.error("IOException VideoController getPic",e);
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    logger.error("IOException VideoController getPic",e);
+                }
+            }
         }
         return null;
     }
