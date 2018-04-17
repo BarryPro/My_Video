@@ -15,28 +15,28 @@
 <#include "../video/particle.ftl">
 <#include "../common/menus.ftl">
 <body>
-    <input type="hidden" id="_path" value="${my_path}/"/>
+    <input type="hidden" id="_path" value="${my_path!}/"/>
     <input type="hidden" id="_user" value=""/>
-    <input type="hidden" id="_page_str" value="${_page_str}"/>
+    <input type="hidden" id="_page_str" value="${_page_str!}"/>
     <c:set var="review" value=""></c:set>
     <div align="center" style="padding-top: inherit">
         <table width="790px" cellspacing="1" border="1">
             <tr>
                 <td rowspan="6">
-                    <a href="${my_path}/my_video/src/Vid/${review.vid}">
+                    <a href="${my_path}/my_video/src/Vid/${review.vid!}">
                         <img width="168" height="224" id="_views" class="pic-commit"
-                             src="${my_path}/my_video/pic/Vid/${review.vid}" alt="tupian"/></a>
+                             src="${my_path}/my_video/pic/Vid/${review.vid!}" alt="tupian"/></a>
                 </td>
-                <td width="621"><span class="_mycolor">影片名：</span>${review.video.vname}</td>
+                <td width="621"><span class="_mycolor">影片名：</span>${review.video.vname!}</td>
             </tr>
             <tr>
-                <td><span class="_mycolor">导演名：</span>${review.vdirector}</td>
+                <td><span class="_mycolor">导演名：</span>${review.vdirector!}</td>
             </tr>
             <tr>
-                <td><span class="_mycolor">演员表：</span>${review.vactor}</td>
+                <td><span class="_mycolor">演员表：</span>${review.vactor!}</td>
             </tr>
             <tr>
-                <td><span class="_mycolor">上传时间：</span>${review.video.vdate}</td>
+                <td><span class="_mycolor">上传时间：</span>${review.video.vdate!}</td>
             </tr>
             <tr>
                 <td><span class="_mycolor">影片介绍：</td>
@@ -44,7 +44,7 @@
             <tr>
                 <td>
                     <div style="overflow-y:scroll; WIDTH:621px;HEIGHT:200px;background-color:white color:black">
-                    ${review.video.vinfo}</div>
+                    ${review.video.vinfo!}</div>
                 </td>
             </tr>
         </table>
@@ -64,7 +64,7 @@
                         <#if moviesList??>
                             <#list moviesList as videos>
                                 <#if videos.v_set = 0 >
-                                    <tr><td>${videos.vname}</td><td>
+                                    <tr><td>${videos.vname!}</td><td>
                                 <#else>
                                     <tr><td>${videos.vname} 第${videos.v_set}集</td><td>
                                 </#if>

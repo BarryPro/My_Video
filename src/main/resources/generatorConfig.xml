@@ -46,7 +46,7 @@
 
         <!-- Mapper映射文件生成所在的目录 为每一个数据库的表生成对应的SqlMap文件 -->
         <sqlMapGenerator targetPackage="com.belong.mapper" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="false"/>
+            <property name="enableSubPackages" value="ture"/>
         </sqlMapGenerator>
 
         <!--    dao层常用的代码

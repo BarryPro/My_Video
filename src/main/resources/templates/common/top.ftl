@@ -22,12 +22,14 @@
                     <input type="text" class="form-control" placeholder="Search..." id="txt" name="txt">
                     <input type="button" value=" " id="btn_search">
                     <input type="hidden" id="cur_type" value="0"/>
-                    <input type="hidden" id="order_switch" value="${order_switch!}"/>
-                    <input type="hidden" id="order_id" value="${order.order_id?c}"/>
-                    <input type="hidden" id="order_name" value="${order.order_name!}"/>
-                    <input type="hidden" id="trade_time" value="${order.trade_time!}"/>
-                    <input type="hidden" id="order_type" value="${order.order_type!}"/>
-                    <input type="hidden" id="pay_total" value="${order.pay_total!}"/>
+                    <#if order??>
+                        <input type="hidden" id="order_switch" value="${order_switch!}"/>
+                        <input type="hidden" id="order_id" value="${order.order_id?c}"/>
+                        <input type="hidden" id="order_name" value="${order.order_name!}"/>
+                        <input type="hidden" id="trade_time" value="${order.trade_time!}"/>
+                        <input type="hidden" id="order_type" value="${order.order_type!}"/>
+                        <input type="hidden" id="pay_total" value="${order.pay_total!}"/>
+                    </#if>
                     <#if Session["global_user"]??>
                         <input type="hidden" id="cur_user_uid" value="${global_user.id!}"/>
                     <#else>
