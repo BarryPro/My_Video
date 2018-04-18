@@ -1,4 +1,4 @@
-package com.belong.plugins.util;
+package com.belong.util;
 
 /**
  * @author yuchenglong03

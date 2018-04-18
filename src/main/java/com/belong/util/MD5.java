@@ -1,4 +1,4 @@
-package com.belong.encrypt;
+package com.belong.util;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

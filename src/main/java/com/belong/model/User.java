@@ -14,4 +14,6 @@ public class User implements Serializable{
     private Integer pagenum;
     private byte[] pic;
     private Integer vip;
+    private String email;
+    private Integer vipGrade;
 }

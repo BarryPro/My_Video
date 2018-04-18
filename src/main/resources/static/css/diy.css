@@ -265,3 +265,10 @@
     top: 86px;
     opacity: 0.5;
 }
+.webchat-area{
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    top: 25%;
+    left: 39%;
+}

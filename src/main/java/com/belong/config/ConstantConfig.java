@@ -22,7 +22,7 @@ public class ConstantConfig {
     public static final String COOKIEUSERNAME = "com.belong.username";
     public static final String COOKIEPASSWORD = "com.belong.password";
     public static final String OFF = "off";
-    public static final String FILE = "visitor.txt";
+    public static final String VISITOR = "visitor.txt";
     public static final String COUNT = "count";
     public static final String RFAILED = "对不起，注册失败了，别灰心再重新来一次吧";
     public static final String RSUCCESS = "恭喜你注册成功了，快去登陆吧";
@@ -40,7 +40,6 @@ public class ConstantConfig {
     public static final String PICTURE_PATH = "upload/";
     public static final String RESOURCE_PATH = "D:/Codes/My_Video/target/classes/static/resources/";
     public static final String ORDER_SWITCH = "order_switch";
-    public static final String ORDER = "order";
 
     public static final Map<String,String> VIP_TYPE = new HashMap<>();
     public static final Map<String,Integer> VIP_CASH = new HashMap<>();
@@ -52,5 +51,4 @@ public class ConstantConfig {
         VIP_CASH.put("2",15);
         VIP_CASH.put("3",5);
     }
-
 }

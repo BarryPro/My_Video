@@ -68,6 +68,11 @@
                 <img title="Close (ESC)" id="order_close" class="order_close _close" src="${my_path}/static/images/close.png">
                 <div id="common-area"></div>
             </div>
+
+            <#--公共使用部分-->
+             <div class="webchat-area" id="webchat-area">
+                 <img src="${my_path}/webChat/loginEntry">
+             </div>
         </div>
     </div>
 </div>

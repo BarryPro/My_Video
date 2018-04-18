@@ -30,7 +30,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 /**
- @author weikun
+ @author barry
   * @since 2016-11-3 21:42
  */
 /*

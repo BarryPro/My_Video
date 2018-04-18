@@ -1,4 +1,4 @@
-package com.belong.plugins.util;
+package com.belong.util;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;

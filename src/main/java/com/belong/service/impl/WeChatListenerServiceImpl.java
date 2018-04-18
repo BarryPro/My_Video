@@ -1,14 +1,21 @@
-package com.belong.plugins.webchat;
+package com.belong.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.belong.plugins.util.Util;
+import com.belong.service.IWeChatListenerService;
+import com.belong.util.Email;
+import com.belong.util.MtUtil;
+import com.belong.util.Util;
 import com.sun.istack.internal.Nullable;
+import lombok.Getter;
+import lombok.Setter;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,17 +24,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings("WeakerAccess")
-public class WeChat {
+@Getter
+@Setter
+@Service
+public class WeChatListenerServiceImpl {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private static final Logger logger = LoggerFactory.getLogger(WeChat.class);
-
-    static {
-        System.setProperty("jsse.enableSNIExtension", "false");
-    }
-
+    private static final Logger logger = LoggerFactory.getLogger(WeChatListenerServiceImpl.class);
+    /**
+     * 可以写个网页接口，判断Online文件是否存在即可知道微信是否在线
+     * 经过测试直接关闭控制台后ShutdownHook不会运行，所以该情况下Online文件不会自动删除
+     */
+    private static final File ONLINE_FILE = new File("Online");
+    private static final Thread SHUTDOWN_HANDLER = new Thread(() -> {
+        if (ONLINE_FILE.exists())
+            //方法检验结果
+            ONLINE_FILE.delete();
+    });
     private static final String UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36";
 
+    private long lastCheckQRCodeTime;
     private String uuid;
     private String loginUrl;
     private String domainName;
@@ -38,8 +53,96 @@ public class WeChat {
     private String pass_ticket;
     private String syncKey;
     private JSONObject syncKeyJson;
+    @Getter
+    private IWeChatListenerService listener = new IWeChatListenerService() {
+        public byte[] jpgData;
+        public String message;
 
-    private WeChatListener listener;
+        @Override
+        public void onLoadingQRCode() {
+            logger.info("WeChat.WeChatListener onLoadingQRCode 正在获取登录二维码..");
+        }
+
+        @Override
+        public byte[] getJpgDate() {
+            return jpgData;
+        }
+
+        @Override
+        public void onReceivedQRCode(byte[] jpgData) {
+            logger.info("WeChat.WeChatListener onReceivedQRCode 获取成功，请用手机微信扫码");
+            this.jpgData = jpgData;
+        }
+
+        @Override
+        public void onQRCodeScanned(byte[] jpgData) {
+            logger.info("WeChat.WeChatListener onQRCodeScanned 扫码成功，请在手机微信中点击登录");
+            if (jpgData != null) {
+                this.jpgData = jpgData;
+            }
+        }
+
+        @Override
+        public void onLoginResult(boolean loginSucceed) {
+            if (loginSucceed) {
+                logger.info("WeChat.WeChatListener onLoginResult 登录成功");
+                this.message = "WebChat登录成功";
+                // 登录成功后标识用户在线
+                try {
+                    if (!ONLINE_FILE.createNewFile()) {
+                        logger.error("WeChat.WeChatListener onLoginResult 创建Online文件失败");
+                    }
+                } catch (IOException e) {
+                    logger.error("WeChat.WeChatListener onLoginResult 创建Online文件失败", e);
+                    this.message = "WebChat登录失败";
+                }
+            } else {
+                logger.info("WeChat.WeChatListener onLoginResult 登录失败");
+                this.message = "WebChat登录失败";
+                // 删除在线文件
+                ONLINE_FILE.delete();
+            }
+        }
+
+        String lastID = "";
+
+        @Override
+        public void onReceivedMoney(String money, String mark, String id) {
+            if (lastID.equals(id))
+                return;
+            lastID = id;
+            logger.info("WeChat.WeChatListener onReceivedMoney 二维码收款：{}元，备注：{}", money, mark.isEmpty() ? "无" : mark);
+            // 下面是收到转账后处理，业务代码不公开，请改成你自己的
+            MtUtil.openVip(mark, money, id);
+        }
+
+        @Override
+        public void onDropped(long onlineTime) {
+            // 删除在线文件
+            ONLINE_FILE.delete();
+            if (onlineTime > 5000) {
+                try {
+                    if (Email.sendEmail("1278423697@qq.com", "微信离线通知", "服务器的微信已经离线啦，快去登录！"))
+                        logger.info("WeChat.WeChatListener onDropped 微信已离线，发送通知邮件成功");
+                    else
+                        logger.error("WeChat.WeChatListener onDropped 微信已离线，发送通知邮件失败");
+                } catch (Exception e) {
+                    logger.error("WeChat.WeChatListener onDropped 微信已离线，发送通知邮件失败", e);
+                }
+            } else {
+                logger.info("请尝试重新登录");
+                login();
+            }
+        }
+
+        @Override
+        public void onException(IOException e) {
+            logger.error("Main onException", e);
+            if (jpgData != null) {
+                jpgData = null;
+            }
+        }
+    };
 
     private CookieJar cookieJar = new CookieJar() {
         HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
@@ -61,8 +164,24 @@ public class WeChat {
             }
             return cookies;
         }
-
     };
+
+    static {
+        System.setProperty("jsse.enableSNIExtension", "false");
+    }
+
+    public byte[] loginEntry() {
+        logger.info("微信支付监听 V1.1");
+        Runtime.getRuntime().addShutdownHook(SHUTDOWN_HANDLER);
+        if (ONLINE_FILE.exists()) {
+            //方法检验结果
+            ONLINE_FILE.delete();
+        }
+        login();
+        return listener.getJpgDate();
+    }
+
+
     private OkHttpClient client = new OkHttpClient.Builder()
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
@@ -75,51 +194,51 @@ public class WeChat {
             .connectTimeout(30, TimeUnit.SECONDS)
             .cookieJar(cookieJar).followRedirects(false).build();
 
-    public WeChat(WeChatListener listener) {
-        this.listener = listener;
-    }
-
-    private byte[] getLoginQRCode() throws IOException {
+    private byte[] getLoginQRCode() {
         String url = "https://wx2.qq.com/?&lang=zh_CN";
         Request request = new Request.Builder().url(url)
                 .addHeader("accept", "*/*")
                 .addHeader("connection", "Keep-Alive")
                 .addHeader("user-agent", UA)
                 .build();
-        Response response = client.newCall(request).execute();
-        response.close();
+        Response response = null;
+        String str = null;
+        byte[] data = null;
+        try {
+            response = client.newCall(request).execute();
+            response.close();
 
-        url = "https://login.wx2.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https%3A%2F%2Fwx2.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=zh_CN&_=" + System.currentTimeMillis();
-        request = new Request.Builder().url(url)
-                .addHeader("accept", "*/*")
-                .addHeader("connection", "Keep-Alive")
-                .addHeader("user-agent", UA)
-                .build();
+            url = "https://login.wx2.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https%3A%2F%2Fwx2.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=zh_CN&_=" + System.currentTimeMillis();
+            request = new Request.Builder().url(url)
+                    .addHeader("accept", "*/*")
+                    .addHeader("connection", "Keep-Alive")
+                    .addHeader("user-agent", UA)
+                    .build();
 
-        response = client.newCall(request).execute();
-        checkStatusCode(response);
-        //noinspection ConstantConditions
-        String str = response.body().string();
-        response.close();
-        uuid = Util.getStringMiddle(str, "window.QRLogin.uuid = \"", "\";");
+            response = client.newCall(request).execute();
+            checkStatusCode(response);
+            str = response.body().string();
+            response.close();
+            uuid = Util.getStringMiddle(str, "window.QRLogin.uuid = \"", "\";");
 
-        url = "https://login.weixin.qq.com/qrcode/" + uuid;
-        request = new Request.Builder().url(url)
-                .addHeader("accept", "*/*")
-                .addHeader("connection", "Keep-Alive")
-                .addHeader("user-agent", UA)
-                .build();
-        response = client.newCall(request).execute();
-        checkStatusCode(response);
-        //noinspection ConstantConditions
-        byte[] data = response.body().bytes();
-        response.close();
+            url = "https://login.weixin.qq.com/qrcode/" + uuid;
+            request = new Request.Builder().url(url)
+                    .addHeader("accept", "*/*")
+                    .addHeader("connection", "Keep-Alive")
+                    .addHeader("user-agent", UA)
+                    .build();
+            response = client.newCall(request).execute();
+            checkStatusCode(response);
+            data = response.body().bytes();
+            response.close();
+        } catch (IOException e) {
+            logger.error("WeChatListenerServiceImpl getLoginQRCode", e);
+        }
         return data;
     }
 
-    private long lastCheckQRCodeTime;
 
-    private boolean checkQRCode() throws IOException {
+    private boolean checkQRCode() {
         if (lastCheckQRCodeTime == -1)
             lastCheckQRCodeTime = System.currentTimeMillis();
         else
@@ -133,54 +252,56 @@ public class WeChat {
                 .addHeader("host", "login.wx2.qq.com")
                 .addHeader("referer", "https://wx2.qq.com/?&lang=zh_CN")
                 .build();
-        Response response = client.newCall(request).execute();
-        checkStatusCode(response);
-        //noinspection ConstantConditions
-        String str = response.body().string();
-//        System.out.println(str);
-//        response.close();
-        String code = Util.getStringMiddle(str, "code=", ";");
-        switch (code) {
-            case "408":
-                break;
-            case "201":
-                String base64 = Util.getStringMiddle(str, "base64,", "'");
-                listener.onQRCodeScanned(new BASE64Decoder().decodeBuffer(base64));
-                break;
-            case "200":
-                loginUrl = Util.getStringMiddle(str, "redirect_uri=\"", "\"");
-                domainName = Util.getStringMiddle(loginUrl, "//", "/");
-                pushDomainName = "webpush." + domainName;
-                return true;
-            default:
-                logger.debug("checkQRCode: unknown code - " + str);
-                return false;
+        Response response = null;
+        String str = null;
+        try {
+            response = client.newCall(request).execute();
+            checkStatusCode(response);
+            str = response.body().string();
+            String code = Util.getStringMiddle(str, "code=", ";");
+            switch (code) {
+                case "408":
+                    break;
+                case "201":
+                    String base64 = Util.getStringMiddle(str, "base64,", "'");
+                    listener.onQRCodeScanned(new BASE64Decoder().decodeBuffer(base64));
+                    break;
+                case "200":
+                    loginUrl = Util.getStringMiddle(str, "redirect_uri=\"", "\"");
+                    domainName = Util.getStringMiddle(loginUrl, "//", "/");
+                    pushDomainName = "webpush." + domainName;
+                    return true;
+                default:
+                    logger.debug("checkQRCode: unknown code - " + str);
+                    return false;
+            }
+        } catch (IOException e) {
+            logger.error("checkQRCode", e);
         }
         return false;
     }
 
-    private boolean checkIsLogged() throws IOException {
+    private boolean checkIsLogged() {
         Request request = new Request.Builder().url(loginUrl)
                 .addHeader("accept", "*/*")
                 .addHeader("connection", "Keep-Alive")
                 .addHeader("user-agent", UA)
                 .build();
-//        System.out.println("loginUrl " + loginUrl);
-        Response response = client2.newCall(request).execute();
-        //noinspection ConstantConditions
-        String str = response.body().string();
+        Response response = null;
+        String str = null;
+        try {
+            response = client2.newCall(request).execute();
+            str = response.body().string();
+        } catch (IOException e) {
+            logger.error("checkIsLogged", e);
+        }
+
         response.close();
-//        System.out.println(str);
         if (Util.getStringMiddle(str, "<ret>", "</ret>").equals("0")) {
             skey = Util.getStringMiddle(str, "<skey>", "</skey>");
             wxsid = Util.getStringMiddle(str, "<wxsid>", "</wxsid>");
             wxuin = Util.getStringMiddle(str, "<wxuin>", "</wxuin>");
             pass_ticket = Util.getStringMiddle(str, "<pass_ticket>", "</pass_ticket>");
-//            System.out.println(skey);
-//            System.out.println(wxsid);
-//            System.out.println(wxuin);
-//            System.out.println(pass_ticket);
-//            System.out.println(webwx_data_ticket);
             loadSyncKey();
             return true;
         }
@@ -190,46 +311,42 @@ public class WeChat {
     public void login() {
         lastCheckQRCodeTime = -1;
         listener.onLoadingQRCode();
+        byte[] data = getLoginQRCode();
+        listener.onReceivedQRCode(data);
         new Thread(() -> {
-            try {
-                byte[] data = getLoginQRCode();
-                listener.onReceivedQRCode(data);
+            while (true) {
+                if (checkQRCode())
+                    break;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    logger.error("InterruptedException", e);
+                }
+            }
+            boolean logged = checkIsLogged();
+            listener.onLoginResult(logged);
+            if (logged) {
+                long time = System.currentTimeMillis();
+                w:
                 while (true) {
-                    if (checkQRCode())
-                        break;
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                boolean logged = checkIsLogged();
-                listener.onLoginResult(logged);
-                if (logged) {
-                    long time = System.currentTimeMillis();
-                    w:
-                    while (true) {
-                        for (int i = 0; i < 5; i++) {
-                            try {
-                                if (syncCheck() < 1000)
-                                    continue w;
-                            } catch (Throwable e) {
-                                logger.debug("SyncCheck", e);
+                    for (int i = 0; i < 5; i++) {
+                        try {
+                            if (syncCheck() < 1000)
                                 continue w;
-                            }
+                        } catch (Throwable e) {
+                            logger.debug("SyncCheck", e);
+                            continue w;
                         }
-                        // 如果10次都得到错误的返回码，break
-                        break;
                     }
-                    listener.onDropped(System.currentTimeMillis() - time);
+                    // 如果10次都得到错误的返回码，break
+                    break;
                 }
-            } catch (IOException e) {
-                listener.onException(e);
+                listener.onDropped(System.currentTimeMillis() - time);
             }
         }).start();
     }
 
-    private void loadSyncKey() throws IOException {
+    private void loadSyncKey() {
         String postData = "{\"BaseRequest\":{\"Uin\":\"" + wxuin
                 + "\",\"Sid\":\"" + wxsid + "\",\"Skey\":\"" + skey
                 + "\",\"DeviceID\":\"" + Util.get15RandomText() + "\"}}";
@@ -245,10 +362,14 @@ public class WeChat {
                 .addHeader("referer", "https://" + domainName + "/")
                 .build();
 
-        Response response = client.newCall(request).execute();
-
-        //noinspection ConstantConditions
-        JSONObject jsonObject = JSONObject.parseObject(response.body().string());
+        Response response = null;
+        JSONObject jsonObject = null;
+        try {
+            response = client.newCall(request).execute();
+            jsonObject = JSONObject.parseObject(response.body().string());
+        } catch (IOException e) {
+            logger.error("loadSyncKey IOException", e);
+        }
         response.close();
         jsonObject = syncKeyJson = jsonObject.getJSONObject("SyncKey");
         int count = jsonObject.getInteger("Count");
@@ -260,16 +381,16 @@ public class WeChat {
         }
         sb.deleteCharAt(0);
         syncKey = sb.toString();
-        System.out.println(syncKey);
-        System.out.println(syncKeyJson.toString());
+        logger.info(syncKey);
+        logger.info(syncKeyJson.toString());
     }
 
-    private int syncCheck() throws IOException {
+    private int syncCheck() {
         String url = "https://" + pushDomainName + "/cgi-bin/mmwebwx-bin/synccheck?r=" + System.currentTimeMillis()
                 + "&skey=" + skey.replace("@", "%40") + "&sid=" + wxsid + "&uin=" + wxuin + "&deviceid=" + Util.get15RandomText()
                 + "&synckey=" + syncKey.replace("|", "%7C") + "&_=" + System.currentTimeMillis();
 
-        System.out.println("正在等待消息..");
+        logger.info("正在等待消息..");
 
         Request request = new Request.Builder().url(url)
                 .addHeader("accept", "*/*")
@@ -290,8 +411,12 @@ public class WeChat {
             return 1100;
         }
 
-        //noinspection ConstantConditions
-        String str = response.body().string();
+        String str = null;
+        try {
+            str = response.body().string();
+        } catch (IOException e) {
+            logger.error("syncCheck IOException", e);
+        }
         response.close();
         String retCode = Util.getStringMiddle(str, "retcode:\"", "\"");
         String selector = Util.getStringMiddle(str, "selector:\"", "\"");
@@ -312,7 +437,7 @@ public class WeChat {
         return 1;
     }
 
-    private void getMessage() throws IOException {
+    public void getMessage() {
         JSONObject json = new JSONObject();
 
         JSONObject baseRequest = new JSONObject();
@@ -328,7 +453,7 @@ public class WeChat {
         }
         json.put("rr", Integer.valueOf(sb.toString()));
         String content = json.toString();
-        System.out.println(content);
+        logger.info(content);
 
         String url = "https://" + domainName + "/cgi-bin/mmwebwx-bin/webwxsync?sid=" + wxsid + "&skey=" + skey.replace("@", "%40") + "&pass_ticket=" + pass_ticket;
         Request request = new Request.Builder().url(url)
@@ -338,8 +463,6 @@ public class WeChat {
                 .addHeader("user-agent", UA)
                 .addHeader("content-type", "application/json;charset=UTF-8")
                 .build();
-
-
         Response response;
         try {
             response = client.newCall(request).execute();
@@ -351,10 +474,13 @@ public class WeChat {
             return;
         }
 
-        //noinspection ConstantConditions
-        content = response.body().string();
+        try {
+            content = response.body().string();
+        } catch (IOException e) {
+            logger.error("getMessage IOException", e);
+        }
         response.close();
-        System.out.println(content);
+        logger.info(content);
 
         JSONObject jsonObject = JSONObject.parseObject(content);
         JSONObject syncKeyJson = this.syncKeyJson = jsonObject.getJSONObject("SyncKey");
@@ -372,8 +498,6 @@ public class WeChat {
         int size = jsonArray.size();
         for (int i = 0; i < size; i++) {
             jsonObject = jsonArray.getJSONObject(i);
-//            String fromUserName = jsonObject.getString("FromUserName");
-//            String toUserName = jsonObject.getString("ToUserName");
             int msgType = jsonObject.getInteger("MsgType");
             String con = jsonObject.getString("Content");
             if (msgType == 49) {
@@ -382,7 +506,7 @@ public class WeChat {
         }
     }
 
-    private void checkPay(String con) throws IOException {
+    private void checkPay(String con) {
         System.out.println(con);
         if (!con.contains("CDATA[微信支付]") || !con.contains("CDATA[收款到账通知") || !con.contains("收款成功"))
             return;
@@ -390,7 +514,6 @@ public class WeChat {
         if (money.isEmpty())
             return;
         try {
-            //noinspection ResultOfMethodCallIgnored
             Float.parseFloat(money);
         } catch (NumberFormatException e) {
             return;
@@ -401,44 +524,16 @@ public class WeChat {
         String count = Util.getStringMiddle(all, "第", "笔");
         String allMoney = Util.getStringRight(all, "￥").replace(".", "");
         all = DATE_FORMAT.format(System.currentTimeMillis()) + "-" + count + "-" + allMoney;
-        listener.onReceivedMoney(money, mark, all);
-    }
-
-    private static void checkStatusCode(Response response) throws IOException {
-        if (!response.isSuccessful()) {
-            throw new IOException("Http status code = " + response.code());
+        try {
+            listener.onReceivedMoney(money, mark, all);
+        } catch (IOException e) {
+            logger.error("checkPay IOException", e);
         }
     }
 
-    interface WeChatListener {
-        void onLoadingQRCode();
-
-        /**
-         * 得到登录二维码
-         *
-         * @param jpgData 二维码图片
-         */
-        void onReceivedQRCode(byte[] jpgData);
-
-        /**
-         * 二维码被扫描
-         *
-         * @param jpgData 头像
-         */
-        void onQRCodeScanned(byte[] jpgData);
-
-        void onLoginResult(boolean loginSucceed);
-
-        void onReceivedMoney(String money, String mark, String id) throws IOException;
-
-        /**
-         * 登录成功后掉线
-         *
-         * @param onlineTime 掉线之前保持在线到时长
-         */
-        void onDropped(long onlineTime);
-
-        void onException(IOException e);
+    private static void checkStatusCode(Response response)  {
+        if (!response.isSuccessful()) {
+            logger.error("不成功");
+        }
     }
-
 }

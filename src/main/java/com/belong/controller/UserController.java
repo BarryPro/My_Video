@@ -1,8 +1,7 @@
 package com.belong.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.belong.config.ConstantConfig;
-import com.belong.encrypt.MD5;
+import com.belong.util.MD5;
 import com.belong.model.User;
 import com.belong.service.IUserService;
 import org.slf4j.Logger;
@@ -93,7 +92,7 @@ public class UserController {
 
     @RequestMapping(value = "/visitor")
     public String getVisitor(HttpServletResponse response){
-        InputStream is = UserController.class.getClassLoader().getResourceAsStream(ConstantConfig.FILE);
+        InputStream is = UserController.class.getClassLoader().getResourceAsStream(ConstantConfig.VISITOR);
         Properties pro = new Properties();
         try {
             pro.load(is);
@@ -111,7 +110,7 @@ public class UserController {
 
     //访客加1
     private void add(){
-        InputStream is = UserController.class.getClassLoader().getResourceAsStream(ConstantConfig.FILE);
+        InputStream is = UserController.class.getClassLoader().getResourceAsStream(ConstantConfig.VISITOR);
         Properties pro = new Properties();
         try {
             pro.load(is);
@@ -120,7 +119,7 @@ public class UserController {
             sum++;
             //得到项目目录
             String tpath = UserController.class.getClassLoader().getResource("").toString();
-            String upload = tpath+ConstantConfig.FILE;
+            String upload = tpath+ConstantConfig.VISITOR;
             //去掉file: 5个字符
             String stdupload = upload.substring(5,upload.length());
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(stdupload)));

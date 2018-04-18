@@ -1,6 +1,4 @@
-package com.belong.plugins.webchat;
-
-import com.belong.plugins.util.MtUtil;
+package com.belong.util;
 
 import javax.mail.Address;
 import javax.mail.Message;

@@ -246,6 +246,7 @@ $(document).ready(function () {
             $("#play-area").slideUp(300);
             $("#order-area").slideUp(300);
             $("#play-area").empty();
+            $('#webchat-area').hide();
             fixCurPage();
         }
     });
@@ -343,6 +344,10 @@ $(document).ready(function () {
     if ($("#cur_page_str").attr("value") == 1) {
         $("#cover-menus").show();
     }
+
+    $("#webChat_login").click(function () {
+        $('#webchat-area').show();
+    });
 
 });
 
@@ -505,6 +510,8 @@ function playArea() {
     $("#setting").hide();
     $("#cover-menus").hide();
     $("#order-area").hide();
+    $('#webchat-area').hide();
+
     _path = $("#_path").attr("value");//得到项目的绝对路径
     var url = _path + '/my_video/top20';
     $.ajax({
