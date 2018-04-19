@@ -1,7 +1,7 @@
 package com.belong.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import com.belong.service.IWeChatListenerService;
 import com.belong.util.Email;
 import com.belong.util.MtUtil;
@@ -292,6 +292,7 @@ public class WeChatListenerServiceImpl {
         try {
             response = client2.newCall(request).execute();
             str = response.body().string();
+            logger.info("checkIsLogged response.body {}",str);
         } catch (IOException e) {
             logger.error("checkIsLogged", e);
         }
@@ -366,12 +367,13 @@ public class WeChatListenerServiceImpl {
         JSONObject jsonObject = null;
         try {
             response = client.newCall(request).execute();
-            jsonObject = JSONObject.parseObject(response.body().string());
+            jsonObject = JSONObject.fromObject(response.body().string())
+            logger.info("loadSyncKey {}",jsonObject);
         } catch (IOException e) {
             logger.error("loadSyncKey IOException", e);
         }
         response.close();
-        jsonObject = syncKeyJson = jsonObject.getJSONObject("SyncKey");
+        syncKeyJson = jsonObject.getJSONObject("SyncKey");
         int count = jsonObject.getInteger("Count");
         JSONArray jsonArray = jsonObject.getJSONArray("List");
         StringBuilder sb = new StringBuilder();
@@ -382,7 +384,7 @@ public class WeChatListenerServiceImpl {
         sb.deleteCharAt(0);
         syncKey = sb.toString();
         logger.info(syncKey);
-        logger.info(syncKeyJson.toString());
+        logger.info(syncKeyJson.toJSONString());
     }
 
     private int syncCheck() {
@@ -507,7 +509,7 @@ public class WeChatListenerServiceImpl {
     }
 
     private void checkPay(String con) {
-        System.out.println(con);
+        logger.info(con);
         if (!con.contains("CDATA[微信支付]") || !con.contains("CDATA[收款到账通知") || !con.contains("收款成功"))
             return;
         String money = Util.getStringMiddle(con, "收款金额：￥", "<br/>");
