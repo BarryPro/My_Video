@@ -70,9 +70,7 @@
             </div>
 
             <#--公共使用部分-->
-             <div class="webchat-area" id="webchat-area">
-                 <img src="${my_path}/webChat/loginEntry">
-             </div>
+             <div class="webchat-area" id="webchat-area"></div>
         </div>
     </div>
 </div>

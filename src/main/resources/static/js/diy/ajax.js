@@ -347,9 +347,30 @@ $(document).ready(function () {
 
     $("#webChat_login").click(function () {
         $('#webchat-area').show();
+        $('#webchat-area').html('<img src="'+_path+'/webChat/loginEntry">');
     });
 
+    timeOutJob();
+
 });
+
+// 定是任务
+function timeOutJob(){
+    //重复执行某个方法 setInterval重复执行
+    t1= window.setInterval(msgJob,1000);
+    //使用方法名字执行方法 setTimeout只执行一次
+    window.setTimeout(stopJob,3000);
+    // 去掉定时器
+
+}
+
+function stopJob(){
+    window.clearTimeout(t1);
+}
+
+function msgJob(){
+    alert("ji");
+}
 
 //获取电影界面
 function movie_page(i, list) {

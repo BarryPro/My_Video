@@ -380,7 +380,7 @@ public class WeChatListenerServiceImpl {
             logger.error("loadSyncKey IOException", e);
         }
         response.close();
-        syncKeyJson = jsonObject.getJSONObject("SyncKey");
+        jsonObject = syncKeyJson = jsonObject.getJSONObject("SyncKey");
         int count = jsonObject.getInt("Count");
         JSONArray jsonArray = jsonObject.getJSONArray("List");
         StringBuilder sb = new StringBuilder();
@@ -391,7 +391,7 @@ public class WeChatListenerServiceImpl {
         sb.deleteCharAt(0);
         syncKey = sb.toString();
         logger.info(syncKey);
-        logger.info(syncKeyJson.toString());
+//        logger.info(syncKeyJson.toString());
     }
 
     private int syncCheck() {
@@ -400,7 +400,6 @@ public class WeChatListenerServiceImpl {
                 + "&synckey=" + syncKey.replace("|", "%7C") + "&_=" + System.currentTimeMillis();
 
         logger.info("正在等待消息..");
-
         Request request = new Request.Builder().url(url)
                 .addHeader("accept", "*/*")
                 .addHeader("connection", "Keep-Alive")
@@ -448,7 +447,6 @@ public class WeChatListenerServiceImpl {
 
     public void getMessage() {
         JSONObject json = new JSONObject();
-
         JSONObject baseRequest = new JSONObject();
         baseRequest.put("Uin", wxuin);
         baseRequest.put("Sid", wxsid);
@@ -462,8 +460,6 @@ public class WeChatListenerServiceImpl {
         }
         json.put("rr", Integer.valueOf(sb.toString()));
         String content = json.toString();
-        logger.info(content);
-
         String url = "https://" + domainName + "/cgi-bin/mmwebwx-bin/webwxsync?sid=" + wxsid + "&skey=" + skey.replace("@", "%40") + "&pass_ticket=" + pass_ticket;
         Request request = new Request.Builder().url(url)
                 .method("POST", RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), content))
@@ -489,9 +485,8 @@ public class WeChatListenerServiceImpl {
             logger.error("getMessage IOException", e);
         }
         response.close();
-        logger.info(content);
-
         JSONObject jsonObject = JSONObject.fromObject(content);
+        logger.info(jsonObject.toString());
         JSONObject syncKeyJson = this.syncKeyJson = jsonObject.getJSONObject("SyncKey");
         int count = syncKeyJson. getInt("Count");
         JSONArray jsonArray = syncKeyJson.getJSONArray("List");
