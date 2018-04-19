@@ -22,5 +22,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-resources/logback.xml
-LOG_HOME_IS_UNDEFINED
+/log4j.xml/
+/src/main/java/com/belong/util/MtUtil.java
+/src/main/resources/logback.xml
+/.gitignore

@@ -60,6 +60,8 @@ public class WeChatListenerServiceImpl {
     private String pass_ticket;
     private String syncKey;
     private JSONObject syncKeyJson;
+    private String content;
+    String lastID = "";
     @Getter
     private IWeChatListenerService listener = new IWeChatListenerService() {
         public byte[] jpgData;
@@ -115,8 +117,6 @@ public class WeChatListenerServiceImpl {
                 ONLINE_FILE.delete();
             }
         }
-
-        String lastID = "";
 
         @Override
         public void onReceivedMoney(String money, String mark, String id) {
@@ -197,7 +197,6 @@ public class WeChatListenerServiceImpl {
         return listener.getLoginCode();
     }
 
-
     private OkHttpClient client = new OkHttpClient.Builder()
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
@@ -252,7 +251,6 @@ public class WeChatListenerServiceImpl {
         }
         return data;
     }
-
 
     private boolean checkQRCode() {
         if (lastCheckQRCodeTime == -1)
@@ -390,6 +388,7 @@ public class WeChatListenerServiceImpl {
         }
         response.close();
         jsonObject = syncKeyJson = jsonObject.getJSONObject("SyncKey");
+
         int count = jsonObject.getInt("Count");
         JSONArray jsonArray = jsonObject.getJSONArray("List");
         StringBuilder sb = new StringBuilder();
@@ -497,6 +496,9 @@ public class WeChatListenerServiceImpl {
         JSONObject jsonObject = JSONObject.fromObject(content);
         logger.info(jsonObject.toString());
         JSONObject syncKeyJson = this.syncKeyJson = jsonObject.getJSONObject("SyncKey");
+        // 解析微信拦截的消息内容并解析
+        parseContentMsg(jsonObject);
+
         int count = syncKeyJson. getInt("Count");
         JSONArray jsonArray = syncKeyJson.getJSONArray("List");
         sb = new StringBuilder();
@@ -519,8 +521,26 @@ public class WeChatListenerServiceImpl {
         }
     }
 
+    private String parseContentMsg(JSONObject jsonObject) {
+        String parseContent = null;
+        try {
+            JSONArray contentArray = jsonObject.getJSONArray("AddMsgList");
+            if (contentArray != null) {
+                JSONObject contentJson = contentArray.getJSONObject(0);
+                String contentJsonString = contentJson.getString("Content");
+                if (!"".equals(contentJsonString)) {
+                     content = contentJsonString;
+                     checkPay(content);
+                    logger.info("AddMsgList content {}",content);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("json 解析AddMsgList出错",e);
+        }
+        return parseContent;
+    }
+
     private void checkPay(String con) {
-        logger.info(con);
         if (!con.contains("CDATA[微信支付]") || !con.contains("CDATA[收款到账通知") || !con.contains("收款成功"))
             return;
         String money = Util.getStringMiddle(con, "收款金额：￥", "<br/>");
@@ -546,7 +566,7 @@ public class WeChatListenerServiceImpl {
 
     private static void checkStatusCode(Response response)  {
         if (!response.isSuccessful()) {
-            logger.error("不成功");
+            logger.error("checkStatusCode 不成功");
         }
     }
 }
