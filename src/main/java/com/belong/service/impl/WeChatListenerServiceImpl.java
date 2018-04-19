@@ -63,7 +63,7 @@ public class WeChatListenerServiceImpl {
     @Getter
     private IWeChatListenerService listener = new IWeChatListenerService() {
         public byte[] jpgData;
-        public String message;
+        public int code;
 
         @Override
         public void onLoadingQRCode() {
@@ -73,6 +73,11 @@ public class WeChatListenerServiceImpl {
         @Override
         public byte[] getJpgDate() {
             return jpgData;
+        }
+
+        @Override
+        public int getLoginCode() {
+            return code;
         }
 
         @Override
@@ -93,7 +98,7 @@ public class WeChatListenerServiceImpl {
         public void onLoginResult(boolean loginSucceed) {
             if (loginSucceed) {
                 logger.info("WeChat.WeChatListener onLoginResult 登录成功");
-                this.message = "WebChat登录成功";
+                this.code = 1;
                 // 登录成功后标识用户在线
                 try {
                     if (!ONLINE_FILE.createNewFile()) {
@@ -101,11 +106,11 @@ public class WeChatListenerServiceImpl {
                     }
                 } catch (IOException e) {
                     logger.error("WeChat.WeChatListener onLoginResult 创建Online文件失败", e);
-                    this.message = "WebChat登录失败";
+                    this.code = 0;
                 }
             } else {
                 logger.info("WeChat.WeChatListener onLoginResult 登录失败");
-                this.message = "WebChat登录失败";
+                this.code = 0;
                 // 删除在线文件
                 ONLINE_FILE.delete();
             }
@@ -186,6 +191,10 @@ public class WeChatListenerServiceImpl {
         }
         login();
         return listener.getJpgDate();
+    }
+
+    public int getLoginCode(){
+        return listener.getLoginCode();
     }
 
 

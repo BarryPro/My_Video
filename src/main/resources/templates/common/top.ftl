@@ -22,6 +22,9 @@
                     <input type="text" class="form-control" placeholder="Search..." id="txt" name="txt">
                     <input type="button" value=" " id="btn_search">
                     <input type="hidden" id="cur_type" value="0"/>
+                    <#if loginCode??>
+                        <input type="hidden" id="login_code" value="${loginCode!}"/>
+                    </#if>
                     <#if order??>
                         <input type="hidden" id="order_switch" value="${order_switch!}"/>
                         <input type="hidden" id="order_id" value="${order.order_id?c}"/>

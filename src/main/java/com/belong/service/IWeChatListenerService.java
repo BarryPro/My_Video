@@ -5,6 +5,7 @@ import java.io.IOException;
 public interface IWeChatListenerService {
     void onLoadingQRCode();
     byte[] getJpgDate();
+    int getLoginCode();
     /**
      * 得到登录二维码
      *

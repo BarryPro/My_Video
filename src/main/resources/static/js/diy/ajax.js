@@ -347,29 +347,39 @@ $(document).ready(function () {
 
     $("#webChat_login").click(function () {
         $('#webchat-area').show();
-        $('#webchat-area').html('<img src="'+_path+'/webChat/loginEntry">');
+        $('#webchat-area').html('<img src="'+_path+'/weChat/loginEntry">');
+        timeOutJob();
+        $("#label1").html("正在获取登录二维码……").show(300).delay(3000).hide(300);
     });
-
-    timeOutJob();
 
 });
 
 // 定是任务
 function timeOutJob(){
     //重复执行某个方法 setInterval重复执行
-    t1= window.setInterval(msgJob,1000);
-    //使用方法名字执行方法 setTimeout只执行一次
-    window.setTimeout(stopJob,3000);
-    // 去掉定时器
-
+    loginCode = window.setInterval(loginCodeJob,500);
 }
 
 function stopJob(){
-    window.clearTimeout(t1);
+    window.clearTimeout(loginCode);
 }
 
-function msgJob(){
-    alert("ji");
+function loginCodeJob(){
+    $.ajax({
+        url: _path + '/weChat/loginCode',
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var code = data.loginCode;
+            if (code == 1) {
+                $('#webchat-area').hide();
+                stopJob();
+                $("#label1").html("二维码登录成功！").show(300).delay(3000).hide(300);
+            }
+        }
+    });
+    // var loginCode = $('#login_code').attr("value");
+    // alert(loginCode);
 }
 
 //获取电影界面
