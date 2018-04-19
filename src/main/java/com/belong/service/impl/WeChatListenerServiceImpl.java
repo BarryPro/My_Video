@@ -1,7 +1,5 @@
 package com.belong.service.impl;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import com.belong.service.IWeChatListenerService;
 import com.belong.util.Email;
 import com.belong.util.MtUtil;
@@ -9,7 +7,16 @@ import com.belong.util.Util;
 import com.sun.istack.internal.Nullable;
 import lombok.Getter;
 import lombok.Setter;
-import okhttp3.*;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -367,24 +374,24 @@ public class WeChatListenerServiceImpl {
         JSONObject jsonObject = null;
         try {
             response = client.newCall(request).execute();
-            jsonObject = JSONObject.fromObject(response.body().string())
+            jsonObject = JSONObject.fromObject(response.body().string());
             logger.info("loadSyncKey {}",jsonObject);
         } catch (IOException e) {
             logger.error("loadSyncKey IOException", e);
         }
         response.close();
         syncKeyJson = jsonObject.getJSONObject("SyncKey");
-        int count = jsonObject.getInteger("Count");
+        int count = jsonObject.getInt("Count");
         JSONArray jsonArray = jsonObject.getJSONArray("List");
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
             jsonObject = jsonArray.getJSONObject(i);
-            sb.append("|").append(jsonObject.getInteger("Key")).append("_").append(jsonObject.getInteger("Val"));
+            sb.append("|").append(jsonObject. getInt("Key")).append("_").append(jsonObject. getInt("Val"));
         }
         sb.deleteCharAt(0);
         syncKey = sb.toString();
         logger.info(syncKey);
-        logger.info(syncKeyJson.toJSONString());
+        logger.info(syncKeyJson.toString());
     }
 
     private int syncCheck() {
@@ -484,14 +491,14 @@ public class WeChatListenerServiceImpl {
         response.close();
         logger.info(content);
 
-        JSONObject jsonObject = JSONObject.parseObject(content);
+        JSONObject jsonObject = JSONObject.fromObject(content);
         JSONObject syncKeyJson = this.syncKeyJson = jsonObject.getJSONObject("SyncKey");
-        int count = syncKeyJson.getInteger("Count");
+        int count = syncKeyJson. getInt("Count");
         JSONArray jsonArray = syncKeyJson.getJSONArray("List");
         sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
             syncKeyJson = jsonArray.getJSONObject(i);
-            sb.append("|").append(syncKeyJson.getInteger("Key")).append("_").append(syncKeyJson.getInteger("Val"));
+            sb.append("|").append(syncKeyJson. getInt("Key")).append("_").append(syncKeyJson. getInt("Val"));
         }
         sb.deleteCharAt(0);
         syncKey = sb.toString();
@@ -500,7 +507,7 @@ public class WeChatListenerServiceImpl {
         int size = jsonArray.size();
         for (int i = 0; i < size; i++) {
             jsonObject = jsonArray.getJSONObject(i);
-            int msgType = jsonObject.getInteger("MsgType");
+            int msgType = jsonObject. getInt("MsgType");
             String con = jsonObject.getString("Content");
             if (msgType == 49) {
                 checkPay(con);
