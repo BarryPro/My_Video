@@ -85,45 +85,45 @@ $(document).ready(function () {
     //得到电影
     $("#movie").click(function () {
         var n = 2;
-        $("#cur_type").attr("value",n);
+        $("#cur_type").attr("value", n);
         ajax_page(n, 1);
     });
     //得到新闻
     $("#vip").click(function () {
         var n = 4;
-        $("#cur_type").attr("value",n);
+        $("#cur_type").attr("value", n);
         ajax_page(n, 1);
     });
     //得到TV
     $("#tv").click(function () {
         var n = 1;
-        $("#cur_type").attr("value",n);
+        $("#cur_type").attr("value", n);
         ajax_page(n, 1);
     });
     //得到 MV
     $("#MV").click(function () {
         var n = 3;
-        $("#cur_type").attr("value",n);
+        $("#cur_type").attr("value", n);
         ajax_page(n, 1);
     });
 
     //得到 ZY
     $("#ZY").click(function () {
         var n = 5;
-        $("#cur_type").attr("value",n);
+        $("#cur_type").attr("value", n);
         ajax_page(n, 1);
     });
 
     //得到 DM
     $("#DM").click(function () {
         var n = 6;
-        $("#cur_type").attr("value",n);
+        $("#cur_type").attr("value", n);
         ajax_page(n, 1);
     });
     //得到 主页
     $("#home").click(function () {
         var n = 0;
-        $("#cur_type").attr("value",n);
+        $("#cur_type").attr("value", n);
         ajax_page(n, 1);
     });
 
@@ -241,8 +241,8 @@ $(document).ready(function () {
         location.href = _path + "/my_user/setting";
     });
 
-    $(window).keyup(function(e){
-        if(e.keyCode==27){//此处代表按的是键盘的Esc键
+    $(window).keyup(function (e) {
+        if (e.keyCode == 27) {//此处代表按的是键盘的Esc键
             $("#play-area").slideUp(300);
             $("#order-area").slideUp(300);
             $("#play-area").empty();
@@ -251,18 +251,18 @@ $(document).ready(function () {
         }
     });
 
-    $("#play-close").bind("click",function () {
+    $("#play-close").bind("click", function () {
         $("#play-area").slideUp(300);
         $("#play-player").empty();
         fixCurPage();
     });
 
     // 处理显示区域的关闭close是否显示
-    $("#play-area").mouseleave(function(){
+    $("#play-area").mouseleave(function () {
         $("#play_close").hide();
     });
 
-    $("#play-area").mouseenter(function(){
+    $("#play-area").mouseenter(function () {
         $("#play_close").show();
     });
 
@@ -279,13 +279,13 @@ $(document).ready(function () {
     });
 
     $("#order").click(function () {
-        if ($("#my_image").attr("title") == -1){
+        if ($("#my_image").attr("title") == -1) {
             $("#_login").trigger("click");
         } else {
             var uid = $("#cur_user_uid").attr("value");
             $("#order-area").show(500);
             $("#common-area").html('<div class="container-fluid">' +
-                '    <div class="row-fluid"><form method="post" enctype="multipart/form-data" action='+_path+'/my_order/preview>' +
+                '    <div class="row-fluid"><form method="post" enctype="multipart/form-data" action=' + _path + '/my_order/preview>' +
                 '        <div class="span12">' +
                 '            <div class="page-header">' +
                 '                <h1 class="white-color">充值VIP.</h1></div>' +
@@ -293,18 +293,18 @@ $(document).ready(function () {
                 '                <thead><tr><th>权限</th><th>普通（免费）</th><th>vip（6元/月）</th><th>svip（15元/月）</th></tr></thead>' +
                 '                <tbody>' +
                 '                <tr><td>普通视频</td>' +
-                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td>' +
-                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td>' +
-                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td></tr>' +
+                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
                 '                <tr ><td>vip视频</td><td></td>' +
-                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td>' +
-                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td></tr>' +
+                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
                 '                <tr><td>付费/用券视频</td><td></td><td></td>' +
-                '                    <td><img src='+_path+'/static/images/right.png class="right-size"/></td></tr>' +
+                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
                 '                </tbody>' +
                 '            </table>' +
-                '            <hr/><div ><input type="hidden" name="user_id" value='+uid+' >' +
-                '               <label class="msg">充值类型：</label>'+
+                '            <hr/><div ><input type="hidden" name="user_id" value=' + uid + ' >' +
+                '               <label class="msg">充值类型：</label>' +
                 '                <select class="margin" name="vip_type"><option value="1">vip</option><option value="2">svip</option></select>' +
                 '                <label class="msg">充值时长：</label>' +
                 '                <select class="margin" name="vip_time"><option  value="1">1个月</option><option value="6">6个月</option>' +
@@ -323,11 +323,11 @@ $(document).ready(function () {
         $("#order-area").hide(300);
     });
 
-    $("#movies-list").on('click','button',function () {
+    $("#movies-list").on('click', 'button', function () {
         var cur = $(this).attr("value");
         var uid = $("#cur_user_uid").attr("value");
-        cur = _path+'/my_video/src/Vid/'+cur+'/Uid/'+uid;
-        clickPlay(this,cur);
+        cur = _path + '/my_video/src/Vid/' + cur + '/Uid/' + uid;
+        clickPlay(this, cur);
     });
 
     $("#vip-center").click(function () {
@@ -340,31 +340,61 @@ $(document).ready(function () {
     });
 
     // 设置评论页不可以选择视频分类
-    $("#cur_page_str").attr("value",$("#_page_str").attr("value"));
+    $("#cur_page_str").attr("value", $("#_page_str").attr("value"));
     if ($("#cur_page_str").attr("value") == 1) {
         $("#cover-menus").show();
     }
 
     $("#webChat_login").click(function () {
         $('#webchat-area').show();
-        $('#webchat-area').html('<img src="'+_path+'/weChat/loginEntry">');
+        $('#webchat-area').html('<img src="' + _path + '/weChat/loginEntry">');
         timeOutJob();
+        setMsgFlag()
         $("#label1").html("正在获取登录二维码……").show(300).delay(3000).hide(300);
     });
 
 });
 
 // 定是任务
-function timeOutJob(){
+function timeOutJob() {
     //重复执行某个方法 setInterval重复执行
-    loginCode = window.setInterval(loginCodeJob,500);
+    loginCode = window.setInterval(loginCodeJob, 500);
+    msgFlag = window.setInterval(setMsgFlag, 1000);
 }
 
-function stopJob(){
+function stopJob() {
     window.clearTimeout(loginCode);
 }
 
-function loginCodeJob(){
+function setMsgFlag() {
+    $.ajax({
+        url: _path + '/weChat/msgFlag',
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var msg = data.msgFlag;
+            if (msg == 1) {
+                $('#msg_flag').attr("value",msg);
+                window.clearTimeout(msgFlag);
+                alert($('#msg_flag').attr("value"))
+            }
+        }
+    });
+}
+
+function payMessageJob() {
+    $.ajax({
+        url: _path + '/weChat/payMessage',
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var msg = data.payMessage;
+            $("#label1").html((msg==undefined)?"****":msg).show(300).delay(3000).hide(300);
+        }
+    });
+}
+
+function loginCodeJob() {
     $.ajax({
         url: _path + '/weChat/loginCode',
         type: "post",
@@ -378,8 +408,6 @@ function loginCodeJob(){
             }
         }
     });
-    // var loginCode = $('#login_code').attr("value");
-    // alert(loginCode);
 }
 
 //获取电影界面
@@ -393,8 +421,8 @@ function movie_page(i, list) {
     $("#1").append(
         '<div class="col-md-2 resent-grid recommended-grid slider-top-grids">' +
         '<div class="resent-grid-img recommended-grid-img">' +
-        '<div class="video-vip"><img src=' + _path + '/static/images/video/video-vip'+list.v_type+'.png width="48px" height="48px"  alt="tupian" /></div>' +
-        '<a id="play_video" title='+_path+'/my_video/src/Vid/'+list.vid+'/Uid/'+uid+' onclick="clickPlay(this,0)">' +
+        '<div class="video-vip"><img src=' + _path + '/static/images/video/video-vip' + list.v_type + '.png width="48px" height="48px"  alt="tupian" /></div>' +
+        '<a id="play_video" title=' + _path + '/my_video/src/Vid/' + list.vid + '/Uid/' + uid + ' onclick="clickPlay(this,0)">' +
         '<img id="views" class="display-img" src=' + _path + '/my_video/pic/Vid/' + list.vid + ' alt="tupian" /></a>' +
         '<div class="time"><p>' + list.vdate + '</p></div>' +
         '</div>' +
@@ -415,7 +443,7 @@ function movie_page(i, list) {
 }
 
 //显示电影加分页图标
-function ajax_page(type,cur) {
+function ajax_page(type, cur) {
     _path = $("#_path").attr("value");//得到项目的绝对路径
     $.ajax({
         url: _path + "/my_video/db_info",
@@ -551,10 +579,10 @@ function playArea() {
         dataType: "json",
         success: function (data) {
             $("#top20-list").empty();
-            $(data).each(function (i,list) {
+            $(data).each(function (i, list) {
                 $("#top20-list").append(
-                    '<li><a href=' + _path + '/my_review/review/Vid/'+list.vid+' class="menu1" id="sport">'+
-                    '<span class="fa">'+(i+1)+'&nbsp;&nbsp;'+list.vname+'</span>'+
+                    '<li><a href=' + _path + '/my_review/review/Vid/' + list.vid + ' class="menu1" id="sport">' +
+                    '<span class="fa">' + (i + 1) + '&nbsp;&nbsp;' + list.vname + '</span>' +
                     '</a></li>'
                 );
             })
@@ -563,7 +591,7 @@ function playArea() {
 }
 
 // 处理video点击播放
-function clickPlay(a,value){
+function clickPlay(a, value) {
     _path = $("#_path").attr("value");//得到项目的绝对路径
     if (value == 0) {
         url = $(a).attr("title");//this就是表示此时点击的那个超链的title了
@@ -580,8 +608,8 @@ function clickPlay(a,value){
                 $("#play-area").slideDown(600);
                 $("#play-player").empty();
                 $("#play-player").append(
-                    '<video id="video_play" src="'+_path+'/static/resources/movies/'+data.srcpath+'" controls="controls"' +
-                    'autoplay="autoplay" width="1024" height="576" poster="'+_path+'/static/images/loading.gif">' +
+                    '<video id="video_play" src="' + _path + '/static/resources/movies/' + data.srcpath + '" controls="controls"' +
+                    'autoplay="autoplay" width="1024" height="576" poster="' + _path + '/static/images/loading.gif">' +
                     '</video>'
                 );
                 $("#label1").html(data.msg).show(300).delay(3000).hide(300);
@@ -605,29 +633,29 @@ function submitOrder() {
     var order_switch = $("#order_switch").attr("value");
     if (order_switch == 1) {
         $("#common-area").html(
-            '<div class="container-fluid"><form method="post" enctype="multipart/form-data" action='+_path+'/my_order/paySubmit>' +
+            '<div class="container-fluid"><form method="post" enctype="multipart/form-data" action=' + _path + '/my_order/paySubmit>' +
             '    <div class="row-fluid"><div class="span12">' +
             '            <div class="page-header"><h1 class="white-color">MyPlay 收银台.</h1></div>' +
             '            <h3 class="white-color">订单支付详情.</h3>' +
             '            <table class="table table-hover table-bordered">' +
             '                <tbody>' +
-            '                <tr class="info"><td>订单标号</td><td>'+order_id+'</td></tr>' +
-            '                <tr class="warning"><td>商品名称</td><td>'+$("#order_name").attr("value")+'</td></tr>' +
-            '                <tr class="info"><td>交易时间</td><td>'+$("#trade_time").attr("value")+'</td></tr>' +
-            '                <tr class="info"><td>订单类型</td><td>'+$("#order_type").attr("value")+'</td></tr>' +
-            '                <tr class="info"><td>支付金额</td><td>'+pay_total+'元</td></tr></tbody></table>' +
+            '                <tr class="info"><td>订单标号</td><td>' + order_id + '</td></tr>' +
+            '                <tr class="warning"><td>商品名称</td><td>' + $("#order_name").attr("value") + '</td></tr>' +
+            '                <tr class="info"><td>交易时间</td><td>' + $("#trade_time").attr("value") + '</td></tr>' +
+            '                <tr class="info"><td>订单类型</td><td>' + $("#order_type").attr("value") + '</td></tr>' +
+            '                <tr class="info"><td>支付金额</td><td>' + pay_total + '元</td></tr></tbody></table>' +
             '            <div class="tabbable" id="tabs-797679">' +
             '                <ul class="nav nav-tabs">' +
             '                    <li><a href="#panel-544732" data-toggle="tab">微信</a></li>' +
             '                    <li class="active"><a href="#panel-879116" data-toggle="tab">支付宝</a></li></ul>' +
             '                <div class="tab-content">' +
-            '                   <input value='+order_id+' name="order_id" type="hidden" />' +
-            '                  <input value='+pay_total+' name="pay_total" type="hidden" />'+
+            '                   <input value=' + order_id + ' name="order_id" type="hidden" />' +
+            '                  <input value=' + pay_total + ' name="pay_total" type="hidden" />' +
             '                    <div class="tab-pane msg" id="panel-544732">' +
-            '                        <img alt="支付二维码" src='+_path+'/static/images/code/v6.jpg class="sys-ewm"/>' +
+            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/v6.jpg class="sys-ewm"/>' +
             '                        <small class="msg-info margin">提示：先扫【微信】二维码支付，再点击【支付提交】</small></div>' +
             '                    <div class="tab-pane active msg" id="panel-879116">' +
-            '                        <img alt="支付二维码" src='+_path+'/static/images/code/z6.jpg class="sys-ewm"/>' +
+            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/z6.jpg class="sys-ewm"/>' +
             '                        <small class="msg-info margin">提示：先扫【支付宝】二维码支付，再点击【支付提交】</small></div></div>' +
             '            </div><hr/><input class="btn btn-block btn-primary" type="submit" value="支付提交"></input><hr/></div></div>' +
             '</form></div>'

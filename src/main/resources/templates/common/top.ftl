@@ -22,9 +22,7 @@
                     <input type="text" class="form-control" placeholder="Search..." id="txt" name="txt">
                     <input type="button" value=" " id="btn_search">
                     <input type="hidden" id="cur_type" value="0"/>
-                    <#if loginCode??>
-                        <input type="hidden" id="login_code" value="${loginCode!}"/>
-                    </#if>
+                    <input type="hidden" id="msg_flag" value="0"/>
                     <#if order??>
                         <input type="hidden" id="order_switch" value="${order_switch!}"/>
                         <input type="hidden" id="order_id" value="${order.order_id?c}"/>
@@ -76,7 +74,7 @@
                         <img title="消息" src="${my_path!}/static/images/msg.png" class="user_avatar myimg" /></a>
                 </div>
                 <div class="info-msg">
-                    <label id="label1" style="color: red"><b><i>${(msg)?default("")}</i></b></label>
+                    <label id="label1" style="color: red">${(msg)?default("")}</label>
                 </div>
             </div>
             <div class="signin">

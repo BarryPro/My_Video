@@ -26,3 +26,4 @@ nbdist/
 /src/main/java/com/belong/util/MtUtil.java
 /src/main/resources/logback.xml
 /.gitignore
+/src/main/java/com/belong/config/HiddenConfig.java

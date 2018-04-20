@@ -1,11 +1,11 @@
 package com.belong.service;
 
-import java.io.IOException;
-
 public interface IWeChatListenerService {
     void onLoadingQRCode();
     byte[] getJpgDate();
     int getLoginCode();
+    String getPayMessage();
+    int getMsgFlag();
     /**
      * 得到登录二维码
      *
@@ -22,7 +22,7 @@ public interface IWeChatListenerService {
 
     void onLoginResult(boolean loginSucceed);
 
-    void onReceivedMoney(String money, String mark, String id) throws IOException;
+    void onReceivedMoney(String money, String mark, String id);
 
     /**
      * 登录成功后掉线
@@ -30,6 +30,4 @@ public interface IWeChatListenerService {
      * @param onlineTime 掉线之前保持在线到时长
      */
     void onDropped(long onlineTime);
-
-    void onException(IOException e);
 }

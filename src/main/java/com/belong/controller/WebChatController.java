@@ -45,4 +45,20 @@ public class WebChatController {
         videoController.json(map,response);
         return ConstantConfig.HOME;
     }
+
+    @RequestMapping(value = "/payMessage")
+    public String getPayMessage(Map map,HttpServletResponse response){
+        String payMessage = weChatListenerService.getPayMessage();
+        map.put("payMessage",payMessage);
+        videoController.json(map,response);
+        return ConstantConfig.HOME;
+    }
+
+    @RequestMapping(value = "/msgFlag")
+    public String getMsgFlag(Map map,HttpServletResponse response){
+        int msgFlag = weChatListenerService.getMsgFlag();
+        map.put("msgFlag",msgFlag);
+        videoController.json(map,response);
+        return ConstantConfig.HOME;
+    }
 }

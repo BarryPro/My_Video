@@ -1,8 +1,8 @@
 package com.belong.service.impl;
 
+import com.belong.config.HiddenConfig;
 import com.belong.service.IWeChatListenerService;
 import com.belong.util.Email;
-import com.belong.util.MtUtil;
 import com.belong.util.Util;
 import com.sun.istack.internal.Nullable;
 import lombok.Getter;
@@ -61,11 +61,16 @@ public class WeChatListenerServiceImpl {
     private String syncKey;
     private JSONObject syncKeyJson;
     private String content;
-    String lastID = "";
+    private String lastID = "";
+    private String payMessage = "";
+    private int msgFlag = 0;
+
     @Getter
     private IWeChatListenerService listener = new IWeChatListenerService() {
-        public byte[] jpgData;
-        public int code;
+        private byte[] jpgData;
+        private int code;
+        private String payMessage;
+        private int msgFlag;
 
         @Override
         public void onLoadingQRCode() {
@@ -83,17 +88,26 @@ public class WeChatListenerServiceImpl {
         }
 
         @Override
+        public String getPayMessage() {
+            return payMessage;
+        }
+
+        @Override
+        public int getMsgFlag() {
+            return msgFlag;
+        }
+
+        @Override
         public void onReceivedQRCode(byte[] jpgData) {
             logger.info("WeChat.WeChatListener onReceivedQRCode 获取成功，请用手机微信扫码");
-            this.jpgData = jpgData;
+            if (jpgData != null) {
+                this.jpgData = jpgData;
+            }
         }
 
         @Override
         public void onQRCodeScanned(byte[] jpgData) {
             logger.info("WeChat.WeChatListener onQRCodeScanned 扫码成功，请在手机微信中点击登录");
-            if (jpgData != null) {
-                this.jpgData = jpgData;
-            }
         }
 
         @Override
@@ -120,12 +134,16 @@ public class WeChatListenerServiceImpl {
 
         @Override
         public void onReceivedMoney(String money, String mark, String id) {
-            if (lastID.equals(id))
+            if (lastID.equals(id)) {
                 return;
+            }
             lastID = id;
-            logger.info("WeChat.WeChatListener onReceivedMoney 二维码收款：{}元，备注：{}", money, mark.isEmpty() ? "无" : mark);
+            // 设置可以显示收款信息
+            msgFlag = 1;
+            payMessage = "二维码收款："+money+"元,备注：" + ( mark.isEmpty()?"无": mark);
+            logger.info("WeChat.WeChatListener onReceivedMoney payMessage {}", payMessage);
             // 下面是收到转账后处理，业务代码不公开，请改成你自己的
-            MtUtil.openVip(mark, money, id);
+            PayServiceImpl.openVip(mark, money, id);
         }
 
         @Override
@@ -134,7 +152,7 @@ public class WeChatListenerServiceImpl {
             ONLINE_FILE.delete();
             if (onlineTime > 5000) {
                 try {
-                    if (Email.sendEmail("1278423697@qq.com", "微信离线通知", "服务器的微信已经离线啦，快去登录！"))
+                    if (Email.sendEmail(HiddenConfig.EMAIL_QQ, "微信离线通知", "服务器的微信已经离线啦，快去重新登录吧！"))
                         logger.info("WeChat.WeChatListener onDropped 微信已离线，发送通知邮件成功");
                     else
                         logger.error("WeChat.WeChatListener onDropped 微信已离线，发送通知邮件失败");
@@ -144,14 +162,6 @@ public class WeChatListenerServiceImpl {
             } else {
                 logger.info("请尝试重新登录");
                 login();
-            }
-        }
-
-        @Override
-        public void onException(IOException e) {
-            logger.error("Main onException", e);
-            if (jpgData != null) {
-                jpgData = null;
             }
         }
     };
@@ -308,7 +318,7 @@ public class WeChatListenerServiceImpl {
             str = response.body().string();
             logger.info("checkIsLogged response.body {}",str);
         } catch (IOException e) {
-            logger.error("checkIsLogged", e);
+            logger.error("checkIsLogged request{}",request, e);
         }
 
         response.close();
@@ -496,9 +506,6 @@ public class WeChatListenerServiceImpl {
         JSONObject jsonObject = JSONObject.fromObject(content);
         logger.info(jsonObject.toString());
         JSONObject syncKeyJson = this.syncKeyJson = jsonObject.getJSONObject("SyncKey");
-        // 解析微信拦截的消息内容并解析
-        parseContentMsg(jsonObject);
-
         int count = syncKeyJson. getInt("Count");
         JSONArray jsonArray = syncKeyJson.getJSONArray("List");
         sb = new StringBuilder();
@@ -508,7 +515,6 @@ public class WeChatListenerServiceImpl {
         }
         sb.deleteCharAt(0);
         syncKey = sb.toString();
-
         jsonArray = jsonObject.getJSONArray("AddMsgList");
         int size = jsonArray.size();
         for (int i = 0; i < size; i++) {
@@ -521,34 +527,21 @@ public class WeChatListenerServiceImpl {
         }
     }
 
-    private String parseContentMsg(JSONObject jsonObject) {
-        String parseContent = null;
-        try {
-            JSONArray contentArray = jsonObject.getJSONArray("AddMsgList");
-            if (contentArray != null) {
-                JSONObject contentJson = contentArray.getJSONObject(0);
-                String contentJsonString = contentJson.getString("Content");
-                if (!"".equals(contentJsonString)) {
-                     content = contentJsonString;
-                     checkPay(content);
-                    logger.info("AddMsgList content {}",content);
-                }
-            }
-        } catch (Exception e) {
-            logger.error("json 解析AddMsgList出错",e);
-        }
-        return parseContent;
-    }
-
+    /**
+     * 判断是否是支付信息
+     * @param con
+     * @return
+     */
     private void checkPay(String con) {
         if (!con.contains("CDATA[微信支付]") || !con.contains("CDATA[收款到账通知") || !con.contains("收款成功"))
             return;
         String money = Util.getStringMiddle(con, "收款金额：￥", "<br/>");
         if (money.isEmpty())
-            return;
+            // return;
         try {
             Float.parseFloat(money);
         } catch (NumberFormatException e) {
+            logger.error("checkPay NumberFormatException {}",money,e);
             return;
         }
 
@@ -557,11 +550,7 @@ public class WeChatListenerServiceImpl {
         String count = Util.getStringMiddle(all, "第", "笔");
         String allMoney = Util.getStringRight(all, "￥").replace(".", "");
         all = DATE_FORMAT.format(System.currentTimeMillis()) + "-" + count + "-" + allMoney;
-        try {
-            listener.onReceivedMoney(money, mark, all);
-        } catch (IOException e) {
-            logger.error("checkPay IOException", e);
-        }
+        listener.onReceivedMoney(money, mark, all);
     }
 
     private static void checkStatusCode(Response response)  {

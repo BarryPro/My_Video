@@ -13,6 +13,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 public class RedisConfig {
     /**
      * EnableRedisHttpSession主解是允许redis来存储session的值一边全局共享数据
+     *
      * @return
      */
     @Bean
