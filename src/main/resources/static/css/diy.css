@@ -157,6 +157,12 @@
     right: 0px;
 }
 
+.vip-area{
+    position: fixed;
+    right: 126px;
+    top: 37px;
+}
+
 .play-area{
     width: 1024px;
     height: 576px;

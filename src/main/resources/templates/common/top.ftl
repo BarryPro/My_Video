@@ -31,29 +31,15 @@
                     </#if>
                 </form>
                 <div class="info-view">
+                    <a id="vip-area"></a>
                     <#if Session["global_user"]??>
-                    <#if (global_user.vip >= 0 && global_user.vip < 10)>
-                        <a id="order" href="javascript:void(0)" class="">
-                        <img src="${my_path!}/static/images/vip/Vip${global_user.vip!}.png"
-                             class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
-                    <#else>
-                        <a id="vip-center" href="javascript:void(0)" class="">
-                            <img src="${my_path!}/static/images/vip/Vip${global_user.vip!}.png"
-                                 class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
-                    </#if>
-                        <input type="hidden" title="${global_user.id!}" id="my_image"/>
                         <img  id="_setting" src="${my_path!}/my_user/pic/userid/${global_user.id!}"
-                             title="${global_user.username!}" class="user_avatar myimg" style="border-radius:50%;overflow:hidden"/>
+                              title="${global_user.username!}" class="user_avatar myimg" style="border-radius:50%;overflow:hidden"/>
                     <#else>
-                        <a id="order" href="javascript:void(0)" class="">
-                        <img src="${my_path!}/static/images/vip/Vip0.png"
-                             class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>
-                        <input type="hidden" title="-1" id="my_image"/>
-                        <a id="_login" href="#small-dialog" class="play-icon popup-with-zoom-anim">
-                            <img src="${my_path!}/static/images/login.png" class="user_avatar myimg"
-                                 title="Visitor" style="border-radius:50%;overflow:hidden"/></a>
+                    <a id="_login" href="#small-dialog" class="play-icon popup-with-zoom-anim">
+                        <img src="${my_path!}/static/images/login.png" class="user_avatar myimg"
+                             title="Visitor" style="border-radius:50%;overflow:hidden"/></a>
                     </#if>
-
                     <a href="#small-dialog2" class="play-icon popup-with-zoom-anim">
                         <img title="注册" src="${my_path!}/static/images/register.png" class="user_avatar myimg"/></a>
 

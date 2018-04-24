@@ -77,10 +77,4 @@ public class WebChatController {
         this.textMessage = textMessage;
         logger.info("my_play.pay_mq.topic consumer:{}",textMessage);
     }
-
-    @RequestMapping(value = "/msgFlag")
-    public String getMsgFlag(){
-        weChatListenerService.getListener().onReceivedMoney("100","购买视频","2018-04-23-5-005");
-        return ConstantConfig.HOME;
-    }
 }

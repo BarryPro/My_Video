@@ -80,9 +80,15 @@ public class UserController {
 
     }
 
-    @RequestMapping(value= "/getVip/Vip/{Vip}")
-    public String getUserVip(Map map,HttpServletResponse response){
-        int vip = service.getVip(map);
+    @RequestMapping(value= "/getVipJpg")
+    public String getUserVip(@RequestParam(value = "user_id") String user_id,
+            Map map,HttpServletResponse response){
+        int vip = -1;
+        if (!"-1".equals(user_id)) {
+            map.put("uid",user_id);
+            vip = service.getVip(map);
+        }
+        map.put("vip",vip);
         videoController.json(map,response);
         return ConstantConfig.HOME;
     }

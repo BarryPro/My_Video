@@ -129,7 +129,7 @@ $(document).ready(function () {
 
     //查找
     $("#btn_search").click(function () {
-        var userid = $("#my_image").attr("title");
+        var userid = $("#cur_user_uid").attr("value");
         var cur = $("#cur_page").attr("title");
         var txt = $("#txt").val();
         var type = $("#type_id").attr("value");
@@ -139,7 +139,7 @@ $(document).ready(function () {
     //改变查找
     $("#txt").keyup(function () {
         var type = $("#type_id").attr("value");
-        var userid = $("#my_image").attr("title");
+        var userid = $("#cur_user_uid").attr("value");
         var cur = $("#cur_page").attr("title");
         var txt = $("#txt").val();
         txt_search(userid, cur, txt, type);
@@ -155,7 +155,7 @@ $(document).ready(function () {
         $.ajax({
             url: _path + '/my_user/num_setting',
             type: "post",
-            data: 'value=' + $("#my_select").val() + '&userid=' + $("#my_image").attr("title"),
+            data: 'value=' + $("#my_select").val() + '&userid=' + $("#cur_user_uid").attr("value"),
             dataType: "text",
             success: function (data) {
                 $("#label1").html(data).show(300).delay(3000).hide(300);
@@ -169,7 +169,7 @@ $(document).ready(function () {
     $("#header").on('click', '#first_page', function () {
         var type = $("#type_id").attr("value");
         var cur = $("#cur_page").attr("title");
-        var userid = $("#my_image").attr("title");
+        var userid = $("#cur_user_uid").attr("value");
         var txt = $("#txt").val();
         if (type == 6) {
             ajax_page_search(userid, cur, txt, type)
@@ -182,7 +182,7 @@ $(document).ready(function () {
     $("#header").on('click', 'a', function () {
         var type = $("#type_id").attr("value");
         var cur = $("#cur_page").attr("title");
-        var userid = $("#my_image").attr("title");
+        var userid = $("#cur_user_uid").attr("value");
         var txt = $("#txt").val();
         cur--;
         if (cur >= 1 && type != 6) {
@@ -197,7 +197,7 @@ $(document).ready(function () {
         var type = $("#type_id").attr("value");
         var cur = $("#cur_page").attr("title");
         var max = $("#last_page").attr("title");
-        var userid = $("#my_image").attr("title");
+        var userid = $("#cur_user_uid").attr("value");
         var txt = $("#txt").val();
         cur++;
         if (cur <= max && type != 6) {
@@ -211,7 +211,7 @@ $(document).ready(function () {
     $("#tail").on('click', '#last_page', function () {
         var type = $("#type_id").attr("value");
         var cur = $("#last_page").attr("title");
-        var userid = $("#my_image").attr("title");
+        var userid = $("#cur_user_uid").attr("value");
         var txt = $("#txt").val();
         if (type == 6) {
             ajax_page_search(userid, cur, txt, type);
@@ -225,7 +225,7 @@ $(document).ready(function () {
     $("#middle").on('click', 'a', function () {
         var type = $("#type_id").attr("value");
         var cur = $(this).attr("title");//this就是表示此时点击的那个超链的title了
-        var userid = $("#my_image").attr("title");
+        var userid = $("#cur_user_uid").attr("value");
         var txt = $("#txt").val();
         if (type == 6) {
             ajax_page_search(userid, cur, txt, type);
@@ -277,8 +277,8 @@ $(document).ready(function () {
         $("#order-area").slideUp(300);
     });
 
-    $("#order").click(function () {
-        if ($("#my_image").attr("title") == -1) {
+    $("#vip-area").on('click', '#order', function () {
+        if ($("#cur_user_uid").attr("value") == -1) {
             $("#_login").trigger("click");
         } else {
             var uid = $("#cur_user_uid").attr("value");
@@ -333,7 +333,7 @@ $(document).ready(function () {
                 url: _path + '/my_order/preview',
                 type: "post",
                 data: 'vip_type=' + vip_type +
-                '&user_id=' + $("#my_image").attr("title")+
+                '&user_id=' + $("#cur_user_uid").attr("value")+
                 '&vip_time='+vip_time,
                 dataType: "json",
                 success: function (data) {
@@ -382,6 +382,9 @@ $(document).ready(function () {
         var payType = $(this).attr("value");
         $("#pay_type").attr("value",payType);
     });
+
+    // 获取vip图标标志
+    getVipJpg();
 });
 
 // 定是任务
@@ -409,6 +412,7 @@ function payMQJob() {
                 $('#order-area').hide();
                 // 清空支付消息任务和扫描信息任务
                 window.clearTimeout(payMQ);
+                getVipJpg();
             }
         }
     });
@@ -468,7 +472,7 @@ function ajax_page(type, cur) {
     $.ajax({
         url: _path + "/my_video/db_info",
         type: "post",
-        data: 'n=' + type + '&userid=' + $("#my_image").attr("title") + '&cur_page=' + cur,
+        data: 'n=' + type + '&userid=' + $("#cur_user_uid").attr("value") + '&cur_page=' + cur,
         dataType: "json",
         success: function (data) {
             $("#1").empty();
@@ -697,16 +701,42 @@ function submitOrderPay(order){
         url: _path + '/my_order/paySubmit',
         type: "post",
         data: 'order_id=' + order.extra +
-        '&user_id=' + $("#my_image").attr("title")+
+        '&user_id=' + $("#cur_user_uid").attr("value")+
         '&pay_total='+order.pay_total+
         '&pay_type='+$("#pay_type").attr("value"),
         dataType: "json",
         success: function (data) {
             var pay_status = data.pay_status;
             if (pay_status == 1) {
-                // window.setInterval(setMsgFlag,3000);
                 // 定时扫描消息队列
                 payMQ = window.setInterval(payMQJob, 1000);
+            }
+        }
+    });
+}
+
+function getVipJpg() {
+    $.ajax({
+        url: _path + '/my_user/getVipJpg',
+        type: "post",
+        data: 'user_id=' + $("#cur_user_uid").attr("value"),
+        dataType: "json",
+        success: function (data) {
+            var vip = data.vip;
+            if (vip == -1) {
+                $('#vip-area').html(
+                    '<a id="order" href="javascript:void(0)" class="">' +
+                    '<img src='+_path+'/static/images/vip/Vip0.png' +
+                    ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>')
+            } else if (vip >=0 && vip < 10 ){
+                $('#vip-area').html(
+                    '<a id="order" href="javascript:void(0)" >'+
+                    '<img src='+_path+'/static/images/vip/Vip'+vip+'.png'+
+                    ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>')
+            } else {
+                $('#vip-area').html('<a id="vip-center" href="javascript:void(0)" >' +
+                    ' <img src='+_path+'/static/images/vip/Vip'+vip+'.png' +
+                    ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>');
             }
         }
     });
