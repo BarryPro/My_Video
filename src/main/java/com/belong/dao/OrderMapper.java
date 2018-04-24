@@ -4,4 +4,5 @@ import java.util.Map;
 
 public interface OrderMapper {
     boolean insertOrder(Map map);
+    boolean updateOrderStatus(Map map);
 }

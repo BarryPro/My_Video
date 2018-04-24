@@ -15,4 +15,5 @@ public interface IUserService {
     String getAuthor(int userid);
     boolean updataSelect(int value, int userid);
     void updateVideoNumber(Map map);
+    boolean updateUserVip(Map map);
 }

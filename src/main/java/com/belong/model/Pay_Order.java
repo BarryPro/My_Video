@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class Pay_Order implements Serializable {
-    private Integer pay_id;
+    private Long pay_id;
     private Long order_id;
     private String pay_time;
     private String update_time;

@@ -48,7 +48,7 @@ $(document).ready(function () {
 
     //取消提示消息
     $("#dispear").click(function () {
-        $("#label1").attr("style", "display:none");
+        $("#label1").hide()
     });
 
     //上传电影
@@ -176,7 +176,6 @@ $(document).ready(function () {
         } else {
             ajax_page(type, cur);
         }
-
     });
 
     //处理分页 上一页
@@ -285,10 +284,10 @@ $(document).ready(function () {
             var uid = $("#cur_user_uid").attr("value");
             $("#order-area").show(500);
             $("#common-area").html('<div class="container-fluid">' +
-                '    <div class="row-fluid"><form method="post" enctype="multipart/form-data" action=' + _path + '/my_order/preview>' +
+                '    <div class="row-fluid"> '+
                 '        <div class="span12">' +
                 '            <div class="page-header">' +
-                '                <h1 class="white-color">充值VIP.</h1></div>' +
+                '                <h2 class="white-color">充值VIP.</h2></div>' +
                 '            <table class="table table-hover table-bordered white-color">' +
                 '                <thead><tr><th>权限</th><th>普通（免费）</th><th>vip（6元/月）</th><th>svip（15元/月）</th></tr></thead>' +
                 '                <tbody>' +
@@ -309,18 +308,45 @@ $(document).ready(function () {
                 '                <label class="msg">充值时长：</label>' +
                 '                <select class="margin" name="vip_time"><option  value="1">1个月</option><option value="6">6个月</option>' +
                 '                           <option value="12">12个月</option></select></div><hr/>' +
-                '            <input class="btn btn-block btn-primary my_btn" type="submit"  value="立即充值"/><hr/>' +
-                '</div></div></form></div>'
+                '            <button class="btn btn-block btn-primary my_btn" >立即充值</button><hr/>' +
+                '</div></div></div>'
             );
         }
     });
 
-    // 判断是否显示订单支付页
-    submitOrder();
-
+    // 用于判断是订单预览还是订单支付
     $("#common-area").on('click', 'button', function () {
-        $("#label1").html("支付成功！").show(300).delay(3000).hide(300);
-        $("#order-area").hide(300);
+        var order_pay_flag = $("h2").text();
+        var vip_type = 0;
+        var vip_time = 0;
+        if (order_pay_flag == "充值VIP.") {
+            $("select option:selected").each(function (i,data) {
+                var value = data.value;
+                if (i == 2) {
+                    vip_type = value;
+                } else {
+                    vip_time = value;
+                }
+            });
+            // 发送异步请求
+            $.ajax({
+                url: _path + '/my_order/preview',
+                type: "post",
+                data: 'vip_type=' + vip_type +
+                '&user_id=' + $("#my_image").attr("title")+
+                '&vip_time='+vip_time,
+                dataType: "json",
+                success: function (data) {
+                    $('#order_switch').attr("value",data.order_switch);
+                    $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+                    // 展示提单详情页
+                    submitOrder(data.order);
+                    // 监听支付消息然后提交信息
+                    submitOrderPay(data.order);
+                }
+            });
+            $("#order-area").hide(300);
+        }
     });
 
     $("#movies-list").on('click', 'button', function () {
@@ -349,47 +375,41 @@ $(document).ready(function () {
         $('#webchat-area').show();
         $('#webchat-area').html('<img src="' + _path + '/weChat/loginEntry">');
         timeOutJob();
-        setMsgFlag()
         $("#label1").html("正在获取登录二维码……").show(300).delay(3000).hide(300);
     });
-
+    // 设置支付类型
+    $("#common-area").on('click', 'li', function () {
+        var payType = $(this).attr("value");
+        $("#pay_type").attr("value",payType);
+    });
 });
 
 // 定是任务
 function timeOutJob() {
     //重复执行某个方法 setInterval重复执行
     loginCode = window.setInterval(loginCodeJob, 500);
-    msgFlag = window.setInterval(setMsgFlag, 1000);
-}
-
-function stopJob() {
-    window.clearTimeout(loginCode);
 }
 
 function setMsgFlag() {
     $.ajax({
         url: _path + '/weChat/msgFlag',
-        type: "post",
-        dataType: "json",
-        success: function (data) {
-            var msg = data.msgFlag;
-            if (msg == 1) {
-                $('#msg_flag').attr("value",msg);
-                window.clearTimeout(msgFlag);
-                alert($('#msg_flag').attr("value"))
-            }
-        }
+        type: "post"
     });
 }
 
-function payMessageJob() {
+function payMQJob() {
     $.ajax({
-        url: _path + '/weChat/payMessage',
+        url: _path + '/weChat/payMQ',
         type: "post",
         dataType: "json",
         success: function (data) {
-            var msg = data.payMessage;
-            $("#label1").html((msg==undefined)?"****":msg).show(300).delay(3000).hide(300);
+            var payMsg = data.payMsg;
+            if (""!= payMsg){
+                $("#label1").html(payMsg).show(300).delay(1000).hide(300);
+                $('#order-area').hide();
+                // 清空支付消息任务和扫描信息任务
+                window.clearTimeout(payMQ);
+            }
         }
     });
 }
@@ -403,7 +423,7 @@ function loginCodeJob() {
             var code = data.loginCode;
             if (code == 1) {
                 $('#webchat-area').hide();
-                stopJob();
+                window.clearTimeout(loginCode);
                 $("#label1").html("二维码登录成功！").show(300).delay(3000).hide(300);
             }
         }
@@ -626,39 +646,68 @@ function fixCurPage() {
     ajax_page(n, cur);
 }
 
-function submitOrder() {
-    $("#order-area").show(500);
-    var order_id = $("#order_id").attr("value");
-    var pay_total = $("#pay_total").attr("value");
-    var order_switch = $("#order_switch").attr("value");
+/**
+ * 提交订单展示
+ * @param order
+ */
+function submitOrder(order) {
+    var order_switch = $('#order_switch').attr("value");
+    var uid = $("#cur_user_uid").attr("value");
     if (order_switch == 1) {
         $("#common-area").html(
-            '<div class="container-fluid"><form method="post" enctype="multipart/form-data" action=' + _path + '/my_order/paySubmit>' +
+            '<div class="container-fluid">' +
             '    <div class="row-fluid"><div class="span12">' +
             '            <div class="page-header"><h1 class="white-color">MyPlay 收银台.</h1></div>' +
             '            <h3 class="white-color">订单支付详情.</h3>' +
             '            <table class="table table-hover table-bordered">' +
             '                <tbody>' +
-            '                <tr class="info"><td>订单标号</td><td>' + order_id + '</td></tr>' +
-            '                <tr class="warning"><td>商品名称</td><td>' + $("#order_name").attr("value") + '</td></tr>' +
-            '                <tr class="info"><td>交易时间</td><td>' + $("#trade_time").attr("value") + '</td></tr>' +
-            '                <tr class="info"><td>订单类型</td><td>' + $("#order_type").attr("value") + '</td></tr>' +
-            '                <tr class="info"><td>支付金额</td><td>' + pay_total + '元</td></tr></tbody></table>' +
+            '                <tr class="info"><td>订单标号</td><td>' + order.extra + '</td></tr>' +
+            '                <tr class="warning"><td>商品名称</td><td>' + order.order_name + '</td></tr>' +
+            '                <tr class="info"><td>交易时间</td><td>' + order.trade_time + '</td></tr>' +
+            '                <tr class="info"><td>订单类型</td><td>' + order.order_type + '</td></tr>' +
+            '                <tr class="info"><td>支付金额</td><td>' + order.pay_total + '元</td></tr></tbody></table>' +
             '            <div class="tabbable" id="tabs-797679">' +
             '                <ul class="nav nav-tabs">' +
-            '                    <li><a href="#panel-544732" data-toggle="tab">微信</a></li>' +
-            '                    <li class="active"><a href="#panel-879116" data-toggle="tab">支付宝</a></li></ul>' +
+            '                    <li class="active" value="0"><a href="#panel-544732" data-toggle="tab">微信</a></li>' +
+            '                    <li value="1"><a href="#panel-879116" data-toggle="tab">支付宝</a></li></ul>' +
             '                <div class="tab-content">' +
-            '                   <input value=' + order_id + ' name="order_id" type="hidden" />' +
-            '                  <input value=' + pay_total + ' name="pay_total" type="hidden" />' +
-            '                    <div class="tab-pane msg" id="panel-544732">' +
+            '                   <input value=' + order.extra + ' name="order_id" type="hidden" />' +
+            '                   <input value=' + order.pay_total + ' name="pay_total" type="hidden" />' +
+            '                   <input value="0" id="pay_type" name="pay_type" type="hidden" />' +
+            '                   <input value=' + uid + ' name="user_id"  type="hidden" />'+
+            '                    <div class="tab-pane active msg" id="panel-544732">' +
             '                        <img alt="支付二维码" src=' + _path + '/static/images/code/v6.jpg class="sys-ewm"/>' +
-            '                        <small class="msg-info margin">提示：先扫【微信】二维码支付，再点击【支付提交】</small></div>' +
-            '                    <div class="tab-pane active msg" id="panel-879116">' +
+            '                        <small class="msg-info margin">提示：请用【微信】扫二维码支付</small></div>' +
+            '                    <div class="tab-pane msg" id="panel-879116">' +
             '                        <img alt="支付二维码" src=' + _path + '/static/images/code/z6.jpg class="sys-ewm"/>' +
-            '                        <small class="msg-info margin">提示：先扫【支付宝】二维码支付，再点击【支付提交】</small></div></div>' +
-            '            </div><hr/><input class="btn btn-block btn-primary" type="submit" value="支付提交"></input><hr/></div></div>' +
-            '</form></div>'
+            '                        <small class="msg-info margin">提示：请用【支付宝】扫二维码支付</small></div></div>' +
+            '            </div><hr/>' +
+            '</div>'
         );
     }
+    $("#order-area").show(500);
+}
+
+/**
+ * 提交订单支付
+ * @param order 订单信息
+ */
+function submitOrderPay(order){
+    $.ajax({
+        url: _path + '/my_order/paySubmit',
+        type: "post",
+        data: 'order_id=' + order.extra +
+        '&user_id=' + $("#my_image").attr("title")+
+        '&pay_total='+order.pay_total+
+        '&pay_type='+$("#pay_type").attr("value"),
+        dataType: "json",
+        success: function (data) {
+            var pay_status = data.pay_status;
+            if (pay_status == 1) {
+                // window.setInterval(setMsgFlag,3000);
+                // 定时扫描消息队列
+                payMQ = window.setInterval(payMQJob, 1000);
+            }
+        }
+    });
 }

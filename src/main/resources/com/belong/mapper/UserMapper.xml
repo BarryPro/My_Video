@@ -41,4 +41,10 @@
     SET pagenum = #{pagenum,jdbcType=INTEGER}
     WHERE id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateUserVip" parameterType="map">
+    UPDATE user
+    SET vip = #{vip,jdbcType=INTEGER}
+    WHERE id = #{user_id,jdbcType=INTEGER}
+  </update>
 </mapper>

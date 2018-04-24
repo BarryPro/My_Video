@@ -65,4 +65,9 @@ public class UserServiceImpl implements IUserService {
     public void updateVideoNumber(Map map) {
         dao.updateVideoNumber(map);
     }
+
+    @Override
+    public boolean updateUserVip(Map map) {
+        return dao.updateUserVip(map);
+    }
 }

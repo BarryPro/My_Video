@@ -14,4 +14,9 @@ public class OrderServiceImpl implements IOrderService {
     public boolean insertOrder(Map map) {
         return dao.insertOrder(map);
     }
+
+    @Override
+    public boolean updateOrderStatus(Map map) {
+        return dao.updateOrderStatus(map);
+    }
 }

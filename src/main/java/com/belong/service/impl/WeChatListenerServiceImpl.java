@@ -9,19 +9,15 @@ import lombok.Getter;
 import lombok.Setter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
 
+import javax.jms.Topic;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -62,15 +58,17 @@ public class WeChatListenerServiceImpl {
     private JSONObject syncKeyJson;
     private String content;
     private String lastID = "";
-    private String payMessage = "";
-    private int msgFlag = 0;
+    @Autowired
+    private JmsMessagingTemplate jmsMessagingTemplate;
+
+    @Autowired
+    private Topic topic;
 
     @Getter
-    private IWeChatListenerService listener = new IWeChatListenerService() {
+    private IWeChatListenerService listener = new IWeChatListenerService()  {
         private byte[] jpgData;
         private int code;
         private String payMessage;
-        private int msgFlag;
 
         @Override
         public void onLoadingQRCode() {
@@ -85,16 +83,6 @@ public class WeChatListenerServiceImpl {
         @Override
         public int getLoginCode() {
             return code;
-        }
-
-        @Override
-        public String getPayMessage() {
-            return payMessage;
-        }
-
-        @Override
-        public int getMsgFlag() {
-            return msgFlag;
         }
 
         @Override
@@ -139,11 +127,9 @@ public class WeChatListenerServiceImpl {
             }
             lastID = id;
             // 设置可以显示收款信息
-            msgFlag = 1;
             payMessage = "二维码收款："+money+"元,备注：" + ( mark.isEmpty()?"无": mark);
-            logger.info("WeChat.WeChatListener onReceivedMoney payMessage {}", payMessage);
-            // 下面是收到转账后处理，业务代码不公开，请改成你自己的
-            PayServiceImpl.openVip(mark, money, id);
+            jmsMessagingTemplate.convertAndSend(topic, payMessage);
+            logger.info("my_play.pay_mq.topic product {} lastID {}", payMessage,lastID);
         }
 
         @Override
@@ -165,6 +151,10 @@ public class WeChatListenerServiceImpl {
             }
         }
     };
+
+    public IWeChatListenerService getListener(){
+        return listener;
+    }
 
     private CookieJar cookieJar = new CookieJar() {
         HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
@@ -193,7 +183,7 @@ public class WeChatListenerServiceImpl {
     }
 
     public byte[] loginEntry() {
-        logger.info("微信支付监听 V1.1");
+        logger.info("loginEntry 微信支付监听 V1.1");
         Runtime.getRuntime().addShutdownHook(SHUTDOWN_HANDLER);
         if (ONLINE_FILE.exists()) {
             //方法检验结果
@@ -458,7 +448,7 @@ public class WeChatListenerServiceImpl {
         try {
             getMessage();
         } catch (Throwable e) {
-            return 1000;
+             return 1000;
         }
         return 1;
     }
@@ -537,7 +527,7 @@ public class WeChatListenerServiceImpl {
             return;
         String money = Util.getStringMiddle(con, "收款金额：￥", "<br/>");
         if (money.isEmpty())
-            // return;
+            return;
         try {
             Float.parseFloat(money);
         } catch (NumberFormatException e) {

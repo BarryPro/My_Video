@@ -51,7 +51,7 @@
                             </div>
                         </form>
                        <#if global_user??>
-                           <#if (global_user.username = "BarryPro")>
+                           <#if (global_user.username = "admin")>
                         <div class="page-header">
                             <h3>
                                 <small>管理员登录</small>

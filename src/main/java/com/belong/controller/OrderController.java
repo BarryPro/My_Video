@@ -3,8 +3,10 @@ package com.belong.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.belong.config.ConstantConfig;
 import com.belong.model.Order_Video;
+import com.belong.model.Pay_Order;
 import com.belong.service.IOrderService;
 import com.belong.service.IPayOrderService;
+import com.belong.service.IUserService;
 import com.belong.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,12 +31,17 @@ public class OrderController {
     private IOrderService service;
     @Autowired
     private IPayOrderService payOrderService;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private VideoController videoController;
 
     @RequestMapping(value = "/preview")
     public String insertOrder(@RequestParam("vip_type") String vip_type,
-                        @RequestParam("vip_time") String vip_time,
-                        @RequestParam("user_id") String user_id,
-                        Map map){
+                              @RequestParam("vip_time") String vip_time,
+                              @RequestParam("user_id") String user_id,
+                              Map map,
+                              HttpServletResponse response){
         logger.info("OrderController insertOrder [vip_type:{} vip_time:{} user_id:{}]",vip_type,vip_time,user_id);
         if (!StringUtils.isEmpty(vip_time) && !StringUtils.isEmpty(vip_type)) {
             Order_Video order = new Order_Video();
@@ -44,6 +52,7 @@ public class OrderController {
             order.setOrder_status(0);
             String timeStamp = TimeUtils.getFormatTime("yyyy-MM-dd HH:mm:ss",new Date());
             order.setTrade_time(timeStamp);
+            order.setExtra(order.getOrder_id()+"");
             double payTotal = 0.0;
             payTotal = Integer.parseInt(vip_time) * ConstantConfig.VIP_CASH.get(vip_type);
             order.setPay_total(payTotal);
@@ -62,15 +71,46 @@ public class OrderController {
             map.put(ConstantConfig.MSG,"生成订单失败！");
             map.put(ConstantConfig.ORDER_SWITCH,"0");
         }
+        videoController.json(map,response);
         return ConstantConfig.HOME;
     }
 
     @RequestMapping(value = "/paySubmit")
     public String insertPayOrder(@RequestParam("order_id") String order_id,
                         @RequestParam("pay_total") String pay_total,
-                        Map map) {
-        logger.info("OrderController insertPayOrder [vip_type:{} vip_time:{} user_id:{}]", order_id, pay_total);
-
+                        @RequestParam("user_id") String user_id,
+                        @RequestParam("pay_type") String pay_type,
+                        Map map,HttpServletResponse response) {
+        logger.info("OrderController insertPayOrder [order_id:{} ,user_id:{} ,pay_total:{} ,pay_type:{}]", order_id, user_id,pay_total,pay_type);
+        Pay_Order payOrder = new Pay_Order();
+        payOrder.setPay_id(genPayId(user_id,pay_type,pay_total));
+        payOrder.setOrder_id(Long.parseLong(order_id));
+        payOrder.setPay_status(1);
+        payOrder.setPay_total(Double.parseDouble(pay_total));
+        payOrder.setPay_type(Integer.parseInt(pay_type));
+        payOrder.setUser_id(Integer.parseInt(user_id));
+        map.put("payOrder",payOrder);
+        boolean payStatus = payOrderService.insertPayOrder(map);
+        // 更新订单状态
+        if (payStatus) {
+            map.put("order_id",order_id);
+            // 支付成功
+            map.put("order_status",1);
+            if(service.updateOrderStatus(map)){
+                // 更新用户身份
+                map.put("user_id",user_id);
+                map.put("vip",1);
+                if(userService.updateUserVip(map)){
+                    map.put("user_status","1");
+                } else {
+                    map.put("user_status","0");
+                }
+                map.put("pay_status","1");
+            } else {
+                map.put("pay_status","0");
+            }
+        }
+         videoController.json(map,response);
         return ConstantConfig.HOME;
     }
 
@@ -81,7 +121,12 @@ public class OrderController {
     public static void main (String[]args){
         System.out.println(new OrderController().genOrderId("1", "1", "3"));
     }
+
     private Long genOrderId (String user_id, String vip_type, String vip_time){
         return Long.parseLong(TimeUtils.getFormatTime("yyyyMMddHHmmss", new Date()) + user_id + vip_type + vip_time);
+    }
+
+    private Long genPayId (String user_id,String pay_type, String pay_total){
+        return Long.parseLong(TimeUtils.getFormatTime("yyyyMMddHHmmss", new Date()) + user_id + pay_type + pay_total);
     }
 }

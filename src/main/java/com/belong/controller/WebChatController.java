@@ -5,9 +5,14 @@ import com.belong.service.impl.WeChatListenerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.jms.ConnectionFactory;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.util.Map;
@@ -18,6 +23,8 @@ public class WebChatController {
     private static final Logger logger = LoggerFactory.getLogger(WebChatController.class);
     @Autowired
     private WeChatListenerServiceImpl weChatListenerService;
+
+    private String textMessage;
 
     @Autowired
     private VideoController videoController;
@@ -46,19 +53,34 @@ public class WebChatController {
         return ConstantConfig.HOME;
     }
 
-    @RequestMapping(value = "/payMessage")
+    @Bean
+    public JmsListenerContainerFactory<?> jmsListenerContainerTopic(ConnectionFactory activeMQConnectionFactory) {
+        DefaultJmsListenerContainerFactory bean = new DefaultJmsListenerContainerFactory();
+        bean.setPubSubDomain(true);
+        bean.setConnectionFactory(activeMQConnectionFactory);
+        return bean;
+    }
+
+    @RequestMapping(value = "/payMQ")
     public String getPayMessage(Map map,HttpServletResponse response){
-        String payMessage = weChatListenerService.getPayMessage();
-        map.put("payMessage",payMessage);
+        if (textMessage != null) {
+            map.put("payMsg",textMessage);
+            textMessage = null;
+        } else {
+            map.put("payMsg","");
+        }
         videoController.json(map,response);
         return ConstantConfig.HOME;
     }
+    @JmsListener(destination = "my_play.pay_mq.topic", containerFactory="jmsListenerContainerTopic")
+    private void setTextMessage(String textMessage){
+        this.textMessage = textMessage;
+        logger.info("my_play.pay_mq.topic consumer:{}",textMessage);
+    }
 
     @RequestMapping(value = "/msgFlag")
-    public String getMsgFlag(Map map,HttpServletResponse response){
-        int msgFlag = weChatListenerService.getMsgFlag();
-        map.put("msgFlag",msgFlag);
-        videoController.json(map,response);
+    public String getMsgFlag(){
+        weChatListenerService.getListener().onReceivedMoney("100","购买视频","2018-04-23-5-005");
         return ConstantConfig.HOME;
     }
 }

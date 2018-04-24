@@ -4,8 +4,6 @@ public interface IWeChatListenerService {
     void onLoadingQRCode();
     byte[] getJpgDate();
     int getLoginCode();
-    String getPayMessage();
-    int getMsgFlag();
     /**
      * 得到登录二维码
      *

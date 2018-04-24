@@ -80,6 +80,13 @@ public class UserController {
 
     }
 
+    @RequestMapping(value= "/getVip/Vip/{Vip}")
+    public String getUserVip(Map map,HttpServletResponse response){
+        int vip = service.getVip(map);
+        videoController.json(map,response);
+        return ConstantConfig.HOME;
+    }
+
     @RequestMapping(value = "/logout")
     public String logout(SessionStatus sessionStatus,
                          Map map){
@@ -184,6 +191,8 @@ public class UserController {
             os.write(buffer);
             os.flush();
             os.close();
+        }catch (NullPointerException NPE){
+            logger.error("NullPointerException UserController getPic");
         } catch (Exception e) {
             logger.error("IOException UserController getPic",e);
         }

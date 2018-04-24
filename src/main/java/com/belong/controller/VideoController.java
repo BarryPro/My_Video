@@ -8,9 +8,12 @@ import com.belong.model.PageBean;
 import com.belong.model.Review;
 import com.belong.service.IMoviesService;
 import com.belong.service.IUserService;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -94,6 +97,8 @@ public class VideoController {
             os.write(buffer);
             os.flush();
             os.close();
+        }catch (RedisConnectionFailureException redisExpction){
+            logger.error("VideoController getPic RedisConnectionFailureException");
         } catch (Exception e) {
             logger.error("IOException VideoController getPic",e);
         } finally {
@@ -157,6 +162,7 @@ public class VideoController {
     }
 
     //json返回网页信息
+    @JsonSerialize(using = ToStringSerializer.class)
     protected void json(Object object,HttpServletResponse response){
         try {
             response.setCharacterEncoding("UTF-8");

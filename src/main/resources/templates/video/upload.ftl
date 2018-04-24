@@ -16,7 +16,7 @@
             选择上传视频类型:
                 <select name="type" id="type">
                 <option value="1">电视</option>
-                <option value="2" selected>电影</option>
+                <option value="2">电影</option>
                 <option value="3">MV</option>
                 <option value="4">动漫</option>
                 <option value="5">其他</option>

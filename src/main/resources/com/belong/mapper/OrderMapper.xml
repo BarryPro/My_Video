@@ -27,4 +27,10 @@
          #{order.pay_total,jdbcType=DECIMAL},
          #{user.extra,jdbcType=LONGVARCHAR})
     </insert>
+
+    <update id="updateOrderStatus" parameterType="map">
+        UPDATE ORDER_VIDEO
+        SET order_status = #{order_status,jdbcType=INTEGER}
+        WHERE order_id = #{order_id,jdbcType=INTEGER}
+    </update>
 </mapper>
