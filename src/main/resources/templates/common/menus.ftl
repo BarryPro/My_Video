@@ -51,7 +51,7 @@
         <div class="setting" id="setting">
             <img title="Close (ESC)" id="setting_close" class="setting_close _close" src="${my_path}/static/images/close.png">
             <div>
-                <#include "../video/cashier.ftl">
+                <#include "../video/user-center.ftl">
             </div>
         </div>
 
