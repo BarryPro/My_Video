@@ -63,7 +63,7 @@ public class WebChatController {
 
     @RequestMapping(value = "/payMQ")
     public String getPayMessage(Map map,HttpServletResponse response){
-        if (textMessage != null) {
+        if (textMessage != null && textMessage.startsWith("二维码收款")) {
             map.put("payMsg",textMessage);
             textMessage = null;
         } else {
