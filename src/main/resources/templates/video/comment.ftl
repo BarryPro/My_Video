@@ -14,7 +14,7 @@
 </style>
 <#include "../video/particle.ftl">
 <#include "../common/menus.ftl">
-<body>
+<body style="overflow: auto;width: 1865px" >
     <input type="hidden" id="_path" value="${my_path!}/"/>
     <input type="hidden" id="_user" value=""/>
     <input type="hidden" id="_page_str" value="${_page_str!}"/>
@@ -43,7 +43,7 @@
             </tr>
             <tr>
                 <td>
-                    <div style="overflow-y:scroll; WIDTH:621px;HEIGHT:200px;background-color:white color:black">
+                    <div style="overflow-y:auto; WIDTH:621px;HEIGHT:200px;background-color:white color:black">
                     ${review.video.vinfo!}</div>
                 </td>
             </tr>
@@ -54,7 +54,7 @@
             <div class="container-fluid">
                 <div class="row-fluid">
                     <div class="span12">
-                        <table class="table table-hover ">
+                        <table class="table table-hover center-area">
                             <thead>
                             <tr>
                                 <th>影视名</th>

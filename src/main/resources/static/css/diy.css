@@ -123,15 +123,17 @@
     background-color: #272c2e;
     right: 0px;
     top: 80px;
-    height: 100%;
     width: 19%;
+    height: 100%;
     position: fixed;
+    overflow: auto;
 }
 
 .video-list{
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 3%;
+    height: 761px;
     position: relative;
 }
 .page-box-pos{
@@ -277,4 +279,13 @@
     height: 300px;
     top: 25%;
     left: 39%;
+}
+
+.display-area{
+    overflow: auto;
+    width: 1585.8px;
+}
+
+.center-area{
+    width: 790px;
 }

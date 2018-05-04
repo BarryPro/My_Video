@@ -6,13 +6,6 @@
     <input type="hidden" id="_path" value="${my_path}"/>
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="${my_path}/my_video/home"><h1><img src="${my_path}/images/logo.png" alt=""/>
             </h1></a>
         </div>
@@ -24,6 +17,7 @@
                     <input type="hidden" id="cur_type" value="0"/>
                     <input type="hidden" id="msg_flag" value="0"/>
                     <input type="hidden" id="order_switch" value="0"/>
+                    <input type="hidden" id="cur_page_str" value="0"/>
                     <#if Session["global_user"]??>
                         <input type="hidden" id="cur_user_uid" value="${global_user.id!}"/>
                     <#else>
