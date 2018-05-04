@@ -70,4 +70,9 @@ public class UserServiceImpl implements IUserService {
     public boolean updateUserVip(Map map) {
         return dao.updateUserVip(map);
     }
+
+    @Override
+    public boolean updateSettingSave(Map map) {
+        return dao.updateSettingSave(map);
+    }
 }

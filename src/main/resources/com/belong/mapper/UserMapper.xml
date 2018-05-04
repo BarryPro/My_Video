@@ -47,4 +47,10 @@
     SET vip = #{vip,jdbcType=INTEGER}
     WHERE id = #{user_id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateSettingSave" parameterType="map">
+    UPDATE user
+    SET pagenum = #{num,jdbcType=INTEGER},email = #{email,jdbcType=VARCHAR},alias = #{alias,jdbcType=VARCHAR}
+    WHERE id = #{user_id,jdbcType=INTEGER}
+  </update>
 </mapper>

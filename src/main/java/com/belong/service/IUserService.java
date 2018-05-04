@@ -16,4 +16,5 @@ public interface IUserService {
     boolean updataSelect(int value, int userid);
     void updateVideoNumber(Map map);
     boolean updateUserVip(Map map);
+    boolean updateSettingSave(Map map);
 }

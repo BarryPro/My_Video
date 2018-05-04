@@ -11,4 +11,5 @@ public interface UserMapper {
     User getPic(int id);
     void updateVideoNumber(Map map);
     boolean updateUserVip(Map map);
+    boolean updateSettingSave(Map map);
 }

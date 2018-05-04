@@ -93,6 +93,30 @@ public class UserController {
         return ConstantConfig.HOME;
     }
 
+    @RequestMapping(value="/setting_save")
+    public String settingSave(@RequestParam("inputAlias") String inputAlias,
+                              @RequestParam("inputEmail") String inputEmail,
+                              @RequestParam("num") String num,
+                              @RequestParam("user_id") String user_id,
+                              Map map,
+                              HttpServletResponse response){
+        logger.info("settingSave inputAlias,inputEmail,num user_id[{},{},{},{}]",inputAlias,inputEmail,num,user_id);
+        try {
+            map.put("num",Integer.parseInt(num));
+            map.put("email",inputEmail);
+            map.put("alias",inputAlias);
+            map.put("user_id",Integer.parseInt(user_id));
+        } catch (NumberFormatException e){
+            logger.error("NumberFormatException inputAlias,inputEmail,num user_id[{},{},{},{}]",inputAlias,inputEmail,num,user_id,e);
+        }
+        if(service.updateSettingSave(map)){
+            map.put(ConstantConfig.MSG,"用户设置保存成功");
+        } else {
+            map.put(ConstantConfig.MSG,"用户设置保存失败");
+        }
+        return ConstantConfig.HOME;
+    }
+
     @RequestMapping(value = "/logout")
     public String logout(SessionStatus sessionStatus,
                          Map map){

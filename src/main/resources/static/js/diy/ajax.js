@@ -385,6 +385,25 @@ $(document).ready(function () {
 
     // 获取vip图标标志
     getVipJpg();
+
+    // 设置中心保存
+    $("#save-btn").click(function () {
+        var alias = $("#inputAlias").val();
+        var email = $("#inputEmail").val();
+        var num = $("#select-option-num").find("option:selected").text();
+        $.ajax({
+            url: _path + '/my_user/setting_save',
+            type: "post",
+            data: 'inputAlias=' + alias +
+            '&inputEmail=' + email+
+            '&num='+num+
+            '&user_id='+ $("#cur_user_uid").attr("value"),
+            dataType: "json",
+            success: function (data) {
+                $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+            }
+        });
+    });
 });
 
 // 定是任务

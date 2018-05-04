@@ -40,14 +40,14 @@
                                 </div>
                                 <div class="controls">
                                     <label class="control-label">设置页面</label>
-                                    <select>
+                                    <select id="select-option-num">
                                         <option>6</option>
                                         <option>12</option>
                                         <option>18</option>
                                         <option>24</option>
                                     </select><label class="control-label">个视频数</label>
                                 </div><hr/>
-                                <button class="btn btn-block btn-info" type="button">保存</button>
+                                <button class="btn btn-block btn-info" type="button" id="save-btn">保存</button>
                             </div>
                         </form>
                        <#if global_user??>
