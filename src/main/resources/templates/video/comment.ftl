@@ -121,7 +121,7 @@
                 var flag = '';
                 //处理回复
                 $("#article_info").on('click', 'img', function () {
-                    _uid = $("#my_image").attr("title");
+                    _uid = $("#cur_user_uid").attr("value");
                     if (_uid != -1) {
                         username = $(this).attr("value");
                         if (username != undefined) {
@@ -185,7 +185,7 @@
                     $("#article_info").empty();
                     $(data.articles).each(function (i, article) {
                         _path = $("#_path").attr("value");
-                        if ($("#my_image").attr("title") == article.uid) {
+                        if ($("#cur_user_uid").attr("value") == article.uid) {
                             article_info_delete(data, article);
                         } else {
                             article_info(data, article);
@@ -218,7 +218,7 @@
                         url: _path + '/my_review/query',
                         type: 'post',
                         data: 'content=' + CKEDITOR.instances.content.getData() +
-                        '&userid=' + $("#my_image").attr("title") + '&rootid=' + 0 + '&Vid=' +
+                        '&userid=' + $("#cur_user_uid").attr("value") + '&rootid=' + 0 + '&Vid=' +
                         ${review.vid}+'&cur_page=' + n,
                         dataType: 'json',
                         success: showArticle
@@ -229,14 +229,14 @@
                     $("#_article").click(function () {
                         //只有登陆的用户才有发评论的资格
                         context = CKEDITOR.instances.content.getData();
-                        if ($("#my_image").attr("title") != -1) {
+                        if ($("#cur_user_uid").attr("value") != -1) {
                             if (context != '') {
                                 _path = $("#_path").attr("value");
                                 $.ajax({
                                     url: _path + '/my_review/add_article',
                                     type: 'post',
                                     data: 'acontent=' + context +
-                                    '&uid=' + $("#my_image").attr("title") + '&arootid=' + 0 + '&Vid=' +
+                                    '&uid=' + $("#cur_user_uid").attr("value") + '&arootid=' + 0 + '&Vid=' +
                                     ${review.vid}+'&cur_page=' + $("#max_page_hidden").attr("title"),
                                     dataType: 'json',
                                     success: showArticle
@@ -303,8 +303,8 @@
 
                 //回复帖子
                 function reply(username, old_context) {
-                    if ($("#my_image").attr("title") != -1) {
-                        CKEDITOR.instances.content.setData($("#_user").attr("value") + ': @' + username);
+                    if ($("#cur_user_uid").attr("value") != -1) {
+                        CKEDITOR.instances.content.setData($("#_user").attr("value") + '@' + username);
                         $("#reply").click(function () {
                             context = "<hr/>" + CKEDITOR.instances.content.getData();
                             _path = $("#_path").attr("value");
