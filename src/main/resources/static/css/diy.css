@@ -145,18 +145,6 @@
     display: block;
 }
 
-.info-msg{
-    position: fixed;
-    right: 30px;
-    top: 60px;
-}
-
-.info-view{
-    margin: 1.1em 0 0 1em;
-    position: fixed;
-    right: 0px;
-}
-
 .vip-area{
     position: fixed;
     right: 126px;
@@ -195,8 +183,7 @@
 }
 
 .display-img{
-    width: 168px;
-    height: 224px;
+    height: 25%;
 }
 
 .my_close{
@@ -258,6 +245,7 @@
 }
 
 .movies-list{
+    position: relative;
     width: 820px;
 }
 
@@ -278,3 +266,72 @@
     top: 25%;
     left: 39%;
 }
+
+.top-area{
+    background-color: #FFF;
+    padding-bottom: 10px;
+}
+
+.logo-search-form-area{
+}
+
+.logo-area{
+    float: left;
+    margin-left: 1%;
+    margin-top: 1.0em;
+    position: fixed;
+}
+
+.top-search{
+    margin-top: 2.0em;
+    width: 50%;
+    float: left;
+    margin-left: 25%;
+    margin-right: 25%;
+    position: fixed;
+}
+
+.info-view{
+    right: 0px;
+    margin-top: 2.0em;
+    position: fixed;
+}
+
+.info-msg{
+    position: fixed;
+    right: 30px;
+    top: 4.0em;
+}
+
+.display-area{
+    position: fixed;
+    top: 8em;
+    left: 20%;
+    right: 20%;
+}
+
+.menus-area{
+    background-color: #272c2e;
+    left: 0px;
+    top: 80px;
+    height: 100%;
+    width: 19%;
+    position: fixed;
+}
+
+.right-info{
+    position: fixed;
+    bottom: 3em;
+}
+
+.table-area{
+    padding-top:8em;
+    z-index: -1;
+}
+
+.comment-area{
+    position: fixed;
+    left: 20%;
+    right: 20%;
+}
+

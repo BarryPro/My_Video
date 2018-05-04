@@ -1,6 +1,6 @@
 <link href="${my_path}/static/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-<div class="col-sm-3 col-md-2 sidebar">
-    <div >
+<div class="menus-area">
+    <div class="video-list">
         <ul class="nav nav-sidebar">
             <li><a href="javascript:void(0)" class="menu1" id="sport">
                 <span class="fa fa-eye" aria-hidden="true" id="counter"></span>
@@ -28,12 +28,10 @@
             </a></li>
         </ul>
         <div class="side-bottom">
-            <div class="copyright">
-                <ul class="nav nav-sidebar">
-                    <li><a href="javascript:void(0)" class="menu1" id="sport">
+            <div class="right-info">
+                    <li><a href="javascript:void(0)">
                         <span class="fa fa-copyright" aria-hidden="true">&nbsp;&nbsp;Copyright 2018. from author: Barry</span>
                     </a></li>
-                </ul>
             </div>
         </div>
         <div id="cover-menus" class="cover-menus"></div>

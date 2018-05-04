@@ -29,10 +29,10 @@ a.navbar-brand h1 {
     margin: 0;
 }
 form.navbar-form.navbar-right {
-    margin-right: 1em;
-    width: 50%;
+    margin-right: 20em;
+    width: 100%;
     float: left !important;
-    margin-left: 10em;
+    margin-left: 25em;
     position: relative;
 }
 .navbar-form .form-control {
@@ -460,7 +460,8 @@ a.btn.btn-primary.btn-lg.see-button.hvr-shutter-out-horizontal {
 	margin:1em 0;
 }
 .resent-grid {
-	padding-left: 0.1em;
+	padding-left:1%;
+    padding-right: 1%;
 }
 .resent-grid-img{
 	position:relative;
@@ -1366,7 +1367,7 @@ span.glyphicon.glyphicon-user {
 .terms-info-grid p.terms-info-text{
 	margin: 1em 0 0 1em;
 }
-/*-- news --*/
+    /*-- news --*/
 .news-grids{
 	margin-top:2em;
 	padding: 2em;

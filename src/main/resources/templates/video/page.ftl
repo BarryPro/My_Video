@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <style type="text/css">
-    *{margin:0;padding:0;list-style-type:none;}
+    /**{margin:0;padding:0;list-style-type:none;}*/
     a,img{border:0;}
     body{font:12px/180% Arial,Lucida,Verdana,"宋体",Helvetica,sans-serif;font-size:13px;color:#211922;}
     /* 分页数字链接样式 */
