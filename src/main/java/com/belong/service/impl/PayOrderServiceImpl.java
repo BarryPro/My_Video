@@ -1,6 +1,7 @@
 package com.belong.service.impl;
 
 import com.belong.dao.PayOrderMapper;
+import com.belong.model.Pay_Order;
 import com.belong.service.IPayOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,5 +14,10 @@ public class PayOrderServiceImpl implements IPayOrderService {
     @Override
     public boolean insertPayOrder(Map map) {
         return dao.insertPayOrder(map);
+    }
+
+    @Override
+    public Pay_Order getPayOrderByOrderId(Map map) {
+        return dao.getPayOrderByOrderId(map);
     }
 }

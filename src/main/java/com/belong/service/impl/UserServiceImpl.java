@@ -75,4 +75,9 @@ public class UserServiceImpl implements IUserService {
     public boolean updateSettingSave(Map map) {
         return dao.updateSettingSave(map);
     }
+
+    @Override
+    public User getUserByUserId(Map map) {
+        return dao.getUserByUserId(map);
+    }
 }

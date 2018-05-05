@@ -33,4 +33,10 @@
         SET order_status = #{order_status,jdbcType=INTEGER}
         WHERE order_id = #{order_id,jdbcType=INTEGER}
     </update>
+
+    <select id="getOrderByOrderId" parameterType="map"  resultMap="BaseResultMap">
+      SELECT *
+      FROM ORDER_VIDEO
+      WHERE order_id=#{order_id,jdbcType=INTEGER} limit 1;
+    </select>
 </mapper>

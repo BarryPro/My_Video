@@ -14,7 +14,7 @@
                         <#if Session["global_user"]??>
                          <div>
                              <label>昵称：</label>
-                             <#if global_user.alias!="">
+                             <#if global_user.alias??>
                                  <span>${global_user.alias!}</span><br/>
                              <#else>
                                 <span>${global_user.username!}</span><br/>

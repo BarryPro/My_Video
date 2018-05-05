@@ -12,4 +12,5 @@ public interface UserMapper {
     void updateVideoNumber(Map map);
     boolean updateUserVip(Map map);
     boolean updateSettingSave(Map map);
+    User getUserByUserId(Map map);
 }

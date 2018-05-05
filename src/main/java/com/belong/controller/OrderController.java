@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.belong.config.ConstantConfig;
 import com.belong.model.Order_Video;
 import com.belong.model.Pay_Order;
+import com.belong.model.User;
 import com.belong.service.IOrderService;
 import com.belong.service.IPayOrderService;
 import com.belong.service.IUserService;
@@ -35,6 +36,37 @@ public class OrderController {
     private IUserService userService;
     @Autowired
     private VideoController videoController;
+
+    @RequestMapping(value="/order_query")
+    public String orderQuery(@RequestParam("order_id") String order_id,
+                             Map map,
+                             HttpServletResponse response){
+        logger.info("OrderController orderQuery [order_id:{}]",order_id);
+        try{
+            map.put("order_id",Long.parseLong(order_id));
+            Order_Video orderVideo = service.getOrderByOrderId(map);
+            if (orderVideo != null) {
+                orderVideo.setExtra(orderVideo.getOrder_id().toString());
+                map.put("user_id",orderVideo.getUser_id());
+                User user = userService.getUserByUserId(map);
+                Pay_Order payOrder = payOrderService.getPayOrderByOrderId(map);
+                payOrder.setExtra(payOrder.getPay_id().toString());
+                map.put("orderVideo",orderVideo);
+                map.put("user",user);
+                map.put("payOrder",payOrder);
+                map.put(ConstantConfig.MSG,"订单查询成功！");
+            } else {
+                map.put(ConstantConfig.MSG,"订单查询失败！");
+            }
+
+        } catch (NumberFormatException e) {
+            map.put(ConstantConfig.MSG,"订单查询失败，请确认订单格式！");
+            logger.error("OrderController orderQuery NumberFormatException order_id {}",order_id,e);
+        }
+
+        videoController.json(map,response);
+        return ConstantConfig.HOME;
+    }
 
     @RequestMapping(value = "/preview")
     public String insertOrder(@RequestParam("vip_type") String vip_type,

@@ -1,6 +1,7 @@
 package com.belong.service.impl;
 
 import com.belong.dao.OrderMapper;
+import com.belong.model.Order_Video;
 import com.belong.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,5 +19,10 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public boolean updateOrderStatus(Map map) {
         return dao.updateOrderStatus(map);
+    }
+
+    @Override
+    public Order_Video getOrderByOrderId(Map map) {
+        return dao.getOrderByOrderId(map);
     }
 }

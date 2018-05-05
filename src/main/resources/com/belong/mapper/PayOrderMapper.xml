@@ -26,4 +26,10 @@
         #{payOrder.pay_total,jdbcType=DECIMAL},
         #{payOrder.extra,jdbcType=LONGVARCHAR})
     </insert>
+
+    <select id="getPayOrderByOrderId" parameterType="map"  resultMap="BaseResultMap">
+        SELECT *
+        FROM PAY_ORDER
+        WHERE order_id=#{order_id,jdbcType=INTEGER} limit 1;
+    </select>
 </mapper>

@@ -15,6 +15,7 @@ public class User implements Serializable{
     private byte[] pic;
     private Integer vip;
     private String email;
+    private Integer period;
     private Integer vipGrade;
     private String alias;
 }

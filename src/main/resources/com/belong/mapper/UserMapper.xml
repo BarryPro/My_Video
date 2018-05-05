@@ -8,6 +8,9 @@
     <result column="pagenum" property="pagenum" jdbcType="INTEGER" />
     <result column="pic" property="pic" jdbcType="LONGVARBINARY" />
     <result column="vip" property="vip" jdbcType="INTEGER" />
+    <result column="period" property="period" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="INTEGER" />
+    <result column="alias" property="alias" jdbcType="INTEGER" />
   </resultMap>
 
   <select id="login" parameterType="map" resultMap="BaseResultMap">
@@ -21,6 +24,12 @@
     SELECT vip
     FROM USER
     WHERE id=#{uid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getUserByUserId" parameterType="map" resultMap="BaseResultMap">
+    SELECT vip,id,username,pagenum,period
+    FROM USER
+    WHERE id=#{user_id,jdbcType=INTEGER}
   </select>
 
   <insert id="register" parameterType="map">
