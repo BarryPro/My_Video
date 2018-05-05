@@ -52,7 +52,7 @@
                             </div>
                         </form>
                        <#if global_user??>
-                           <#if (global_user.username = "admin")>
+                           <#if (global_user.vip = 11)>
                            <div class="order-control">
                                <h3>订单管理后台</h3>
                                <div class="page-header"><h4><small class="msg">管理员登录</small></h4></div>

@@ -87,7 +87,7 @@ public class WeChatListenerServiceImpl {
 
         @Override
         public void onReceivedQRCode(byte[] jpgData) {
-            logger.info("WeChat.WeChatListener onReceivedQRCode 获取成功，请用手机微信扫码");
+            logger.info("WeChat.WeChatListener onReceivedQRCode 请重新用手机微信扫码登录");
             if (jpgData != null) {
                 this.jpgData = jpgData;
             }
