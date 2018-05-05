@@ -282,36 +282,39 @@ $(document).ready(function () {
         if ($("#cur_user_uid").attr("value") == -1) {
             $("#_login").trigger("click");
         } else {
-            var uid = $("#cur_user_uid").attr("value");
-            $("#order-area").show(500);
-            $("#common-area").html('<div class="container-fluid">' +
-                '    <div class="row-fluid"> '+
-                '        <div class="span12">' +
-                '            <div class="page-header">' +
-                '                <h2 class="white-color">充值VIP.</h2></div>' +
-                '            <table class="table table-hover table-bordered white-color">' +
-                '                <thead><tr><th>权限</th><th>普通（免费）</th><th>vip（6元/月）</th><th>svip（15元/月）</th></tr></thead>' +
-                '                <tbody>' +
-                '                <tr><td>普通视频</td>' +
-                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
-                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
-                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
-                '                <tr ><td>vip视频</td><td></td>' +
-                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
-                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
-                '                <tr><td>付费/用券视频</td><td></td><td></td>' +
-                '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
-                '                </tbody>' +
-                '            </table>' +
-                '            <hr/><div ><input type="hidden" name="user_id" value=' + uid + ' >' +
-                '               <label class="msg">充值类型：</label>' +
-                '                <select class="margin" name="vip_type"><option value="1">vip</option><option value="2">svip</option></select>' +
-                '                <label class="msg">充值时长：</label>' +
-                '                <select class="margin" name="vip_time"><option  value="1">1个月</option><option value="6">6个月</option>' +
-                '                           <option value="12">12个月</option></select></div><hr/>' +
-                '            <button class="btn btn-block btn-primary my_btn" >立即充值</button><hr/>' +
-                '</div></div></div>'
-            );
+            var vip = $("#vip_value").attr("value");
+            if (vip < 10) {
+                var uid = $("#cur_user_uid").attr("value");
+                $("#order-area").show(500);
+                $("#common-area").html('<div class="container-fluid">' +
+                    '    <div class="row-fluid"> '+
+                    '        <div class="span12">' +
+                    '            <div class="page-header">' +
+                    '                <h2 class="white-color">充值VIP.</h2></div>' +
+                    '            <table class="table table-hover table-bordered white-color">' +
+                    '                <thead><tr><th>权限</th><th>普通（免费）</th><th>vip（6元/月）</th><th>svip（15元/月）</th></tr></thead>' +
+                    '                <tbody>' +
+                    '                <tr><td>普通视频</td>' +
+                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
+                    '                <tr ><td>vip视频</td><td></td>' +
+                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
+                    '                <tr><td>付费/用券视频</td><td></td><td></td>' +
+                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
+                    '                </tbody>' +
+                    '            </table>' +
+                    '            <hr/><div ><input type="hidden" name="user_id" value=' + uid + ' >' +
+                    '               <label class="msg">充值类型：</label>' +
+                    '                <select class="margin" name="vip_type"><option value="1">vip</option><option value="2">svip</option></select>' +
+                    '                <label class="msg">充值时长：</label>' +
+                    '                <select class="margin" name="vip_time"><option  value="1">1个月</option><option value="6">6个月</option>' +
+                    '                           <option value="12">12个月</option></select></div><hr/>' +
+                    '            <button class="btn btn-block btn-primary my_btn" >立即充值</button><hr/>' +
+                    '</div></div></div>'
+                );
+            }
         }
     });
 

@@ -18,4 +18,5 @@ public class User implements Serializable{
     private Integer period;
     private Integer vipGrade;
     private String alias;
+    private String login_time;
 }

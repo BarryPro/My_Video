@@ -57,7 +57,10 @@ public class UserController {
         map.put("user",user);
         logger.info("UserController login{}",map);
         User cor_user = service.login(map);
+        map.put("user",cor_user);
         if(cor_user!=null){
+            // 更新用户的登录时间
+            service.updateLoginTime(map);
             if(!cookie.equals(ConstantConfig.OFF)){
                 Cookie cookie1 = new Cookie(ConstantConfig.COOKIEUSERNAME,cor_user.getUsername());
                 cookie1.setMaxAge(7*24*3600);

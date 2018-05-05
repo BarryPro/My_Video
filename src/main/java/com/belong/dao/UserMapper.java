@@ -13,4 +13,6 @@ public interface UserMapper {
     boolean updateUserVip(Map map);
     boolean updateSettingSave(Map map);
     User getUserByUserId(Map map);
+    boolean updateLoginTime(Map map);
+    boolean updatePeriodByUserid(Map map);
 }

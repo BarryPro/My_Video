@@ -80,4 +80,14 @@ public class UserServiceImpl implements IUserService {
     public User getUserByUserId(Map map) {
         return dao.getUserByUserId(map);
     }
+
+    @Override
+    public boolean updateLoginTime(Map map) {
+        return dao.updateLoginTime(map);
+    }
+
+    @Override
+    public boolean updatePeriodByUserid(Map map) {
+        return dao.updatePeriodByUserid(map);
+    }
 }

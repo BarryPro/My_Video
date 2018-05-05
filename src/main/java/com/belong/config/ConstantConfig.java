@@ -42,6 +42,7 @@ public class ConstantConfig {
     public static final String ORDER_SWITCH = "order_switch";
     public static final String HOST = "127.0.0.1";
     public static final int RESIS_PORT = 6379;
+    public static final int BASE_PRICE = 6;
 
     public static final Map<String,String> VIP_TYPE = new HashMap<>();
     public static final Map<String,Integer> VIP_CASH = new HashMap<>();

@@ -30,7 +30,7 @@
 
     <update id="updateOrderStatus" parameterType="map">
         UPDATE ORDER_VIDEO
-        SET order_status = #{order_status,jdbcType=INTEGER}
+        SET order_status = #{order_status,jdbcType=INTEGER},update_time = now()
         WHERE order_id = #{order_id,jdbcType=INTEGER}
     </update>
 

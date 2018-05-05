@@ -133,6 +133,13 @@ public class OrderController {
                 map.put("user_id",user_id);
                 map.put("vip",1);
                 if(userService.updateUserVip(map)){
+                    // 计算vip有效时间
+                    String period = "";
+                    int month = payOrder.getPay_total().intValue() / ConstantConfig.BASE_PRICE;
+                    period = TimeUtils.getCurTimeMonthNumAfterTimestamp("yyyy-MM-dd HH:mm:ss",month);
+                    map.put("period",period);
+                    map.put("vipGrade",month);
+                    userService.updatePeriodByUserid(map);
                     map.put("user_status","1");
                 } else {
                     map.put("user_status","0");

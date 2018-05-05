@@ -19,8 +19,10 @@
                     <input type="hidden" id="order_switch" value="0"/>
                     <input type="hidden" id="cur_page_str" value="0"/>
                     <#if Session["global_user"]??>
+                        <input type="hidden" id="vip_value" value="${global_user.vip!}"/>
                         <input type="hidden" id="cur_user_uid" value="${global_user.id!}"/>
                     <#else>
+                        <input type="hidden" id="vip_value" value="0"/>
                         <input type="hidden" id="cur_user_uid" value="-1"/>
                     </#if>
                 </form>
