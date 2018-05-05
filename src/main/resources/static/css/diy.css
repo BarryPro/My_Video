@@ -133,7 +133,7 @@
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 3%;
-    height: 761px;
+    height: 1080px;
     position: relative;
 }
 .page-box-pos{
@@ -210,13 +210,13 @@
 
 .setting_close{
     margin-top: 20px;
-    right: 10px;
+    right: 25px;
     z-index: 101;
 }
 
 .setting{
     position: fixed;
-    background-color: #0f7a90;
+    background-color: grey;
     right: 0px;
     top: 80px;
     height: 100%;
@@ -244,6 +244,10 @@
 
 .white-color{
     color: white;
+}
+
+.black-color{
+    color: black;
 }
 
 .right-size{
@@ -289,4 +293,8 @@
 
 .center-area{
     width: 790px;
+}
+
+.order-control{
+    margin-bottom: 10em;
 }

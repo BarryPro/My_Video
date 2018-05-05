@@ -16,4 +16,5 @@ public class User implements Serializable{
     private Integer vip;
     private String email;
     private Integer vipGrade;
+    private String alias;
 }

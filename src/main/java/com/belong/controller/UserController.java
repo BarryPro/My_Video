@@ -110,10 +110,11 @@ public class UserController {
             logger.error("NumberFormatException inputAlias,inputEmail,num user_id[{},{},{},{}]",inputAlias,inputEmail,num,user_id,e);
         }
         if(service.updateSettingSave(map)){
-            map.put(ConstantConfig.MSG,"用户设置保存成功");
+            map.put(ConstantConfig.MSG,"用户设置保存成功,重新登录账号后设置生效！");
         } else {
             map.put(ConstantConfig.MSG,"用户设置保存失败");
         }
+        videoController.json(map,response);
         return ConstantConfig.HOME;
     }
 

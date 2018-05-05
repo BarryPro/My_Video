@@ -246,6 +246,7 @@ $(document).ready(function () {
             $("#order-area").slideUp(300);
             $("#play-area").empty();
             $('#webchat-area').hide();
+            $("#setting").hide();
             fixCurPage();
         }
     });
@@ -401,6 +402,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+                $("#setting").hide();
             }
         });
     });
