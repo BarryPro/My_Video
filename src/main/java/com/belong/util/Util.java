@@ -1,5 +1,7 @@
 package com.belong.util;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -7,6 +9,10 @@ import java.util.Random;
 
 public class Util {
     public static final Random RANDOM = new Random();
+
+    public static Object getObjectFromJson(String extra, Class objClass) {
+        return JSONObject.parseObject(extra, objClass);
+    }
 
     public static String get15RandomText() {
         StringBuilder sb = new StringBuilder("e");

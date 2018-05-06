@@ -49,9 +49,10 @@ public class ConstantConfig {
     static {
         VIP_TYPE.put("1","VIP");
         VIP_TYPE.put("2","SVIP");
+        VIP_TYPE.put("0","付费");
 
         VIP_CASH.put("1",6);
         VIP_CASH.put("2",15);
-        VIP_CASH.put("3",5);
+        VIP_CASH.put("0",5);
     }
 }

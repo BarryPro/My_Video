@@ -11,7 +11,7 @@ public interface IUserService {
     boolean register(Map map);
     User login(Map map);
     Integer getVip(Map map);
-    User getPic(int id);
+    User getPic(Map map);
     String getAuthor(int userid);
     boolean updataSelect(int value, int userid);
     void updateVideoNumber(Map map);
@@ -20,4 +20,6 @@ public interface IUserService {
     User getUserByUserId(Map map);
     boolean updateLoginTime(Map map);
     boolean updatePeriodByUserid(Map map);
+    boolean updateExtraByUserid(Map map);
+    User getExtra(Map map);
 }

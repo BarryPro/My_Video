@@ -47,8 +47,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User getPic(int id) {
-        return dao.getPic(id);
+    public User getPic(Map map) {
+        return dao.getPic(map);
     }
 
     @Override
@@ -89,5 +89,15 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean updatePeriodByUserid(Map map) {
         return dao.updatePeriodByUserid(map);
+    }
+
+    @Override
+    public boolean updateExtraByUserid(Map map) {
+        return dao.updateExtraByUserid(map);
+    }
+
+    @Override
+    public User getExtra(Map map) {
+        return dao.getExtra(map);
     }
 }

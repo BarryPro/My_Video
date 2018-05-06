@@ -12,6 +12,7 @@
     <result column="email" property="email" jdbcType="INTEGER" />
     <result column="alias" property="alias" jdbcType="INTEGER" />
     <result column="login_time" property="login_time" jdbcType="TIMESTAMP" />
+    <result column="extra" property="extra" jdbcType="LONGVARCHAR" />
   </resultMap>
 
   <select id="login" parameterType="map" resultMap="BaseResultMap">
@@ -24,7 +25,7 @@
   <select id="getVip" parameterType="map" resultType="java.lang.Integer">
     SELECT vip
     FROM USER
-    WHERE id=#{uid,jdbcType=INTEGER}
+    WHERE id=#{user_id,jdbcType=INTEGER}
   </select>
 
   <select id="getUserByUserId" parameterType="map" resultMap="BaseResultMap">
@@ -43,7 +44,13 @@
   <select id="getPic" parameterType="map"  resultType="com.belong.model.User" resultMap="BaseResultMap">
     SELECT pic
     FROM user
-    WHERE id = #{id,jdbcType=INTEGER}
+    WHERE id = #{user_id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getExtra" parameterType="map"  resultType="com.belong.model.User" resultMap="BaseResultMap">
+    SELECT extra
+    FROM user
+    WHERE id = #{user_id,jdbcType=INTEGER}
   </select>
 
   <update id="updateVideoNumber" parameterType="map">
@@ -73,6 +80,12 @@
   <update id="updatePeriodByUserid" parameterType="map">
     UPDATE user
     SET period = #{period,jdbcType=VARCHAR},vipGrade = vipGrade + #{vipGrade,jdbcType=INTEGER}
+    WHERE id = #{user_id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateExtraByUserid" parameterType="map">
+    UPDATE user
+    SET extra = #{extra,jdbcType=VARCHAR}
     WHERE id = #{user_id,jdbcType=INTEGER}
   </update>
 </mapper>

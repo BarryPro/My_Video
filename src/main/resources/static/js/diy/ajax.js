@@ -283,37 +283,8 @@ $(document).ready(function () {
             $("#_login").trigger("click");
         } else {
             var vip = $("#vip_value").attr("value");
-            if (vip < 10) {
-                var uid = $("#cur_user_uid").attr("value");
-                $("#order-area").show(500);
-                $("#common-area").html('<div class="container-fluid">' +
-                    '    <div class="row-fluid"> '+
-                    '        <div class="span12">' +
-                    '            <div class="page-header">' +
-                    '                <h2 class="white-color">充值VIP.</h2></div>' +
-                    '            <table class="table table-hover table-bordered white-color">' +
-                    '                <thead><tr><th>权限</th><th>普通（免费）</th><th>vip（6元/月）</th><th>svip（15元/月）</th></tr></thead>' +
-                    '                <tbody>' +
-                    '                <tr><td>普通视频</td>' +
-                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
-                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
-                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
-                    '                <tr ><td>vip视频</td><td></td>' +
-                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
-                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
-                    '                <tr><td>付费/用券视频</td><td></td><td></td>' +
-                    '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
-                    '                </tbody>' +
-                    '            </table>' +
-                    '            <hr/><div ><input type="hidden" name="user_id" value=' + uid + ' >' +
-                    '               <label class="msg">充值类型：</label>' +
-                    '                <select class="margin" name="vip_type"><option value="1">vip</option><option value="2">svip</option></select>' +
-                    '                <label class="msg">充值时长：</label>' +
-                    '                <select class="margin" name="vip_time"><option  value="1">1个月</option><option value="6">6个月</option>' +
-                    '                           <option value="12">12个月</option></select></div><hr/>' +
-                    '            <button class="btn btn-block btn-primary my_btn" >立即充值</button><hr/>' +
-                    '</div></div></div>'
-                );
+            if (vip < 20) {
+                getVipProduct(0);
             }
         }
     });
@@ -323,7 +294,8 @@ $(document).ready(function () {
         var order_pay_flag = $("h2").text();
         var vip_type = 0;
         var vip_time = 0;
-        if (order_pay_flag == "充值VIP.") {
+        var vid = $("#hidden_vid").attr("value");
+        if (order_pay_flag == "充值VIP."||order_pay_flag == "购买付费视频.") {
             $("select option:selected").each(function (i,data) {
                 var value = data.value;
                 if (i == 2) {
@@ -346,7 +318,7 @@ $(document).ready(function () {
                     // 展示提单详情页
                     submitOrder(data.order);
                     // 监听支付消息然后提交信息
-                    submitOrderPay(data.order);
+                    submitOrderPay(data.order,vid);
                 }
             });
             $("#order-area").hide(300);
@@ -384,7 +356,18 @@ $(document).ready(function () {
     // 设置支付类型
     $("#common-area").on('click', 'li', function () {
         var payType = $(this).attr("value");
-        $("#pay_type").attr("value",payType);
+        // 如果是微信支付
+        if(payType == "0"){
+            $("#panel-v").attr("class","tab-pane active msg");
+            $("#panel-z").attr("class","tab-pane msg");
+            $("#li-v").attr("class","active");
+            $("#li-z").attr("class","");
+        } else {
+            $("#panel-z").attr("class","tab-pane active msg");
+            $("#panel-v").attr("class","tab-pane msg");
+            $("#li-z").attr("class","active");
+            $("#li-v").attr("class","");
+        }
     });
 
     // 获取vip图标标志
@@ -697,17 +680,25 @@ function clickPlay(a, value) {
         dataType: "json",
         scriptCharset: 'utf-8',
         success: function (data) {
-            if (data.play_switch == 1) {
+            if (data.extra_switch == "10"|| data.extra_switch == "100") {
                 $("#play-area").slideDown(600);
-                $("#play-player").empty();
-                $("#play-player").append(
+                $("#play-player").html(
                     '<video id="video_play" src="' + _path + '/static/resources/movies/' + data.srcpath + '" controls="controls"' +
                     'autoplay="autoplay" width="1024" height="576" poster="' + _path + '/static/images/loading.gif">' +
                     '</video>'
                 );
                 $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+            } else if(data.extra_switch.indexOf("01") == 0){
+                // 购买付费视频
+                var price_percent = 1;
+                if (data.extra_switch.indexOf("011") == 0) {
+                    // vip付费
+                    price_percent = 0.6;
+                }
+                getPayProduct(price_percent,data.vid);
             } else {
-                $("#order-area").show();
+                // 购买vip
+                getVipProduct(data.vid);
             }
         }
     });
@@ -741,18 +732,18 @@ function submitOrder(order) {
             '                <tr class="info"><td>支付金额</td><td>' + order.pay_total + '元</td></tr></tbody></table>' +
             '            <div class="tabbable" id="tabs-797679">' +
             '                <ul class="nav nav-tabs">' +
-            '                    <li class="active" value="0"><a href="#panel-544732" data-toggle="tab">微信</a></li>' +
-            '                    <li value="1"><a href="#panel-879116" data-toggle="tab">支付宝</a></li></ul>' +
+            '                    <li class="active" value="0" id="li-v"><a>微信</a></li>' +
+            '                    <li value="1" id="li-z"><a>支付宝</a></li></ul>' +
             '                <div class="tab-content">' +
             '                   <input value=' + order.extra + ' name="order_id" type="hidden" />' +
             '                   <input value=' + order.pay_total + ' name="pay_total" type="hidden" />' +
             '                   <input value="0" id="pay_type" name="pay_type" type="hidden" />' +
             '                   <input value=' + uid + ' name="user_id"  type="hidden" />'+
-            '                    <div class="tab-pane active msg" id="panel-544732">' +
-            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/v6.jpg class="sys-ewm"/>' +
+            '                    <div class="tab-pane active msg" id="panel-v">' +
+            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/v'+order.pay_total+'.png class="sys-ewm"/>' +
             '                        <small class="msg-info margin">提示：请用【微信】扫二维码支付</small></div>' +
-            '                    <div class="tab-pane msg" id="panel-879116">' +
-            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/z6.jpg class="sys-ewm"/>' +
+            '                    <div class="tab-pane msg" id="panel-z">' +
+            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/z'+order.pay_total+'.png class="sys-ewm"/>' +
             '                        <small class="msg-info margin">提示：请用【支付宝】扫二维码支付</small></div></div>' +
             '            </div><hr/>' +
             '</div>'
@@ -765,14 +756,16 @@ function submitOrder(order) {
  * 提交订单支付
  * @param order 订单信息
  */
-function submitOrderPay(order){
+function submitOrderPay(order,vid){
     $.ajax({
         url: _path + '/my_order/paySubmit',
         type: "post",
         data: 'order_id=' + order.extra +
         '&user_id=' + $("#cur_user_uid").attr("value")+
         '&pay_total='+order.pay_total+
-        '&pay_type='+$("#pay_type").attr("value"),
+        '&pay_type='+$("#pay_type").attr("value")+
+        '&order_type='+ order.order_type+
+        '&vid='+ vid,
         dataType: "json",
         success: function (data) {
             var pay_status = data.pay_status;
@@ -809,4 +802,51 @@ function getVipJpg() {
             }
         }
     });
+}
+
+function getVipProduct(vid) {
+    $("#order-area").show();
+    $("#common-area").html('<div class="container-fluid">' +
+        '    <div class="row-fluid"> '+
+        '        <div class="span12">' +
+        '            <div class="page-header">' +
+        '                <h2 class="white-color">充值VIP.</h2></div>' +
+        '            <table class="table table-hover table-bordered white-color">' +
+        '                <thead><tr><th>权限</th><th>普通（免费）</th><th>vip（6元/月）</th><th>svip（15元/月）</th></tr></thead>' +
+        '                <tbody>' +
+        '                <tr><td>普通视频</td>' +
+        '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+        '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+        '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
+        '                <tr ><td>vip视频</td><td></td>' +
+        '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td>' +
+        '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
+        '                <tr><td>付费/用券视频</td><td></td><td></td>' +
+        '                    <td><img src=' + _path + '/static/images/right.png class="right-size"/></td></tr>' +
+        '                </tbody>' +
+        '            </table>' +
+        '            <hr/><div ><input type="hidden" id="hidden_vid" value=' + vid + ' >' +
+        '               <label class="msg">充值类型：</label>' +
+        '                <select class="margin" name="vip_type"><option value="1">vip</option><option value="2">svip</option></select>' +
+        '                <label class="msg">充值时长：</label>' +
+        '                <select class="margin" name="vip_time"><option  value="1">1个月</option><option value="6">6个月</option>' +
+        '                           <option value="12">12个月</option></select></div><hr/>' +
+        '            <button class="btn btn-block btn-primary my_btn" >立即充值</button><hr/>' +
+        '</div></div></div>'
+    );
+}
+
+function getPayProduct(percent,vid) {
+    $("#order-area").show();
+    $("#common-area").html('<div class="container-fluid">' +
+        '    <div class="row-fluid"> '+
+        '        <div class="span12">' +
+        '            <div class="page-header">' +
+        '            <h2 class="white-color">购买付费视频.</h2></div>' +
+        '            <div ><input type="hidden" id="hidden_vid" value=' + vid + ' >' +
+        '                <select class="margin" name="vip_type" hidden><option value="0"></option></select>' +
+        '                <select class="margin" name="vip_time" hidden><option  value='+percent+'></option></select></div>' +
+        '            <button class="btn btn-block btn-primary my_btn" >立即付费</button><hr/>' +
+        '</div></div></div>'
+    );
 }

@@ -88,7 +88,7 @@ public class UserController {
             Map map,HttpServletResponse response){
         int vip = -1;
         if (!"-1".equals(user_id)) {
-            map.put("uid",user_id);
+            map.put("user_id",user_id);
             vip = service.getVip(map);
         }
         map.put("vip",vip);
@@ -216,10 +216,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/pic/userid/{uid}")
-    public String getPic(@PathVariable(value = "uid") int uid, HttpServletResponse response){
+    public String getPic(@PathVariable(value = "uid") int uid,
+                         Map map,
+                         HttpServletResponse response){
         response.setContentType(ConstantConfig.IMAGE);
         try {
-            User user = service.getPic(uid);
+            map.put("user_id",uid);
+            User user = service.getPic(map);
             byte[] buffer = user.getPic();
             OutputStream os = response.getOutputStream();
             os.write(buffer);

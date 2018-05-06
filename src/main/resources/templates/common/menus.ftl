@@ -66,7 +66,9 @@
             <#--公共使用部分-->
             <div class="order-area" id="order-area">
                 <img title="Close (ESC)" id="order_close" class="order_close _close" src="${my_path}/static/images/close.png">
-                <div id="common-area"></div>
+                <div id="common-area">
+
+                </div>
             </div>
 
             <#--公共使用部分-->

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+
 @Setter
 @Getter
 public class User implements Serializable{
@@ -19,4 +20,5 @@ public class User implements Serializable{
     private Integer vipGrade;
     private String alias;
     private String login_time;
+    private String extra;
 }
