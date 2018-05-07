@@ -317,8 +317,19 @@ $(document).ready(function () {
                     $("#label1").html(data.msg).show(300).delay(3000).hide(300);
                     // 展示提单详情页
                     submitOrder(data.order);
-                    // 监听支付消息然后提交信息
-                    submitOrderPay(data.order,vid);
+                    // 设置全局订单变量
+                    order_extra = data.order.extra;
+                    order_user_id = $("#cur_user_uid").attr("value");
+                    order_pay_total = data.order.pay_total;
+                    order_pay_type = $("#pay_type").attr("value");
+                    order_type = data.order.order_type;
+                    order_vid = vid;
+
+                    // 启动支付扫描程序
+                    if (data.order_switch == 1) {
+                        // 定时扫描消息队列
+                        payMQ = window.setInterval(payMQJob, 1000);
+                    }
                 }
             });
             $("#order-area").hide(300);
@@ -456,12 +467,15 @@ function payMQJob() {
     $.ajax({
         url: _path + '/weChat/payMQ',
         type: "post",
+        data: 'pay_total=' + order_pay_total ,
         dataType: "json",
         success: function (data) {
             var payMsg = data.payMsg;
-            if (""!= payMsg){
-                $("#label1").html(payMsg).show(300).delay(1000).hide(300);
+            if (payMsg == order_pay_total){
+                $("#label1").html("二维码收款"+payMsg+"元！").show(300).delay(1000).hide(300);
                 $('#order-area').hide();
+                // 监听支付消息然后提交信息,字符成功后才更新订单和支付的转态
+                submitOrderPay();
                 // 清空支付消息任务和扫描信息任务
                 window.clearTimeout(payMQ);
                 getVipJpg();
@@ -668,40 +682,44 @@ function playArea() {
 
 // 处理video点击播放
 function clickPlay(a, value) {
-    _path = $("#_path").attr("value");//得到项目的绝对路径
-    if (value == 0) {
-        url = $(a).attr("title");//this就是表示此时点击的那个超链的title了
+    if ($("#cur_user_uid").attr("value") == -1) {
+        $("#_login").trigger("click");
     } else {
-        url = value;
-    }
-    $.ajax({
-        url: url,
-        type: "post",
-        dataType: "json",
-        scriptCharset: 'utf-8',
-        success: function (data) {
-            if (data.extra_switch == "10"|| data.extra_switch == "100") {
-                $("#play-area").slideDown(600);
-                $("#play-player").html(
-                    '<video id="video_play" src="' + _path + '/static/resources/movies/' + data.srcpath + '" controls="controls"' +
-                    'autoplay="autoplay" width="1024" height="576" poster="' + _path + '/static/images/loading.gif">' +
-                    '</video>'
-                );
-                $("#label1").html(data.msg).show(300).delay(3000).hide(300);
-            } else if(data.extra_switch.indexOf("01") == 0){
-                // 购买付费视频
-                var price_percent = 1;
-                if (data.extra_switch.indexOf("011") == 0) {
-                    // vip付费
-                    price_percent = 0.6;
-                }
-                getPayProduct(price_percent,data.vid);
-            } else {
-                // 购买vip
-                getVipProduct(data.vid);
-            }
+        _path = $("#_path").attr("value");//得到项目的绝对路径
+        if (value == 0) {
+            url = $(a).attr("title");//this就是表示此时点击的那个超链的title了
+        } else {
+            url = value;
         }
-    });
+        $.ajax({
+            url: url,
+            type: "post",
+            dataType: "json",
+            scriptCharset: 'utf-8',
+            success: function (data) {
+                if (data.extra_switch == "10"|| data.extra_switch == "100") {
+                    $("#play-area").slideDown(600);
+                    $("#play-player").html(
+                        '<video id="video_play" src="' + _path + '/static/resources/movies/' + data.srcpath + '" controls="controls"' +
+                        'autoplay="autoplay" width="1024" height="576" poster="' + _path + '/static/images/loading.gif">' +
+                        '</video>'
+                    );
+                    $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+                } else if(data.extra_switch.indexOf("01") == 0){
+                    // 购买付费视频
+                    var price_percent = 1;
+                    if (data.extra_switch.indexOf("011") == 0) {
+                        // vip付费
+                        price_percent = 0.6;
+                    }
+                    getPayProduct(price_percent,data.vid);
+                } else {
+                    // 购买vip
+                    getVipProduct(data.vid);
+                }
+            }
+        });
+    }
 }
 
 function fixCurPage() {
@@ -756,24 +774,17 @@ function submitOrder(order) {
  * 提交订单支付
  * @param order 订单信息
  */
-function submitOrderPay(order,vid){
+function submitOrderPay(){
     $.ajax({
         url: _path + '/my_order/paySubmit',
         type: "post",
-        data: 'order_id=' + order.extra +
-        '&user_id=' + $("#cur_user_uid").attr("value")+
-        '&pay_total='+order.pay_total+
-        '&pay_type='+$("#pay_type").attr("value")+
-        '&order_type='+ order.order_type+
-        '&vid='+ vid,
-        dataType: "json",
-        success: function (data) {
-            var pay_status = data.pay_status;
-            if (pay_status == 1) {
-                // 定时扫描消息队列
-                payMQ = window.setInterval(payMQJob, 1000);
-            }
-        }
+        data: 'order_id=' + order_extra +
+        '&user_id=' + order_user_id+
+        '&pay_total='+order_pay_total+
+        '&pay_type='+order_pay_type+
+        '&order_type='+ order_type+
+        '&vid='+ order_vid,
+        dataType: "json"
     });
 }
 
@@ -790,14 +801,19 @@ function getVipJpg() {
                     '<a id="order" href="javascript:void(0)" class="">' +
                     '<img src='+_path+'/static/images/vip/Vip0.png' +
                     ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>')
+            //  vip的级别
             } else if (vip >=0 && vip < 10 ){
-                $('#vip-area').html(
-                    '<a id="order" href="javascript:void(0)" >'+
-                    '<img src='+_path+'/static/images/vip/Vip'+vip+'.png'+
-                    ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>')
-            } else {
-                $('#vip-area').html('<a id="vip-center" href="javascript:void(0)" >' +
+                $('#vip-area').html('<a id="order" href="javascript:void(0)" >' +
                     ' <img src='+_path+'/static/images/vip/Vip'+vip+'.png' +
+                    ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>');
+            } else if (vip > 10 && vip < 99){
+                vip = vip+"";
+                vip = vip.substr(1,vip.length);
+                $('#vip-area').html(
+                    '<a id="order" href="javascript:void(0)" >' +
+                    '<img src='+_path+'/static/images/vip/svip.png' +
+                    ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/>'+
+                    '<img src='+_path+'/static/images/vip/Vip'+vip+'.png'+
                     ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>');
             }
         }

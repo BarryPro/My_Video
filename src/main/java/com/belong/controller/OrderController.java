@@ -130,6 +130,7 @@ public class OrderController {
             logger.error("OrderController insertPayOrder", e);
         }
         payOrder.setOrder_id(Long.parseLong(order_id));
+        // 支付状态为0，当监控到扫码成功后，才更新为1，
         payOrder.setPay_status(1);
         payOrder.setPay_total(Double.parseDouble(pay_total));
         payOrder.setPay_type(Integer.parseInt(pay_type));
