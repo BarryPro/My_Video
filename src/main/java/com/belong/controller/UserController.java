@@ -257,7 +257,11 @@ public class UserController {
             @Override
             public void run() {
                 int vipGrade = user.getVipGrade();
+                String vip = user.getVip()+"";
                 int level = 1;
+                if (vip.startsWith("2")) {
+                    level = 21;
+                }
                 int base = 1;
                 while (vipGrade >= 0) {
                     vipGrade -= base*10;
