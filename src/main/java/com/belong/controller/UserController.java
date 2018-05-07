@@ -53,6 +53,8 @@ public class UserController {
         User cor_user = service.login(map);
         map.put("user",cor_user);
         if(cor_user!=null){
+            // 异步更新用户的vip级别
+            checkUserGrade(cor_user,map);
             // 更新用户的登录时间
             service.updateLoginTime(map);
             if(!cookie.equals(ConstantConfig.OFF)){
@@ -63,14 +65,17 @@ public class UserController {
                 response.addCookie(cookie1);
                 response.addCookie(cookie2);
             }
+            String vip = cor_user.getVip()+"";
+            if (vip.startsWith("2")) {
+                vip = vip.substring(1,vip.length());
+            }
+            cor_user.setVip(Integer.parseInt(vip));
             map.put(ConstantConfig.USER,cor_user);
             msg = ConstantConfig.SUCCESS+cor_user.getUsername()+ConstantConfig.POST;
         } else {
             msg = ConstantConfig.FAILED;
         }
         map.put(ConstantConfig.MSG,msg);
-        // 异步更新用户的vip级别
-        checkUserGrade(cor_user,map);
         if(action == 0){
             return ConstantConfig.HOME;
         } else {

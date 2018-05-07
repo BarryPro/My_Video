@@ -875,6 +875,6 @@ function registerSuccToLogin(){
             $("#password").val($.session.get("session_password"));
             $("#my_login").trigger("click");
         }
-        $("#label1").show(300).delay(3000).hide(300);
+        $("#label1").show(300).delay(1000).hide(300);
     }
 }
