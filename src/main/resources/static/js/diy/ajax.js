@@ -54,24 +54,20 @@ $(document).ready(function () {
     //上传电影
     $("#upload").click(function () {
         if ($("#vname").val() == '') {
-            $("#label1").html("你还没有编辑上传视频的名称哦!").show(300).delay(3000).hide(300);
-            return;
+            $("#vname").val("未知");
         }
         if ($("#vdirector").val() == '') {
-            $("#label1").html("你还没有编辑上传视频的导演呢!").show(300).delay(3000).hide(300);
-            return;
+            $("#vdirector").val("未知");
         }
         if ($("#vactor").val() == '') {
-            $("#label1").html("你还没有编辑上传视频的演员表哦!").show(300).delay(3000).hide(300);
-            return;
+            $("#vactor").val("未知");
         }
         if ($("#file2").val() == '') {
             $("#label1").html("你还没有选择上传视频的海报哦！").show(300).delay(3000).hide(300);
             return;
         }
         if ($("#vinfo").val() == '') {
-            $("#label1").html("你还没有介绍你要上传的视频呐哦！，这样游客会没有兴趣的喔！").show(300).delay(3000).hide(300);
-            return;
+            $("#vinfo").val("未知");
         }
         if ($("#file1").val() == '') {
             $("#label1").html("你还没有选择上传视频哦！").show(300).delay(3000).hide(300);

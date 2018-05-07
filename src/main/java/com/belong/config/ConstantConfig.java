@@ -43,9 +43,14 @@ public class ConstantConfig {
     public static final String HOST = "127.0.0.1";
     public static final int RESIS_PORT = 6379;
     public static final int BASE_PRICE = 6;
-
+    // vip类型
     public static final Map<String,String> VIP_TYPE = new HashMap<>();
+    // 付款金额基数
     public static final Map<String,Integer> VIP_CASH = new HashMap<>();
+    // 图片扩展类型
+    public static final Map<String,String> PIC_TYPE = new HashMap<>();
+    // 视频扩展类型
+    public static final Map<String,String> VIDEO_TYPE = new HashMap<>();
     static {
         VIP_TYPE.put("1","VIP");
         VIP_TYPE.put("2","SVIP");
@@ -54,5 +59,17 @@ public class ConstantConfig {
         VIP_CASH.put("1",6);
         VIP_CASH.put("2",15);
         VIP_CASH.put("0",5);
+
+        PIC_TYPE.put("image/jpeg", ".jpg");
+        PIC_TYPE.put("image/png", ".png");
+        PIC_TYPE.put("image/gif", ".gif");
+        PIC_TYPE.put("image/x-ms-bmp", ".bmp");
+
+        VIDEO_TYPE.put("video/avi", ".avi");
+        VIDEO_TYPE.put("video/mp4", ".mp4");
+        VIDEO_TYPE.put("image/jpeg", ".jpg");
+        VIDEO_TYPE.put("image/png", ".png");
+        VIDEO_TYPE.put("image/gif", ".gif");
+        VIDEO_TYPE.put("image/x-ms-bmp", ".bmp");
     }
 }

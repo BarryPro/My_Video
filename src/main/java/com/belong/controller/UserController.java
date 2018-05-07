@@ -1,9 +1,9 @@
 package com.belong.controller;
 
 import com.belong.config.ConstantConfig;
-import com.belong.util.MD5;
 import com.belong.model.User;
 import com.belong.service.IUserService;
+import com.belong.util.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
@@ -30,17 +29,9 @@ import java.util.UUID;
 @SessionAttributes("global_user")
 public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
-    private HashMap<String,String> typep = new HashMap();
 
     @Autowired
     private VideoController videoController;
-
-    public UserController(){
-        typep.put("image/jpeg", ".jpg");
-        typep.put("image/png", ".png");
-        typep.put("image/gif", ".gif");
-        typep.put("image/x-ms-bmp", ".bmp");
-    }
 
     @Autowired
     private IUserService service;
@@ -179,7 +170,7 @@ public class UserController {
                            HttpServletRequest request,
                            @RequestPart("file0") MultipartFile file){
         String postfix = file.getContentType();
-        if(typep.containsKey(postfix)){
+        if(ConstantConfig.PIC_TYPE.containsKey(postfix)){
             byte[] pic = null;
             try {
                 pic = file.getBytes();
@@ -193,7 +184,7 @@ public class UserController {
             //得到唯一的文件名存放到服务器中
             UUID filename = UUID.randomUUID();
             //组装文件名
-            String _file  = filename+typep.get(postfix);
+            String _file  = filename+ConstantConfig.PIC_TYPE.get(postfix);
             String targetFile = targetDIR+ConstantConfig.SYSTEMSEPARATOR+_file;
             //得到最终存放的路径
             File tarFile = new File (targetFile);

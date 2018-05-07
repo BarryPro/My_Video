@@ -37,17 +37,6 @@ import java.util.*;
 @SessionAttributes(value = "video")
 public class VideoController {
     Logger logger = LoggerFactory.getLogger(VideoController.class);
-    private HashMap<String, String> typep = new HashMap();
-    private HashMap<String, String> typem = new HashMap();
-
-    public VideoController() {
-        typem.put("video/avi", ".avi");
-        typem.put("video/mp4", ".mp4");
-        typep.put("image/jpeg", ".jpg");
-        typep.put("image/png", ".png");
-        typep.put("image/gif", ".gif");
-        typep.put("image/x-ms-bmp", ".bmp");
-    }
 
     @Autowired
     private IMoviesService service;
@@ -228,7 +217,7 @@ public class VideoController {
         String pic_type = filep.getContentType();
         String src_type = filem.getContentType();
         //符合上传要求才可以进行上传
-        if (typem.containsKey(src_type) && typep.containsKey(pic_type)) {
+        if (ConstantConfig.VIDEO_TYPE.containsKey(src_type) && ConstantConfig.PIC_TYPE.containsKey(pic_type)) {
             //得到服务器的绝对路径eg:D:\IntelliJIDEA\Frame\MyVideo2\target\MyVideo2\
             String tpath = ConstantConfig.RESOURCE_PATH;
 //                    request.getSession().getServletContext().getRealPath(SYSTEMSEPARATOR);
@@ -239,8 +228,8 @@ public class VideoController {
             //记录是那个用户上传的
             movies.setId(Integer.parseInt(id));
             //处理长传视频
-            if (typem.containsKey(src_type)) {
-                file = fileaname + typem.get(src_type);
+            if (ConstantConfig.VIDEO_TYPE.containsKey(src_type)) {
+                file = fileaname + ConstantConfig.VIDEO_TYPE.get(src_type);
                 String vsrc = file;
                 movies.setVsrc(vsrc);
                 vsrc = ConstantConfig.MOVIES_PATH + file;
@@ -248,14 +237,14 @@ public class VideoController {
                 saveFile(filem, tarFile, false);
             }
             //处理上传图片
-            if (typep.containsKey(pic_type)) {
+            if (ConstantConfig.PIC_TYPE.containsKey(pic_type)) {
                 try {
                     byte[] vpic = filep.getBytes();
                     movies.setVpic(vpic);
                 } catch (IOException e) {
                     logger.error("IOException VideoController upload", e);
                 }
-                file = fileaname + typep.get(pic_type);
+                file = fileaname + ConstantConfig.PIC_TYPE.get(pic_type);
                 String uploadpath = ConstantConfig.PICTURE_PATH + file;
                 String tarfile = tpath + uploadpath;
                 saveFile(filep, tarfile, true);
