@@ -22,4 +22,5 @@ public interface IUserService {
     boolean updatePeriodByUserid(Map map);
     boolean updateExtraByUserid(Map map);
     User getExtra(Map map);
+    boolean updateVipGradeByUserid(Map map);
 }

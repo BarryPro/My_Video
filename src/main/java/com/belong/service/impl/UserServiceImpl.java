@@ -100,4 +100,9 @@ public class UserServiceImpl implements IUserService {
     public User getExtra(Map map) {
         return dao.getExtra(map);
     }
+
+    @Override
+    public boolean updateVipGradeByUserid(Map map) {
+        return dao.updateVipGradeByUserid(map);
+    }
 }

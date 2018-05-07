@@ -4,6 +4,8 @@ import com.belong.config.ConstantConfig;
 import com.belong.model.User;
 import com.belong.service.IUserService;
 import com.belong.util.MD5;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import java.io.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.Future;
 
 
 /**
@@ -66,6 +69,8 @@ public class UserController {
             msg = ConstantConfig.FAILED;
         }
         map.put(ConstantConfig.MSG,msg);
+        // 异步更新用户的vip级别
+        checkUserGrade(cor_user,map);
         if(action == 0){
             return ConstantConfig.HOME;
         } else {
@@ -238,5 +243,34 @@ public class UserController {
     @RequestMapping(value = "/setting")
     public String setting(){
         return ConstantConfig.SETTING;
+    }
+
+    /**
+     * 获取用户的积分来跟新积分等级
+     */
+    private void checkUserGrade(User user,Map map){
+        //线程池
+        EventExecutorGroup group = new DefaultEventExecutorGroup(1);
+        //向线程池中提交任务，并返回Future，该Future是netty自己实现的future
+        //位于io.netty.util.concurrent包下
+        Future<?> future = group.submit(new Runnable() {
+            @Override
+            public void run() {
+                int vipGrade = user.getVipGrade();
+                int level = 1;
+                int base = 1;
+                while (vipGrade >= 0) {
+                    vipGrade -= base*10;
+                    level = (vipGrade >= 0)?++level:level;
+                    base++;
+                }
+                if (level > 0) {
+                    logger.info("checkUserGrade 异步更新用户积分 [level:]{}",level);
+                    map.put("user_id",user.getId());
+                    map.put("vip",level);
+                    service.updateVipGradeByUserid(map);
+                }
+            }
+        });
     }
 }

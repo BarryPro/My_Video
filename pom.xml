@@ -35,9 +35,17 @@
         <slf4j-api.version>1.7.21</slf4j-api.version>
         <druid.version>1.0.18</druid.version>
         <lombok.version>1.16.18</lombok.version>
+        <netty-all.version>4.1.24.Final</netty-all.version>
     </properties>
 
     <dependencies>
+        <!--用于处理异步程序-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty-all.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
