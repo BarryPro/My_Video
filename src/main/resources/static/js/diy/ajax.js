@@ -37,8 +37,10 @@ $(document).ready(function () {
             $("#label1").html("你还没有选择文件哦!").show(300).delay(3000).hide(300);
             return;
         }
+        $.session.set("session_username",$("#rusername").val());
+        $.session.set("session_password",$("#rpassword").val());
         $("#r_form").submit();
-        $("#label1").show(300).delay(3000).hide(300);
+        $("#label1").show(300).delay(2000).hide(300);
     });
 
     //登陆
@@ -444,6 +446,8 @@ $(document).ready(function () {
             }
         });
     });
+    // 注册后登录
+    registerSuccToLogin();
 });
 
 // 定是任务
@@ -798,7 +802,7 @@ function getVipJpg() {
                     '<img src='+_path+'/static/images/vip/Vip0.png' +
                     ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>')
             //  vip的级别
-            } else if (vip >=0 && vip < 10 ){
+            } else if (vip >=0 && vip < 10 || vip == 99){
                 $('#vip-area').html('<a id="order" href="javascript:void(0)" >' +
                     ' <img src='+_path+'/static/images/vip/Vip'+vip+'.png' +
                     ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>');
@@ -861,4 +865,16 @@ function getPayProduct(percent,vid) {
         '            <button class="btn btn-block btn-primary my_btn" >立即付费</button><hr/>' +
         '</div></div></div>'
     );
+}
+
+function registerSuccToLogin(){
+    var msg = $("#label1").text();
+    if (msg != "") {
+        if (msg == "恭喜你注册成功了") {
+            $("#username").val($.session.get("session_username"));
+            $("#password").val($.session.get("session_password"));
+            $("#my_login").trigger("click");
+        }
+        $("#label1").show(300).delay(3000).hide(300);
+    }
 }

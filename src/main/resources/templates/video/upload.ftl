@@ -18,8 +18,9 @@
                 <option value="1">电视</option>
                 <option value="2">电影</option>
                 <option value="3">MV</option>
-                <option value="4">动漫</option>
-                <option value="5">其他</option>
+                <option value="5">综艺</option>
+                <option value="6">动漫</option>
+
             </select>
             <textarea style="width: 90%;" name="vinfo" placeholder="电影描述" id="vinfo"></textarea><br/>
             <div align="left"><b>视频支持得格式：.mp4 .avi</b></div>

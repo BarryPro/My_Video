@@ -25,7 +25,7 @@ public class ConstantConfig {
     public static final String VISITOR = "visitor.txt";
     public static final String COUNT = "count";
     public static final String RFAILED = "对不起，注册失败了，别灰心再重新来一次吧";
-    public static final String RSUCCESS = "恭喜你注册成功了，快去登陆吧";
+    public static final String RSUCCESS = "恭喜你注册成功了";
     public static final String IMAGE = "image/jpeg";
     public static final String UPLAOD = "upload";
     public static final String SYSTEMSEPARATOR = "/";

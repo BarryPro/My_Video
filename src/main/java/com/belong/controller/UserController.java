@@ -39,7 +39,7 @@ public class UserController {
     @RequestMapping(value = "/login")
     public String login(User user,
                         Map map,
-                        @RequestParam(value = "action") int action,
+                        @RequestParam(value = "action",defaultValue = "0") int action,
                         @RequestParam(value = "cookie",defaultValue = "off") String cookie,
                         HttpServletResponse response){
         String msg;
@@ -199,9 +199,6 @@ public class UserController {
             } else {
                 map.put(ConstantConfig.MSG,ConstantConfig.RFAILED);
             }
-            user.setPassword(pwd);
-            map.put("user",user);
-            service.login(map);
         }
         return ConstantConfig.HOME;
     }
