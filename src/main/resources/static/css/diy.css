@@ -177,6 +177,7 @@
 
 .order-area{
     width: 1024px;
+    overflow: auto;
     background-color: grey;
     z-index: 100;
     position: fixed;
@@ -187,7 +188,7 @@
 .order_close{
     margin-top: 10px;
     z-index: 101;
-    right: 25%;
+    right: 26%;
 }
 
 ._close{

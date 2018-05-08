@@ -20,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -212,7 +211,6 @@ public class VideoController {
                          @RequestPart("filem") MultipartFile filem,
                          @RequestPart("filep") MultipartFile filep,
                          @RequestPart("id") String id,
-                         HttpServletRequest request,
                          Map map) {
         String pic_type = filep.getContentType();
         String src_type = filem.getContentType();
@@ -259,6 +257,50 @@ public class VideoController {
             map.put("_Vactor", review.getVactor());
             service.upload(map);
             map.put(ConstantConfig.MSG, ConstantConfig.UPLOADSUCCESS);
+        }
+        return ConstantConfig.HOME;
+    }
+
+    @RequestMapping(value = "/lately10")
+    public String getVideoLately10(Map map,
+                                   HttpServletResponse response){
+        List<Movies> moviesList = service.getVideosLately10();
+        map.put("moviesList",moviesList);
+        map.put(ConstantConfig.MSG,"查询成功！");
+        json(map,response);
+        return ConstantConfig.HOME;
+    }
+
+    @RequestMapping(value = "/search_video_info")
+    public String getVideosByVideoInfo(@RequestParam("video_info") String video_info,
+                                       Map map,
+                                       HttpServletResponse response){
+        map.put("video_info","%"+video_info+"%");
+        List<Movies> moviesList = service.getVideosByVnameAndVinfo(map);
+        map.put("moviesList",moviesList);
+        if (moviesList.size() == 0) {
+            map.put(ConstantConfig.MSG,"没有查到视频信息！");
+        } else {
+            map.put(ConstantConfig.MSG,"查询成功！");
+        }
+        json(map,response);
+        return ConstantConfig.HOME;
+    }
+
+    @RequestMapping(value = "/execute_update_video")
+    public String executeUpdateVideo(
+            @RequestParam("opeation_type") String opeation_type,
+            @RequestParam("video_checkbox") String[] video_checkbox,
+            Map map){
+        logger.info("VideoController executeUpdateVideo [opeation_type,video_checkbox] {} {}",opeation_type,video_checkbox);
+        for (String str_vid : video_checkbox) {
+            try {
+                map.put("vid",Integer.parseInt(str_vid));
+                map.put("v_type",Integer.parseInt(opeation_type));
+                service.updateVtypeByVid(map);
+            } catch (NumberFormatException e) {
+                logger.error("VideoController executeUpdateVideo NumberFormatException vid v_type{}",str_vid,opeation_type,e);
+            }
         }
         return ConstantConfig.HOME;
     }

@@ -79,6 +79,21 @@ public class MoviesServiceImpl implements IMoviesService {
     public List<Movies> getVideosFromVname(Map map) {
         return dao.getVideosFromVname(map);
     }
+
+    @Override
+    public List<Movies> getVideosLately10() {
+        return dao.getVideosLately10();
+    }
+
+    @Override
+    public List<Movies> getVideosByVnameAndVinfo(Map map) {
+        return dao.getVideosByVnameAndVinfo(map);
+    }
+
+    @Override
+    public boolean updateVtypeByVid(Map map) {
+        return dao.updateVtypeByVid(map);
+    }
 }
 
 

@@ -1,6 +1,6 @@
 <link href="${my_path}/static/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 <div class="col-sm-3 col-md-2 sidebar">
-    <div >
+    <div>
         <ul class="nav nav-sidebar">
             <li><a href="javascript:void(0)" class="menu1" id="sport">
                 <span class="fa fa-eye" aria-hidden="true" id="counter"></span>
@@ -31,7 +31,8 @@
             <div class="copyright">
                 <ul class="nav nav-sidebar">
                     <li><a href="javascript:void(0)" class="menu1" id="sport">
-                        <span class="fa fa-copyright" aria-hidden="true">&nbsp;&nbsp;Copyright 2018. from author: Barry</span>
+                        <span class="fa fa-copyright"
+                              aria-hidden="true">&nbsp;&nbsp;Copyright 2018. from author: Barry</span>
                     </a></li>
                 </ul>
             </div>
@@ -49,34 +50,38 @@
         </div>
 
         <div class="setting" id="setting">
-            <img title="Close (ESC)" id="setting_close" class="setting_close _close" src="${my_path}/static/images/close.png">
+            <img title="Close (ESC)" id="setting_close" class="setting_close _close"
+                 src="${my_path}/static/images/close.png">
             <div class="setting-center">
                 <#include "../video/user-center.ftl">
             </div>
         </div>
 
         <div align="center">
-            <#--播放区-->
+        <#--播放区-->
             <div class="play-area " id="play-area">
                 <div id="play-close">
-                    <img title="Close (ESC)" id="play_close" class="my_close _close" src="${my_path}/static/images/close.png">
+                    <img title="Close (ESC)" id="play_close" class="my_close _close"
+                         src="${my_path}/static/images/close.png">
                 </div>
                 <div id="play-player">
-                    <#--<video id="video_play" src="" controls="controls"-->
-                    <#--autoplay="autoplay" width="1024" height="576" poster="${my_path}/static/images/loading.gif">-->
-                    <#--</video>-->
+                <#--<video id="video_play" src="" controls="controls"-->
+                <#--autoplay="autoplay" width="1024" height="576" poster="${my_path}/static/images/loading.gif">-->
+                <#--</video>-->
                 </div>
             </div>
-            <#--公共使用部分-->
+        <#--公共使用部分-->
             <div class="order-area" id="order-area">
-                <img title="Close (ESC)" id="order_close" class="order_close _close" src="${my_path}/static/images/close.png">
+                <img title="Close (ESC)" id="order_close" class="order_close _close"
+                     src="${my_path}/static/images/close.png">
                 <div id="common-area">
 
                 </div>
             </div>
-
-            <#--公共使用部分-->
-             <div class="webchat-area" id="webchat-area"></div>
         </div>
+
+    <#--微信监控使用部分-->
+        <div class="webchat-area" id="webchat-area"></div>
     </div>
+</div>
 </div>

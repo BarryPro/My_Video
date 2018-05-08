@@ -421,6 +421,9 @@ $(document).ready(function () {
     });
     // 注册后登录
     registerSuccToLogin();
+
+    // 视频后台管理
+    videoManager();
 });
 
 // 定是任务
@@ -964,4 +967,88 @@ function uploadCheck() {
         $("#label1").html("你还没有选择上传视频哦！").show(300).delay(3000).hide(300);
         return 0;
     }
+}
+
+function videoManager() {
+    $("#video_manager").click(function () {
+        $("#label1").html("正在查询……").show(300).delay(1000).hide(300);
+        $("#order-area").show();
+        $("#common-area").empty();
+        $.ajax({
+            url: _path + '/my_video/lately10',
+            type: "post",
+            dataType: "json",
+            success:function (data) {
+                $("#common-area").append('<form id="execute_form" action="'+_path+'/my_video/execute_update_video" method="post">' +
+                    '<div class="container-fluid"><div class="row-fluid">' +
+                    '<table class="span12">' +
+                    '<h3 class="text-center white-color">视频管理后台.</h3><hr/><div>' +
+                    '<label class="white-color">更新后类型：</label>' +
+                    '<select name="opeation_type">' +
+                    '  <option value="1">VIP视频</option>' +
+                    '  <option value="3">付费视频</option>' +
+                    '  <option value="2">用券视频</option>' +
+                    '  <option value="0">普通视频</option></select>' +
+                    '<label class="white-color">操作：</label>' +
+                    '<input type="text" id="search-text"/>' +
+                    '<button type="button" id="search-video-update">查找</button>' +
+                    '<button type="button">反选</button>' +
+                    '<button type="button">全选</button>' +
+                    '</div><hr/>' +
+                    '<table class="table table-condensed white-color">' +
+                    '<thead><tr><th>操作</th><th>序号</th><th>视频名称</th><th>上传时间</th>' +
+                    '<th>点击量</th><th>视频类型</th><th>上传者</th></tr>' +
+                    '</thead><tbody id="opeation_video">'+
+                    '</tbody></table><hr/><button class="btn btn-block btn-warning" id="execute_submit">执行</button><hr/></div></div></form>');
+                videoAppend(data);
+            }
+        });
+        searchUpdateVideoType();
+        executeOpeation();
+    });
+}
+
+function autoExtendHeight(){
+    var str_height = $("#common-area").css("height")
+    var num_height = parseInt(str_height);
+    if (num_height >= 637){
+        $("#order-area").css("height","637px")
+    }
+}
+
+function searchUpdateVideoType(){
+    $("#common-area").on('click','#search-video-update',function () {
+        $.ajax({
+            url: _path + '/my_video/search_video_info',
+            type: "post",
+            data: 'video_info=' + $("#search-text").val(),
+            dataType: "json",
+            success:function (data) {
+                $("#label1").html(data.msg).show(300).delay(1000).hide(300);
+                videoAppend(data);
+            }
+        });
+        autoExtendHeight();
+    });
+}
+
+function videoAppend(data){
+    $("#opeation_video").empty();
+    $(data.moviesList).each(function (i, video) {
+        var type = video.v_type;
+        switch (type){
+            case 0:type = "普通视频";break;
+            case 1:type = "VIP视频";break;
+            case 2:type = "用券视频";break;
+            case 3:type = "付费视频";break;
+        }
+        $("#opeation_video").append('<tr><td><input type="checkbox" name="video_checkbox" value="'+video.vid+'"/><td>'+(i+1)+'</td>' +
+            '</td><td>'+video.vname+'</td><td>'+video.vdate+'</td><td>'+video.views+'</td><td>'+type+'</td><td>'+video.user.username+'</td></tr>');
+    });
+}
+
+function executeOpeation(){
+    $("#common-area").on("click","#execute_submit",function(){
+        $("#execute_form").submit();
+    });
 }

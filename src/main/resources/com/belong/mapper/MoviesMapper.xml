@@ -53,9 +53,30 @@
     order by v_set desc
   </select>
 
+  <select id="getVideosByVnameAndVinfo"  resultType="com.belong.model.Movies" resultMap="BaseResultMap" parameterType="map">
+    SELECT Vname,Vdate,views,v_type,username,m.id,Vid
+    FROM movies m
+    join user u ON (m.id = u.id)
+    WHERE Vname LIKE #{video_info,jdbcType=VARCHAR}
+    or Vinfo LIKE #{video_info,jdbcType=VARCHAR};
+  </select>
+
+  <select id="getVideosLately10"  resultType="com.belong.model.Movies" resultMap="BaseResultMap">
+    SELECT Vname,Vdate,views,v_type,username,m.id,Vid
+    FROM movies m
+    join user u ON (m.id = u.id)
+    ORDER BY Vdate desc limit 10;
+  </select>
+
   <update id="views" parameterType="map" >
     UPDATE movies
     SET views = views + 1
+    WHERE Vid = #{vid,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateVtypeByVid" parameterType="map" >
+    UPDATE movies
+    SET v_type = #{v_type,jdbcType=INTEGER}
     WHERE Vid = #{vid,jdbcType=INTEGER}
   </update>
 </mapper>

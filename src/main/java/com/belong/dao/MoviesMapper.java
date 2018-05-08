@@ -12,4 +12,7 @@ public interface MoviesMapper {
     void views(int Vid);
     List<Movies> getTop20();
     List<Movies> getVideosFromVname(Map map);
+    List<Movies> getVideosLately10();
+    List<Movies> getVideosByVnameAndVinfo(Map map);
+    boolean updateVtypeByVid(Map map);
 }

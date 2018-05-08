@@ -2,9 +2,9 @@ package com.belong.util;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 public class Util {
@@ -43,24 +43,13 @@ public class Util {
     private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     private static final Charset CHARSET = Charset.forName("UTF-8");
 
-    public static String getMD5(String string) {
-        MessageDigest mdInst;
-        try {
-            mdInst = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException();
-        }
-        byte[] md = string.getBytes(CHARSET);
-        for (int i = 0; i < md.length; i++)
-            md[i] = (byte) ~md[i];
-        mdInst.update(md);
-        md = mdInst.digest();
-        char str[] = new char[md.length << 1];
-        int k = 0;
-        for (byte byte0 : md) {
-            str[k++] = hexDigits[byte0 >>> 4 & 0xf];
-            str[k++] = hexDigits[byte0 & 0xf];
-        }
-        return new String(str);
+    public static String getMD5(String value) throws Exception {
+        // 生成一个MD5加密计算摘要
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        // 计算md5函数
+        md5.update(value.getBytes());
+        // digest()最后确定返回md5 hash值，返回值为8为字符串。因为md5 hash值是16位的hex值，实际上就是8位的字符
+        // BigInteger函数则将8位的字符串转换成16位hex值，用字符串来表示；得到字符串形式的hash值
+        return new BigInteger(1, md5.digest()).toString(16);
     }
 }

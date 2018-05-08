@@ -62,6 +62,10 @@
                                <label>order_id： </label>
                                <input id="inputOrderId" type="text" placeholder="订单ID" class="black-color"/><hr/>
                                <button class="btn btn-block btn-warning" type="button" id="order_select">查询</button><hr/>
+                               <h3>视频管理后台</h3>
+                               <div class="page-header"><h4><small class="msg">视频管理操作</small></h4></div>
+                               <button class="btn btn-block btn-warning" type="button" id="video_manager">视频管理</button>
+                               <hr/>
                            </div>
                            </#if>
                        </#if>

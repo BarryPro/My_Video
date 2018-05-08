@@ -21,4 +21,7 @@ public interface IMoviesService{
     ArrayList<Movies> getInfo(Map map);
     List<Movies> getTop20();
     List<Movies> getVideosFromVname(Map map);
+    List<Movies> getVideosLately10();
+    List<Movies> getVideosByVnameAndVinfo(Map map);
+    boolean updateVtypeByVid(Map map);
 }

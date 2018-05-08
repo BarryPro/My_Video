@@ -3,7 +3,7 @@ package com.belong.controller;
 import com.belong.config.ConstantConfig;
 import com.belong.model.User;
 import com.belong.service.IUserService;
-import com.belong.util.MD5;
+import com.belong.util.Util;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.slf4j.Logger;
@@ -47,7 +47,11 @@ public class UserController {
                         HttpServletResponse response){
         String msg;
         String cookiePWD = user.getPassword();
-        user.setPassword(MD5.getMD5(user.getPassword()));
+        try {
+            user.setPassword(Util.getMD5(user.getPassword()));
+        } catch (Exception e) {
+            logger.error("login MD5加密出错",e);
+        }
         map.put("user",user);
         logger.info("UserController login{}",map);
         User cor_user = service.login(map);
@@ -201,7 +205,11 @@ public class UserController {
             videoController.saveFile(file,targetFile,true);
             //加密保存
             String pwd = user.getPassword();
-            user.setPassword(MD5.getMD5(user.getPassword()));
+            try {
+                user.setPassword(Util.getMD5(user.getPassword()));
+            } catch (Exception e) {
+                logger.error("register MD5加密出错",e);
+            }
             user.setPic(pic);
             map.put("user",user);
             if(service.register(map)){
@@ -263,21 +271,23 @@ public class UserController {
             public void run() {
                 int vipGrade = user.getVipGrade();
                 String vip = user.getVip()+"";
-                int level = 1;
-                if (vip.startsWith("2")) {
-                    level = 21;
-                }
-                int base = 1;
-                while (vipGrade >= 0) {
-                    vipGrade -= base*10;
-                    level = (vipGrade >= 0)?++level:level;
-                    base++;
-                }
-                if (level > 0) {
-                    logger.info("checkUserGrade 异步更新用户积分 [level:]{}",level);
-                    map.put("user_id",user.getId());
-                    map.put("vip",level);
-                    service.updateVipGradeByUserid(map);
+                if (!vip.equals("99")) {
+                    int level = 1;
+                    if (vip.startsWith("2")) {
+                        level = 21;
+                    }
+                    int base = 1;
+                    while (vipGrade >= 0) {
+                        vipGrade -= base*10;
+                        level = (vipGrade >= 0)?++level:level;
+                        base++;
+                    }
+                    if (level > 0) {
+                        logger.info("checkUserGrade 异步更新用户积分 [level:]{}",level);
+                        map.put("user_id",user.getId());
+                        map.put("vip",level);
+                        service.updateVipGradeByUserid(map);
+                    }
                 }
             }
         });
