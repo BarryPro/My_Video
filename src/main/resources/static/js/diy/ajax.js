@@ -20,27 +20,13 @@ $(document).ready(function () {
     playArea();
     //用户注册
     $("#register").click(function () {
-        //注册检测&&提交
-        if ($("#rusername").val() == '') {
-            $("#label1").html("用户名不能为空哦!").show(300).delay(3000).hide(300);
-            return;
+        var returnNum = registerCheck();
+        if (returnNum != 0) {
+            $.session.set("session_username", $("#rusername").val());
+            $.session.set("session_password", $("#rpassword").val());
+            $("#r_form").submit();
+            $("#label1").show(300).delay(2000).hide(300);
         }
-        if ($("#rpassword").val().length < 6) {
-            $("#label1").html("密码至少6位哦!").show(300).delay(3000).hide(300);
-            return;
-        }
-        if ($("#rpassword").val() != $("#repwd").val()) {
-            $("#label1").html("两次输入得密码不一致哦!").show(300).delay(3000).hide(300);
-            return;
-        }
-        if ($("#file0").val() == '') {
-            $("#label1").html("你还没有选择文件哦!").show(300).delay(3000).hide(300);
-            return;
-        }
-        $.session.set("session_username", $("#rusername").val());
-        $.session.set("session_password", $("#rpassword").val());
-        $("#r_form").submit();
-        $("#label1").show(300).delay(2000).hide(300);
     });
 
     //登陆
@@ -59,27 +45,10 @@ $(document).ready(function () {
 
     //上传电影
     $("#upload").click(function () {
-        if ($("#vname").val() == '') {
-            $("#vname").val("未知");
+        var returnNum = uploadCheck();
+        if (returnNum != 0) {
+            $("#u_form").submit();
         }
-        if ($("#vdirector").val() == '') {
-            $("#vdirector").val("未知");
-        }
-        if ($("#vactor").val() == '') {
-            $("#vactor").val("未知");
-        }
-        if ($("#file2").val() == '') {
-            $("#label1").html("你还没有选择上传视频的海报哦！").show(300).delay(3000).hide(300);
-            return;
-        }
-        if ($("#vinfo").val() == '') {
-            $("#vinfo").val("未知");
-        }
-        if ($("#file1").val() == '') {
-            $("#label1").html("你还没有选择上传视频哦！").show(300).delay(3000).hide(300);
-            return;
-        }
-        $("#u_form").submit();
     });
     //得到数据库信息
     ajax_page(0, 1);
@@ -907,12 +876,18 @@ function keyController() {
             // 注册提交
             var display_register = $("#small-dialog2").css("display");
             if (display_register == "block") {
-                $("#r_form").submit();
+                var returnNum = registerCheck();
+                if (returnNum != 0) {
+                    $("#r_form").submit();
+                }
             }
             // 上传提交
             var display_upload = $("#small-dialog3").css("display");
             if (display_upload == "block") {
-                $("#u_form").submit();
+                var returnNum = uploadCheck();
+                if (returnNum != 0) {
+                    $("#u_form").submit();
+                }
             }
         }
         // 上键,音量加
@@ -946,4 +921,47 @@ function keyController() {
 
         }
     });
+}
+
+function registerCheck() {
+    //注册检测&&提交
+    if ($("#rusername").val() == '') {
+        $("#label1").html("用户名不能为空哦!").show(300).delay(3000).hide(300);
+        return 0;
+    }
+    if ($("#rpassword").val().length < 6) {
+        $("#label1").html("密码至少6位哦!").show(300).delay(3000).hide(300);
+        return 0;
+    }
+    if ($("#rpassword").val() != $("#repwd").val()) {
+        $("#label1").html("两次输入得密码不一致哦!").show(300).delay(3000).hide(300);
+        return 0;
+    }
+    if ($("#file0").val() == '') {
+        $("#label1").html("你还没有选择文件哦!").show(300).delay(3000).hide(300);
+        return 0;
+    }
+}
+
+function uploadCheck() {
+    if ($("#vname").val() == '') {
+        $("#vname").val("未知");
+    }
+    if ($("#vdirector").val() == '') {
+        $("#vdirector").val("未知");
+    }
+    if ($("#vactor").val() == '') {
+        $("#vactor").val("未知");
+    }
+    if ($("#file2").val() == '') {
+        $("#label1").html("你还没有选择上传视频的海报哦！").show(300).delay(3000).hide(300);
+        return 0;
+    }
+    if ($("#vinfo").val() == '') {
+        $("#vinfo").val("未知");
+    }
+    if ($("#file1").val() == '') {
+        $("#label1").html("你还没有选择上传视频哦！").show(300).delay(3000).hide(300);
+        return 0;
+    }
 }
