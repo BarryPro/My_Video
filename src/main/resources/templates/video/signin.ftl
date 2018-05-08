@@ -22,7 +22,7 @@
             <input type="button" class="button" value="登录" id="my_login"/>
         </form>
         <div class="forgot">
-            <a href="javascript:void(0)">Forgot password ?</a>
+            <a href="#small-dialog2" class="play-icon popup-with-zoom-anim">quickly register 快速注册</a>
         </div>
     </div>
     <div class="clearfix"></div>

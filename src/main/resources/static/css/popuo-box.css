@@ -571,6 +571,7 @@ button::-moz-focus-inner {
 }
 .forgot {
   margin-top: 1em;
+  text-decoration-line: underline;
 }
 .forgot a{
 	color:#000;
