@@ -895,33 +895,48 @@ function keyController() {
         }
         // 上键,音量加
         if (e.keyCode == 38) {
-            console.log(e.keyCode);
+            var myVideo = document.getElementById("video_play");
+            if (myVideo.volume > 1.0) {
+                myVideo.volume = 1.0;
+            } else {
+                myVideo.volume+=0.1;
+            }
         }
         // 下键,音量减
         if (e.keyCode == 40) {
-            console.log(e.keyCode);
+            var myVideo = document.getElementById("video_play");
+            if (myVideo.volume < 0) {
+                myVideo.volume = 0;
+            } else {
+                myVideo.volume-=0.1;
+            }
         }
         // 左键，快退
         if (e.keyCode == 37) {
-            console.log($("#video_play").currentTime);
+            var myVideo = document.getElementById("video_play");
+            if (myVideo.currentTime < 0) {
+                myVideo.currentTime = 0;
+            } else {
+                myVideo.currentTime-=15;
+            }
         }
         // 右键，快进
         if (e.keyCode == 39) {
-            $("#video_play").on(
-                "timeupdate",
-                function () {
-                    if (this.currentTime > this.duration) {
-                        this.currentTime = this.duration;
-                    } else {
-                        this.currentTime++;
-                    }
-                });
+            var myVideo = document.getElementById("video_play");
+            if (myVideo.currentTime > myVideo.duration) {
+                myVideo.currentTime = myVideo.duration;
+            } else {
+                myVideo.currentTime+=15;
+            }
         }
         // 空格，暂停
         if (e.keyCode == 32) {
-            var url = _path + '/static/resources/movies/蚁人_bd.mp4';
-            $("#video_play").attr("src",url);
-
+            var myVideo = document.getElementById("video_play");
+            if(myVideo.paused){
+                $('video').trigger('play');
+            } else {
+                $('video').trigger('pause');
+            }
         }
     });
 }
