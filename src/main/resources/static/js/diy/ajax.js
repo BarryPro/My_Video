@@ -899,7 +899,21 @@ function keyController() {
         }
         // 回车键，控制提交
         if (e.keyCode == 13) {
-            $("#l_form").submit();
+            // 登录提交
+            var display_login = $("#small-dialog").css("display");
+            if (display_login == "block") {
+                $("#l_form").submit();
+            }
+            // 注册提交
+            var display_register = $("#small-dialog2").css("display");
+            if (display_register == "block") {
+                $("#r_form").submit();
+            }
+            // 上传提交
+            var display_upload = $("#small-dialog3").css("display");
+            if (display_upload == "block") {
+                $("#u_form").submit();
+            }
         }
         // 上键,音量加
         if (e.keyCode == 38) {
