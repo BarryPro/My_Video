@@ -992,8 +992,9 @@ function videoManager() {
                     '<label class="white-color">操作：</label>' +
                     '<input type="text" id="search-text"/>' +
                     '<button type="button" id="search-video-update">查找</button>' +
-                    '<button type="button">反选</button>' +
-                    '<button type="button">全选</button>' +
+                    '<button type="button" id="batchFx">反选</button>' +
+                    '<button type="button" id="batchFalse">重置</button>' +
+                    '<button type="button" id="batchTrue">全选</button>' +
                     '</div><hr/>' +
                     '<table class="table table-condensed white-color">' +
                     '<thead><tr><th>操作</th><th>序号</th><th>视频名称</th><th>上传时间</th>' +
@@ -1029,6 +1030,28 @@ function searchUpdateVideoType(){
             }
         });
         autoExtendHeight();
+    });
+    // 反选
+    $("#common-area").on('click','#batchFx',function () {
+        $('input:checkbox').each(function () {
+            if ($(this).prop("checked")){
+                $(this).prop("checked",false);
+            } else {
+                $(this).prop("checked",true);
+            }
+        })
+    });
+    // 全取消
+    $("#common-area").on('click','#batchFalse',function () {
+        $('input:checkbox').each(function () {
+            $(this).prop("checked",false);
+        })
+    });
+    // 全选择
+    $("#common-area").on('click','#batchTrue',function () {
+        $('input:checkbox').each(function () {
+            $(this).prop("checked",true);
+        })
     });
 }
 
