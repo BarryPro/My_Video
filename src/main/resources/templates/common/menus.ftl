@@ -61,7 +61,11 @@
                 <div id="play-close">
                     <img title="Close (ESC)" id="play_close" class="my_close _close" src="${my_path}/static/images/close.png">
                 </div>
-                <div id="play-player"></div>
+                <div id="play-player">
+                    <#--<video id="video_play" src="" controls="controls"-->
+                    <#--autoplay="autoplay" width="1024" height="576" poster="${my_path}/static/images/loading.gif">-->
+                    <#--</video>-->
+                </div>
             </div>
             <#--公共使用部分-->
             <div class="order-area" id="order-area">

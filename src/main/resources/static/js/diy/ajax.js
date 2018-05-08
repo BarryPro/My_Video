@@ -37,8 +37,8 @@ $(document).ready(function () {
             $("#label1").html("你还没有选择文件哦!").show(300).delay(3000).hide(300);
             return;
         }
-        $.session.set("session_username",$("#rusername").val());
-        $.session.set("session_password",$("#rpassword").val());
+        $.session.set("session_username", $("#rusername").val());
+        $.session.set("session_password", $("#rpassword").val());
         $("#r_form").submit();
         $("#label1").show(300).delay(2000).hide(300);
     });
@@ -51,7 +51,11 @@ $(document).ready(function () {
     //取消提示消息
     $("#dispear").click(function () {
         $("#label1").hide()
+        $("#play-area").show();
     });
+
+    // 键盘按键控制
+    keyController();
 
     //上传电影
     $("#upload").click(function () {
@@ -293,8 +297,8 @@ $(document).ready(function () {
         var vip_type = 0;
         var vip_time = 0;
         var vid = $("#hidden_vid").attr("value");
-        if (order_pay_flag == "充值VIP."||order_pay_flag == "购买付费视频.") {
-            $("select option:selected").each(function (i,data) {
+        if (order_pay_flag == "充值VIP." || order_pay_flag == "购买付费视频.") {
+            $("select option:selected").each(function (i, data) {
                 var value = data.value;
                 if (i == 2) {
                     vip_type = value;
@@ -307,11 +311,11 @@ $(document).ready(function () {
                 url: _path + '/my_order/preview',
                 type: "post",
                 data: 'vip_type=' + vip_type +
-                '&user_id=' + $("#cur_user_uid").attr("value")+
-                '&vip_time='+vip_time,
+                '&user_id=' + $("#cur_user_uid").attr("value") +
+                '&vip_time=' + vip_time,
                 dataType: "json",
                 success: function (data) {
-                    $('#order_switch').attr("value",data.order_switch);
+                    $('#order_switch').attr("value", data.order_switch);
                     $("#label1").html(data.msg).show(300).delay(3000).hide(300);
                     // 展示提单详情页
                     submitOrder(data.order);
@@ -366,16 +370,16 @@ $(document).ready(function () {
     $("#common-area").on('click', 'li', function () {
         var payType = $(this).attr("value");
         // 如果是微信支付
-        if(payType == "0"){
-            $("#panel-v").attr("class","tab-pane active msg");
-            $("#panel-z").attr("class","tab-pane msg");
-            $("#li-v").attr("class","active");
-            $("#li-z").attr("class","");
+        if (payType == "0") {
+            $("#panel-v").attr("class", "tab-pane active msg");
+            $("#panel-z").attr("class", "tab-pane msg");
+            $("#li-v").attr("class", "active");
+            $("#li-z").attr("class", "");
         } else {
-            $("#panel-z").attr("class","tab-pane active msg");
-            $("#panel-v").attr("class","tab-pane msg");
-            $("#li-z").attr("class","active");
-            $("#li-v").attr("class","");
+            $("#panel-z").attr("class", "tab-pane active msg");
+            $("#panel-v").attr("class", "tab-pane msg");
+            $("#li-z").attr("class", "active");
+            $("#li-v").attr("class", "");
         }
     });
 
@@ -391,9 +395,9 @@ $(document).ready(function () {
             url: _path + '/my_user/setting_save',
             type: "post",
             data: 'inputAlias=' + alias +
-            '&inputEmail=' + email+
-            '&num='+num+
-            '&user_id='+ $("#cur_user_uid").attr("value"),
+            '&inputEmail=' + email +
+            '&num=' + num +
+            '&user_id=' + $("#cur_user_uid").attr("value"),
             dataType: "json",
             success: function (data) {
                 $("#label1").html(data.msg).show(300).delay(3000).hide(300);
@@ -408,7 +412,7 @@ $(document).ready(function () {
         $.ajax({
             url: _path + '/my_order/order_query',
             type: "post",
-            data: 'order_id=' + order_id ,
+            data: 'order_id=' + order_id,
             dataType: "json",
             success: function (data) {
                 $("#order-area").show();
@@ -420,9 +424,9 @@ $(document).ready(function () {
                     '                                <h5 class="greenyellow-color"><i><b>订单信息</b></i></h5><hr/>\n' +
                     '                                <thead><tr><td>订单ID</td><td>订单名称</td><td>订单金额</td>\n' +
                     '                                    <td>交易时间</td><td>顶单状态</td><td>用户ID</td></tr></thead>\n' +
-                    '                                <tbody><tr><td>'+data.orderVideo.extra+'</td><td>'+data.orderVideo.order_name+'</td>\n' +
-                    '                                    <td>'+data.orderVideo.pay_total+'</td><td>'+data.orderVideo.trade_time+
-                    '                                </td><td>'+data.orderVideo.order_status+'</td><td>'+data.orderVideo.user_id+'</td></tr>\n' +
+                    '                                <tbody><tr><td>' + data.orderVideo.extra + '</td><td>' + data.orderVideo.order_name + '</td>\n' +
+                    '                                    <td>' + data.orderVideo.pay_total + '</td><td>' + data.orderVideo.trade_time +
+                    '                                </td><td>' + data.orderVideo.order_status + '</td><td>' + data.orderVideo.user_id + '</td></tr>\n' +
                     '                                </tbody></table><hr/></div>\n' +
                     '                        <div id="table-pay-area">\n' +
                     '                            <table class="table" style="color: white">\n' +
@@ -430,9 +434,9 @@ $(document).ready(function () {
                     '                                <thead><tr><td>订单ID</td><td>支付ID</td><td>支付金额</td><td>支付时间</td>\n' +
                     '                                    <td>支付状态状态</td><td>支付类型</td><td>用户ID</td></tr></thead>\n' +
                     '                                <tbody>\n' +
-                    '                                <tr><td>'+data.orderVideo.extra+'</td><td>'+data.payOrder.extra+'</td><td>'+data.payOrder.pay_total+'</td>\n' +
-                    '                                    <td>'+data.payOrder.pay_time+'</td><td>'+data.payOrder.pay_status+'</td><td>'+data.payOrder.pay_type+'</td>' +
-                    '                                 <td>'+data.payOrder.user_id+'</td></tr>\n' +
+                    '                                <tr><td>' + data.orderVideo.extra + '</td><td>' + data.payOrder.extra + '</td><td>' + data.payOrder.pay_total + '</td>\n' +
+                    '                                    <td>' + data.payOrder.pay_time + '</td><td>' + data.payOrder.pay_status + '</td><td>' + data.payOrder.pay_type + '</td>' +
+                    '                                 <td>' + data.payOrder.user_id + '</td></tr>\n' +
                     '                                </tbody></table><hr/></div>\n' +
                     '                        <div id="table-pay-area">\n' +
                     '                            <table class="table" style="color: white">\n' +
@@ -440,8 +444,8 @@ $(document).ready(function () {
                     '                                <thead><tr><td>用户ID</td><td>用户名</td><td>VIP</td><td>VIP日期</td><td>页数设置</td></tr>\n' +
                     '                                </thead>\n' +
                     '                                <tbody>\n' +
-                    '                                <tr><td>'+data.user.id+'</td><td>'+data.user.username+'</td><td>'+data.user.vip+'</td>\n' +
-                    '                                    <td>'+data.user.period+'</td><td>'+data.user.pagenum+'</td></tr></tbody></table><hr/></div>\n' +
+                    '                                <tr><td>' + data.user.id + '</td><td>' + data.user.username + '</td><td>' + data.user.vip + '</td>\n' +
+                    '                                    <td>' + data.user.period + '</td><td>' + data.user.pagenum + '</td></tr></tbody></table><hr/></div>\n' +
                     '                    </div>');
             }
         });
@@ -467,12 +471,12 @@ function payMQJob() {
     $.ajax({
         url: _path + '/weChat/payMQ',
         type: "post",
-        data: 'pay_total=' + order_pay_total ,
+        data: 'pay_total=' + order_pay_total,
         dataType: "json",
         success: function (data) {
             var payMsg = data.payMsg;
-            if (payMsg == order_pay_total){
-                $("#label1").html("二维码收款"+payMsg+"元！").show(300).delay(1000).hide(300);
+            if (payMsg == order_pay_total) {
+                $("#label1").html("二维码收款" + payMsg + "元！").show(300).delay(1000).hide(300);
                 $('#order-area').hide();
                 // 监听支付消息然后提交信息,字符成功后才更新订单和支付的转态
                 submitOrderPay();
@@ -697,7 +701,7 @@ function clickPlay(a, value) {
             dataType: "json",
             scriptCharset: 'utf-8',
             success: function (data) {
-                if (data.extra_switch == "10"|| data.extra_switch == "100") {
+                if (data.extra_switch == "10" || data.extra_switch == "100") {
                     $("#play-area").slideDown(600);
                     $("#play-player").html(
                         '<video id="video_play" src="' + _path + '/static/resources/movies/' + data.srcpath + '" controls="controls"' +
@@ -705,14 +709,14 @@ function clickPlay(a, value) {
                         '</video>'
                     );
                     $("#label1").html(data.msg).show(300).delay(3000).hide(300);
-                } else if(data.extra_switch.indexOf("01") == 0){
+                } else if (data.extra_switch.indexOf("01") == 0) {
                     // 购买付费视频
                     var price_percent = 1;
                     if (data.extra_switch.indexOf("011") == 0) {
                         // vip付费
                         price_percent = 0.6;
                     }
-                    getPayProduct(price_percent,data.vid);
+                    getPayProduct(price_percent, data.vid);
                 } else {
                     // 购买vip
                     getVipProduct(data.vid);
@@ -756,12 +760,12 @@ function submitOrder(order) {
             '                   <input value=' + order.extra + ' name="order_id" type="hidden" />' +
             '                   <input value=' + order.pay_total + ' name="pay_total" type="hidden" />' +
             '                   <input value="0" id="pay_type" name="pay_type" type="hidden" />' +
-            '                   <input value=' + uid + ' name="user_id"  type="hidden" />'+
+            '                   <input value=' + uid + ' name="user_id"  type="hidden" />' +
             '                    <div class="tab-pane active msg" id="panel-v">' +
-            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/v'+order.pay_total+'.png class="sys-ewm"/>' +
+            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/v' + order.pay_total + '.png class="sys-ewm"/>' +
             '                        <small class="msg-info margin">提示：请用【微信】扫二维码支付</small></div>' +
             '                    <div class="tab-pane msg" id="panel-z">' +
-            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/z'+order.pay_total+'.png class="sys-ewm"/>' +
+            '                        <img alt="支付二维码" src=' + _path + '/static/images/code/z' + order.pay_total + '.png class="sys-ewm"/>' +
             '                        <small class="msg-info margin">提示：请用【支付宝】扫二维码支付</small></div></div>' +
             '            </div><hr/>' +
             '</div>'
@@ -774,16 +778,16 @@ function submitOrder(order) {
  * 提交订单支付
  * @param order 订单信息
  */
-function submitOrderPay(){
+function submitOrderPay() {
     $.ajax({
         url: _path + '/my_order/paySubmit',
         type: "post",
         data: 'order_id=' + order_extra +
-        '&user_id=' + order_user_id+
-        '&pay_total='+order_pay_total+
-        '&pay_type='+order_pay_type+
-        '&order_type='+ order_type+
-        '&vid='+ order_vid,
+        '&user_id=' + order_user_id +
+        '&pay_total=' + order_pay_total +
+        '&pay_type=' + order_pay_type +
+        '&order_type=' + order_type +
+        '&vid=' + order_vid,
         dataType: "json"
     });
 }
@@ -799,21 +803,21 @@ function getVipJpg() {
             if (vip == -1) {
                 $('#vip-area').html(
                     '<a id="order" href="javascript:void(0)" class="">' +
-                    '<img src='+_path+'/static/images/vip/Vip0.png' +
+                    '<img src=' + _path + '/static/images/vip/Vip0.png' +
                     ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>')
-            //  vip的级别
-            } else if (vip >=0 && vip < 10 || vip == 99){
+                //  vip的级别
+            } else if (vip >= 0 && vip < 10 || vip == 99) {
                 $('#vip-area').html('<a id="order" href="javascript:void(0)" >' +
-                    ' <img src='+_path+'/static/images/vip/Vip'+vip+'.png' +
+                    ' <img src=' + _path + '/static/images/vip/Vip' + vip + '.png' +
                     ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>');
-            } else if (vip > 10 && vip < 99){
-                vip = vip+"";
-                vip = vip.substr(1,vip.length);
+            } else if (vip > 10 && vip < 99) {
+                vip = vip + "";
+                vip = vip.substr(1, vip.length);
                 $('#vip-area').html(
                     '<a id="order" href="javascript:void(0)" >' +
-                    '<img src='+_path+'/static/images/vip/svip.png' +
-                    ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/>'+
-                    '<img src='+_path+'/static/images/vip/Vip'+vip+'.png'+
+                    '<img src=' + _path + '/static/images/vip/svip.png' +
+                    ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/>' +
+                    '<img src=' + _path + '/static/images/vip/Vip' + vip + '.png' +
                     ' class="user_avatar vip-set myimg" style="border-radius:50%;overflow:hidden"/></a>');
             }
         }
@@ -823,7 +827,7 @@ function getVipJpg() {
 function getVipProduct(vid) {
     $("#order-area").show();
     $("#common-area").html('<div class="container-fluid">' +
-        '    <div class="row-fluid"> '+
+        '    <div class="row-fluid"> ' +
         '        <div class="span12">' +
         '            <div class="page-header">' +
         '                <h2 class="white-color">充值VIP.</h2></div>' +
@@ -852,22 +856,22 @@ function getVipProduct(vid) {
     );
 }
 
-function getPayProduct(percent,vid) {
+function getPayProduct(percent, vid) {
     $("#order-area").show();
     $("#common-area").html('<div class="container-fluid">' +
-        '    <div class="row-fluid"> '+
+        '    <div class="row-fluid"> ' +
         '        <div class="span12">' +
         '            <div class="page-header">' +
         '            <h2 class="white-color">购买付费视频.</h2></div>' +
         '            <div ><input type="hidden" id="hidden_vid" value=' + vid + ' >' +
         '                <select class="margin" name="vip_type" hidden><option value="0"></option></select>' +
-        '                <select class="margin" name="vip_time" hidden><option  value='+percent+'></option></select></div>' +
+        '                <select class="margin" name="vip_time" hidden><option  value=' + percent + '></option></select></div>' +
         '            <button class="btn btn-block btn-primary my_btn" >立即付费</button><hr/>' +
         '</div></div></div>'
     );
 }
 
-function registerSuccToLogin(){
+function registerSuccToLogin() {
     var msg = $("#label1").text();
     if (msg != "") {
         if (msg == "恭喜你注册成功了") {
@@ -877,4 +881,55 @@ function registerSuccToLogin(){
         }
         $("#label1").show(300).delay(1000).hide(300);
     }
+}
+
+/**
+ * 用于定义键盘按键的控制
+ */
+function keyController() {
+    $(window).keyup(function (e) {
+        // esc键，控制关闭
+        if (e.keyCode == 27) {//此处代表按的是键盘的Esc键
+            $("#play-area").slideUp(300);
+            $("#order-area").slideUp(300);
+            $("#play-area").empty();
+            $('#webchat-area').hide();
+            $("#setting").hide();
+            fixCurPage();
+        }
+        // 回车键，控制提交
+        if (e.keyCode == 13) {
+            $("#l_form").submit();
+        }
+        // 上键,音量加
+        if (e.keyCode == 38) {
+            console.log(e.keyCode);
+        }
+        // 下键,音量减
+        if (e.keyCode == 40) {
+            console.log(e.keyCode);
+        }
+        // 左键，快退
+        if (e.keyCode == 37) {
+            console.log($("#video_play").currentTime);
+        }
+        // 右键，快进
+        if (e.keyCode == 39) {
+            $("#video_play").on(
+                "timeupdate",
+                function () {
+                    if (this.currentTime > this.duration) {
+                        this.currentTime = this.duration;
+                    } else {
+                        this.currentTime++;
+                    }
+                });
+        }
+        // 空格，暂停
+        if (e.keyCode == 32) {
+            var url = _path + '/static/resources/movies/蚁人_bd.mp4';
+            $("#video_play").attr("src",url);
+
+        }
+    });
 }
