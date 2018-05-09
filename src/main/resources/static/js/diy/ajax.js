@@ -1073,13 +1073,7 @@ function searchUpdateVideoType(){
 function videoAppend(data){
     $("#opeation_video").empty();
     $(data.moviesList).each(function (i, video) {
-        var type = video.v_type;
-        switch (type){
-            case 0:type = "普通视频";break;
-            case 1:type = "VIP视频";break;
-            case 2:type = "用券视频";break;
-            case 3:type = "付费视频";break;
-        }
+        var type = videoTransType(video.v_type);
         $("#opeation_video").append('<tr><td><input type="checkbox" name="video_checkbox" value="'+video.vid+'"/><td>'+(i+1)+'</td>' +
             '</td><td>'+video.vname+'</td><td>'+video.vdate+'</td><td>'+video.views+'</td><td>'+type+'</td><td>'+video.user.username+'</td></tr>');
     });
@@ -1089,4 +1083,15 @@ function executeOpeation(){
     $("#common-area").on("click","#execute_submit",function(){
         $("#execute_form").submit();
     });
+}
+
+function videoTransType(numType){
+    var type = 0;
+    switch (numType){
+        case 0:type = "普通视频";break;
+        case 1:type = "VIP视频";break;
+        case 2:type = "用券视频";break;
+        case 3:type = "付费视频";break;
+    }
+    return type;
 }
