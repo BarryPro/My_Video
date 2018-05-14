@@ -272,21 +272,23 @@ public class UserController {
                 int vipGrade = user.getVipGrade();
                 String vip = user.getVip()+"";
                 if (!vip.equals("99")) {
-                    int level = 1;
-                    if (vip.startsWith("2")) {
-                        level = 21;
-                    }
-                    int base = 1;
-                    while (vipGrade >= 0) {
-                        vipGrade -= base*10;
-                        level = (vipGrade >= 0)?++level:level;
-                        base++;
-                    }
-                    if (level > 0) {
-                        logger.info("checkUserGrade 异步更新用户积分 [level:]{}",level);
-                        map.put("user_id",user.getId());
-                        map.put("vip",level);
-                        service.updateVipGradeByUserid(map);
+                    if (!vip.equals("0")){
+                        int level = 1;
+                        if (vip.startsWith("2")) {
+                            level = 21;
+                        }
+                        int base = 1;
+                        while (vipGrade >= 0) {
+                            vipGrade -= base*10;
+                            level = (vipGrade >= 0)?++level:level;
+                            base++;
+                        }
+                        if (level > 0) {
+                            logger.info("checkUserGrade 异步更新用户积分 [level:]{}",level);
+                            map.put("user_id",user.getId());
+                            map.put("vip",level);
+                            service.updateVipGradeByUserid(map);
+                        }
                     }
                 }
             }
