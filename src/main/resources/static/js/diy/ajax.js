@@ -37,7 +37,7 @@ $(document).ready(function () {
     //取消提示消息
     $("#dispear").click(function () {
         $("#label1").hide()
-        $("#play-area").show();
+        // $("#play-area").show();
     });
 
     // 键盘按键控制
