@@ -443,7 +443,7 @@ function payMQJob() {
     $.ajax({
         url: _path + '/weChat/payMQ',
         type: "post",
-        data: 'pay_total=' + order_pay_total,
+        data: 'pay_total=' + order_pay_total+ '&order_id=' +order_extra+'&user_id='+$("#cur_user_uid").attr("value"),
         dataType: "json",
         success: function (data) {
             var payMsg = data.payMsg;

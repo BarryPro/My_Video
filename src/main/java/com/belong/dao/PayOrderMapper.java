@@ -7,4 +7,5 @@ import java.util.Map;
 public interface PayOrderMapper {
     boolean insertPayOrder(Map map);
     Pay_Order getPayOrderByOrderId(Map map);
+    Long getPayOrderByOrderIdAndUserId(Map map);
 }

@@ -8,4 +8,5 @@ public interface IOrderService {
     boolean insertOrder(Map map);
     boolean updateOrderStatus(Map map);
     Order_Video getOrderByOrderId(Map map);
+    Order_Video getOrderByOrderIdAndUserId(Map map);
 }

@@ -1,6 +1,7 @@
 package com.belong.service.impl;
 
 import com.belong.config.HiddenConfig;
+import com.belong.mq.ActiveMq;
 import com.belong.service.IWeChatListenerService;
 import com.belong.util.Email;
 import com.belong.util.Util;
@@ -17,14 +18,10 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
 
-import javax.jms.Topic;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Getter
@@ -62,7 +59,7 @@ public class WeChatListenerServiceImpl {
     private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Autowired
-    private Topic topic;
+    private ActiveMq mq;
 
     @Getter
     private IWeChatListenerService listener = new IWeChatListenerService()  {
@@ -128,7 +125,7 @@ public class WeChatListenerServiceImpl {
             lastID = id;
             // 设置可以显示收款信息
             payMessage = "二维码收款："+money+"元,备注：" + ( mark.isEmpty()?"无": mark);
-            jmsMessagingTemplate.convertAndSend(topic, payMessage);
+            mq.sendMessage(payMessage);
             logger.info("my_play.pay_mq.topic product {} lastID {}", payMessage,lastID);
         }
 

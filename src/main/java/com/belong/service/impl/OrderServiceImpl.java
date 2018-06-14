@@ -25,4 +25,9 @@ public class OrderServiceImpl implements IOrderService {
     public Order_Video getOrderByOrderId(Map map) {
         return dao.getOrderByOrderId(map);
     }
+
+    @Override
+    public Order_Video getOrderByOrderIdAndUserId(Map map) {
+        return dao.getOrderByOrderIdAndUserId(map);
+    }
 }

@@ -39,4 +39,10 @@
       FROM ORDER_VIDEO
       WHERE order_id=#{order_id,jdbcType=INTEGER} limit 1;
     </select>
+
+    <select id="getOrderByOrderIdAndUserId" parameterType="map"  resultMap="BaseResultMap">
+        SELECT order_id
+        FROM ORDER_VIDEO
+        WHERE order_id=#{order_id,jdbcType=INTEGER} and user_id=#{user_id,jdbcType=INTEGER} limit 1;
+    </select>
 </mapper>

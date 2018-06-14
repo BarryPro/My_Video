@@ -1,8 +1,7 @@
 package com.belong.controller;
 
 import com.belong.config.ConstantConfig;
-import com.belong.service.IPayOrderService;
-import com.belong.service.IUserService;
+import com.belong.service.IOrderService;
 import com.belong.service.impl.WeChatListenerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +28,8 @@ public class WebChatController {
     @Autowired
     private WeChatListenerServiceImpl weChatListenerService;
     @Autowired
-    private IPayOrderService payOrderService;
-    @Autowired
-    private IUserService userService;
+    private IOrderService orderService;
+
 
     private String textMessage;
 
@@ -72,14 +70,28 @@ public class WebChatController {
 
     @RequestMapping(value = "/payMQ")
     public String getPayMessage(@RequestParam("pay_total") String pay_total,
+                                @RequestParam("user_id") String user_id,
+                                @RequestParam("order_id") String order_id,
             Map map,HttpServletResponse response){
         if (textMessage != null) {
-            Pattern pattern = Pattern.compile("二维码收款(\\d+)元");
+            Pattern pattern = Pattern.compile("二维码收款：(.+)元");
             Matcher matcher = pattern.matcher(textMessage);
+            map.put("user_id",Long.parseLong(user_id));
+            map.put("order_id",Long.parseLong(order_id));
             if(matcher.find()) {
-                String mq_pay_total = matcher.group(1);
-                map.put("payMsg",mq_pay_total);
-                textMessage = null;
+                // 判断是否是当前用户支付的当前的订单
+                if (orderService.getOrderByOrderIdAndUserId(map).getOrder_id()!=null) {
+                   String mq_pay_total = matcher.group(1);
+                   // 检测用户支付的金额与订单的金额是否一致
+                   if (Double.parseDouble(mq_pay_total) == Double.parseDouble(pay_total)){
+                       map.put("payMsg",mq_pay_total);
+                       textMessage = null;
+                   } else {
+                       map.put("payMsg",null);
+                   }
+                } else {
+                    map.put("payMsg",null);
+                }
             } else {
                 map.put("payMsg",null);
             }
@@ -89,9 +101,9 @@ public class WebChatController {
         videoController.json(map,response);
         return ConstantConfig.HOME;
     }
-    @JmsListener(destination = "my_play.pay_mq.topic", containerFactory="jmsListenerContainerTopic")
+    @JmsListener(destination = "my_play.pay_mq.queue")
     private void setTextMessage(String textMessage){
         this.textMessage = textMessage;
-        logger.info("my_play.pay_mq.topic consumer:{}",textMessage);
+        logger.info("my_play.pay_mq.queue consumer:{}",textMessage);
     }
 }
