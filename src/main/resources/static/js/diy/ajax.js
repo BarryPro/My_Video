@@ -384,38 +384,43 @@ $(document).ready(function () {
             data: 'order_id=' + order_id,
             dataType: "json",
             success: function (data) {
-                $("#order-area").show();
-                $("#label1").html(data.msg).show(300).delay(3000).hide(300);
-                $("#common-area").html('<div class="table-area">\n' +
-                    '                        <div id="table-order-area">\n' +
-                    '                            <h3 class="greenyellow-color"><b>订单相关信息</b></h3><hr/>\n' +
-                    '                            <table class="table" style="color: white">\n' +
-                    '                                <h5 class="greenyellow-color"><i><b>订单信息</b></i></h5><hr/>\n' +
-                    '                                <thead><tr><td>订单ID</td><td>订单名称</td><td>订单金额</td>\n' +
-                    '                                    <td>交易时间</td><td>顶单状态</td><td>用户ID</td></tr></thead>\n' +
-                    '                                <tbody><tr><td>' + data.orderVideo.extra + '</td><td>' + data.orderVideo.order_name + '</td>\n' +
-                    '                                    <td>' + data.orderVideo.pay_total + '</td><td>' + data.orderVideo.trade_time +
-                    '                                </td><td>' + data.orderVideo.order_status + '</td><td>' + data.orderVideo.user_id + '</td></tr>\n' +
-                    '                                </tbody></table><hr/></div>\n' +
-                    '                        <div id="table-pay-area">\n' +
-                    '                            <table class="table" style="color: white">\n' +
-                    '                                <h5 class="greenyellow-color"><i><b>订单支付</b></i></h5><hr/>\n' +
-                    '                                <thead><tr><td>订单ID</td><td>支付ID</td><td>支付金额</td><td>支付时间</td>\n' +
-                    '                                    <td>支付状态状态</td><td>支付类型</td><td>用户ID</td></tr></thead>\n' +
-                    '                                <tbody>\n' +
-                    '                                <tr><td>' + data.orderVideo.extra + '</td><td>' + data.payOrder.extra + '</td><td>' + data.payOrder.pay_total + '</td>\n' +
-                    '                                    <td>' + data.payOrder.pay_time + '</td><td>' + data.payOrder.pay_status + '</td><td>' + data.payOrder.pay_type + '</td>' +
-                    '                                 <td>' + data.payOrder.user_id + '</td></tr>\n' +
-                    '                                </tbody></table><hr/></div>\n' +
-                    '                        <div id="table-pay-area">\n' +
-                    '                            <table class="table" style="color: white">\n' +
-                    '                                <h5 class="greenyellow-color"><i><b>用户信息</b></i></h5><hr/>\n' +
-                    '                                <thead><tr><td>用户ID</td><td>用户名</td><td>VIP</td><td>VIP日期</td><td>页数设置</td></tr>\n' +
-                    '                                </thead>\n' +
-                    '                                <tbody>\n' +
-                    '                                <tr><td>' + data.user.id + '</td><td>' + data.user.username + '</td><td>' + data.user.vip + '</td>\n' +
-                    '                                    <td>' + data.user.period + '</td><td>' + data.user.pagenum + '</td></tr></tbody></table><hr/></div>\n' +
-                    '                    </div>');
+                if(data.flag_switch == 1){
+                    $("#order-area").hide();
+                    $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+                } else {
+                    $("#order-area").show();
+                    $("#label1").html(data.msg).show(300).delay(3000).hide(300);
+                    $("#common-area").html('<div class="table-area">\n' +
+                        '                        <div id="table-order-area">\n' +
+                        '                            <h3 class="greenyellow-color"><b>订单相关信息</b></h3><hr/>\n' +
+                        '                            <table class="table" style="color: white">\n' +
+                        '                                <h5 class="greenyellow-color"><i><b>订单信息</b></i></h5><hr/>\n' +
+                        '                                <thead><tr><td>订单ID</td><td>订单名称</td><td>订单金额</td>\n' +
+                        '                                    <td>交易时间</td><td>顶单状态</td><td>用户ID</td></tr></thead>\n' +
+                        '                                <tbody><tr><td>' + data.orderVideo.extra + '</td><td>' + data.orderVideo.order_name + '</td>\n' +
+                        '                                    <td>' + data.orderVideo.pay_total + '</td><td>' + data.orderVideo.trade_time +
+                        '                                </td><td>' + data.orderVideo.order_status + '</td><td>' + data.orderVideo.user_id + '</td></tr>\n' +
+                        '                                </tbody></table><hr/></div>\n' +
+                        '                        <div id="table-pay-area">\n' +
+                        '                            <table class="table" style="color: white">\n' +
+                        '                                <h5 class="greenyellow-color"><i><b>订单支付</b></i></h5><hr/>\n' +
+                        '                                <thead><tr><td>订单ID</td><td>支付ID</td><td>支付金额</td><td>支付时间</td>\n' +
+                        '                                    <td>支付状态状态</td><td>支付类型</td><td>用户ID</td></tr></thead>\n' +
+                        '                                <tbody>\n' +
+                        '                                <tr><td>' + data.orderVideo.extra + '</td><td>' + data.payOrder.extra + '</td><td>' + data.payOrder.pay_total + '</td>\n' +
+                        '                                    <td>' + data.payOrder.pay_time + '</td><td>' + data.payOrder.pay_status + '</td><td>' + data.payOrder.pay_type + '</td>' +
+                        '                                 <td>' + data.payOrder.user_id + '</td></tr>\n' +
+                        '                                </tbody></table><hr/></div>\n' +
+                        '                        <div id="table-pay-area">\n' +
+                        '                            <table class="table" style="color: white">\n' +
+                        '                                <h5 class="greenyellow-color"><i><b>用户信息</b></i></h5><hr/>\n' +
+                        '                                <thead><tr><td>用户ID</td><td>用户名</td><td>VIP</td><td>VIP日期</td><td>页数设置</td></tr>\n' +
+                        '                                </thead>\n' +
+                        '                                <tbody>\n' +
+                        '                                <tr><td>' + data.user.id + '</td><td>' + data.user.username + '</td><td>' + data.user.vip + '</td>\n' +
+                        '                                    <td>' + data.user.period + '</td><td>' + data.user.pagenum + '</td></tr></tbody></table><hr/></div>\n' +
+                        '                    </div>');
+                }
             }
         });
     });

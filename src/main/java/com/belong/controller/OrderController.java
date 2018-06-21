@@ -46,27 +46,30 @@ public class OrderController {
                              HttpServletResponse response) {
         logger.info("OrderController orderQuery [order_id:{}]", order_id);
         try {
-            map.put("order_id", Long.parseLong(order_id));
-            Order_Video orderVideo = service.getOrderByOrderId(map);
-            if (orderVideo != null) {
-                orderVideo.setExtra(orderVideo.getOrder_id().toString());
-                map.put("user_id", orderVideo.getUser_id());
-                User user = userService.getUserByUserId(map);
-                Pay_Order payOrder = payOrderService.getPayOrderByOrderId(map);
-                payOrder.setExtra(payOrder.getPay_id().toString());
-                map.put("orderVideo", orderVideo);
-                map.put("user", user);
-                map.put("payOrder", payOrder);
-                map.put(ConstantConfig.MSG, "订单查询成功！");
+            if(!"".equals(order_id)){
+                map.put("order_id", Long.parseLong(order_id));
+                Order_Video orderVideo = service.getOrderByOrderId(map);
+                if (orderVideo != null) {
+                    orderVideo.setExtra(orderVideo.getOrder_id().toString());
+                    map.put("user_id", orderVideo.getUser_id());
+                    User user = userService.getUserByUserId(map);
+                    Pay_Order payOrder = payOrderService.getPayOrderByOrderId(map);
+                    payOrder.setExtra(payOrder.getPay_id().toString());
+                    map.put("orderVideo", orderVideo);
+                    map.put("user", user);
+                    map.put("payOrder", payOrder);
+                    map.put(ConstantConfig.MSG, "订单查询成功！");
+                } else {
+                    map.put(ConstantConfig.MSG, "订单查询失败！订单ID不存在或不合法");
+                    map.put("flag_switch",1);
+                }
             } else {
-                map.put(ConstantConfig.MSG, "订单查询失败！");
+                map.put(ConstantConfig.MSG, "订单ID不能为空！");
             }
-
         } catch (NumberFormatException e) {
             map.put(ConstantConfig.MSG, "订单查询失败，请确认订单格式！");
             logger.error("OrderController orderQuery NumberFormatException order_id {}", order_id, e);
         }
-
         videoController.json(map, response);
         return ConstantConfig.HOME;
     }
